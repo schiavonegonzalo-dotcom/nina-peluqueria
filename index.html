@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NINA Peluquería</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --violet-deep:   #6B3FA0;
+  --violet-mid:    #8850BE;
+  --violet-light:  #EBC8FF;
+  --violet-pale:   #F5EEFF;
+  --orange-hot:    #FA3C01;
+  --orange-warm:   #FF8456;
+  --orange-peach:  #F4AD82;
+  --orange-pale:   #FFE8DC;
+  --white:         #FFFFFF;
+  --dark:          #1A1018;
+  --gray:          #4A3F52;
+  --gray-light:    #C8BDD0;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Montserrat',sans-serif;
+  background:var(--white);
+  color:var(--dark);
+  overflow-x:hidden;
+}
+
+/* ──────────────── CURSOR ──────────────── */
+.cursor{
+  width:12px;height:12px;
+  background:var(--orange-hot);
+  border-radius:50%;
+  position:fixed;top:0;left:0;
+  pointer-events:none;z-index:9999;
+  transition:transform .15s ease, background .2s;
+  mix-blend-mode:multiply;
+}
+
+/* ──────────────── NAV ──────────────── */
+nav{
+  position:fixed;top:0;left:0;width:100%;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.2rem 5rem;
+  background:rgba(255,255,255,0.92);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(136,80,190,0.12);
+}
+.nav-logo{
+  display:flex;flex-direction:column;line-height:1;
+}
+.nav-logo-name{
+  font-size:1.9rem;font-weight:900;
+  letter-spacing:0.08em;
+  color:var(--violet-mid);
+  text-transform:uppercase;
+}
+.nav-logo-sub{
+  font-size:0.55rem;font-weight:300;
+  letter-spacing:0.35em;
+  text-transform:uppercase;
+  color:var(--gray);
+  margin-top:2px;
+}
+.nav-links{display:flex;gap:2.5rem;list-style:none;}
+.nav-links a{
+  font-size:0.7rem;font-weight:600;
+  letter-spacing:0.18em;text-transform:uppercase;
+  text-decoration:none;color:var(--gray);
+  transition:color .3s;
+}
+.nav-links a:hover{color:var(--violet-mid);}
+.nav-cta{
+  background:var(--orange-hot);
+  color:#fff;border:none;
+  padding:0.6rem 1.8rem;
+  font-family:'Montserrat',sans-serif;
+  font-size:0.7rem;font-weight:700;
+  letter-spacing:0.15em;text-transform:uppercase;
+  cursor:pointer;border-radius:2px;
+  transition:background .3s,transform .2s;
+}
+.nav-cta:hover{background:var(--orange-warm);transform:translateY(-2px);}
+
+/* ──────────────── HERO ──────────────── */
+#hero{
+  min-height:100vh;
+  display:grid;grid-template-columns:1fr 1fr;
+  background:var(--violet-pale);
+  overflow:hidden;
+  padding-top:80px;
+}
+.hero-left{
+  display:flex;flex-direction:column;justify-content:center;
+  padding:5rem 4rem 5rem 6rem;
+  position:relative;
+}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:.7rem;
+  font-size:0.65rem;font-weight:700;
+  letter-spacing:0.28em;text-transform:uppercase;
+  color:var(--orange-hot);margin-bottom:2rem;
+}
+.hero-tag::before{content:'';display:block;width:32px;height:2px;background:var(--orange-hot);}
+.hero-h1{
+  font-size:clamp(3rem,5.5vw,5.5rem);
+  font-weight:900;line-height:1;
+  text-transform:uppercase;
+  color:var(--dark);
+  margin-bottom:0.3rem;
+}
+.hero-h1 span{
+  display:block;
+  color:var(--violet-mid);
+  font-weight:200;
+  font-size:clamp(1.8rem,3vw,3rem);
+  text-transform:none;
+  letter-spacing:0.04em;
+  margin-top:0.5rem;
+}
+.hero-desc{
+  font-size:0.9rem;font-weight:300;
+  line-height:1.85;color:var(--gray);
+  max-width:400px;margin:2rem 0;
+}
+.hero-desc strong{font-weight:700;color:var(--violet-mid);}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;}
+.btn-v{
+  background:var(--violet-mid);color:#fff;border:none;
+  padding:.85rem 2.2rem;
+  font-family:'Montserrat',sans-serif;
+  font-size:0.7rem;font-weight:700;
+  letter-spacing:0.15em;text-transform:uppercase;
+  cursor:pointer;border-radius:2px;
+  transition:background .3s,transform .2s;
+}
+.btn-v:hover{background:var(--violet-deep);transform:translateY(-2px);}
+.btn-o{
+  background:transparent;color:var(--orange-hot);
+  border:2px solid var(--orange-hot);
+  padding:.85rem 2.2rem;
+  font-family:'Montserrat',sans-serif;
+  font-size:0.7rem;font-weight:700;
+  letter-spacing:0.15em;text-transform:uppercase;
+  cursor:pointer;border-radius:2px;
+  transition:all .3s;
+}
+.btn-o:hover{background:var(--orange-hot);color:#fff;}
+
+.hero-right{
+  position:relative;overflow:hidden;
+  background:linear-gradient(135deg,var(--violet-mid) 0%,var(--orange-warm) 100%);
+}
+.hero-img{
+  width:100%;height:100%;object-fit:cover;
+  mix-blend-mode:luminosity;opacity:.55;
+  position:absolute;inset:0;
+}
+.hero-right-content{
+  position:relative;z-index:2;
+  height:100%;display:flex;flex-direction:column;
+  justify-content:flex-end;padding:3rem;
+}
+.hero-pill{
+  display:inline-block;
+  background:rgba(255,255,255,0.15);
+  backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,0.3);
+  color:#fff;padding:.5rem 1.2rem;
+  font-size:.65rem;font-weight:700;
+  letter-spacing:.2em;text-transform:uppercase;
+  border-radius:30px;margin-bottom:1rem;
+  width:fit-content;
+}
+.hero-quote{
+  font-size:clamp(1.8rem,3vw,2.8rem);
+  font-weight:800;color:#fff;line-height:1.15;
+}
+.hero-quote em{
+  font-style:normal;
+  color:var(--orange-pale);
+}
+
+/* ──────────────── BAND ──────────────── */
+.band{
+  background:var(--violet-mid);
+  padding:.9rem 6rem;
+  display:flex;gap:4rem;align-items:center;overflow:hidden;
+}
+.band-item{
+  display:flex;align-items:center;gap:.7rem;
+  white-space:nowrap;
+  font-size:.65rem;font-weight:700;
+  letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(255,255,255,0.8);
+}
+.band-dot{color:var(--orange-warm);font-size:1.2rem;}
+
+/* ──────────────── SECTION COMMONS ──────────────── */
+.section-eyebrow{
+  font-size:.65rem;font-weight:700;
+  letter-spacing:.28em;text-transform:uppercase;
+  color:var(--orange-hot);margin-bottom:.6rem;
+}
+.section-title{
+  font-size:clamp(2rem,3.5vw,3rem);
+  font-weight:900;text-transform:uppercase;
+  color:var(--dark);line-height:1.05;
+}
+.section-title em{
+  font-style:normal;
+  color:var(--violet-mid);font-weight:200;
+  text-transform:none;
+}
+
+/* ──────────────── SERVICES ──────────────── */
+#servicios{padding:6rem 6rem;}
+.services-header{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  margin-bottom:3.5rem;
+}
+.services-cats{
+  display:flex;gap:.7rem;flex-wrap:wrap;
+}
+.cat-btn{
+  background:transparent;
+  border:1.5px solid var(--gray-light);
+  color:var(--gray);
+  padding:.4rem 1rem;
+  font-family:'Montserrat',sans-serif;
+  font-size:.65rem;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;
+  cursor:pointer;border-radius:2px;
+  transition:all .3s;
+}
+.cat-btn.active,.cat-btn:hover{
+  background:var(--violet-mid);
+  border-color:var(--violet-mid);
+  color:#fff;
+}
+.services-list{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:1px;
+  background:rgba(136,80,190,.1);
+  border:1px solid rgba(136,80,190,.1);
+}
+.svc-item{
+  background:#fff;
+  padding:1.6rem 2rem;
+  display:flex;justify-content:space-between;align-items:center;
+  transition:background .3s;
+  cursor:default;
+}
+.svc-item:hover{background:var(--violet-pale);}
+.svc-left{display:flex;flex-direction:column;gap:.25rem;}
+.svc-name{font-size:1rem;font-weight:700;color:var(--dark);}
+.svc-time{
+  font-size:.65rem;font-weight:500;
+  letter-spacing:.1em;color:var(--gray-light);
+  text-transform:uppercase;
+}
+.svc-right{display:flex;align-items:center;gap:1rem;}
+.svc-price{
+  font-size:1.1rem;font-weight:800;
+  color:var(--violet-mid);
+}
+.svc-duration-badge{
+  background:var(--orange-pale);
+  color:var(--orange-hot);
+  padding:.2rem .65rem;
+  font-size:.6rem;font-weight:700;
+  letter-spacing:.1em;border-radius:20px;
+}
+
+/* ──────────────── ABOUT ──────────────── */
+#nosotros{
+  padding:6rem;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:5rem;align-items:center;
+  background:var(--dark);
+}
+.about-img-wrap{position:relative;}
+.about-img{
+  width:100%;aspect-ratio:4/5;object-fit:cover;
+  display:block;
+}
+.about-accent-box{
+  position:absolute;top:-1.5rem;right:-1.5rem;
+  width:70%;height:70%;
+  border:2px solid var(--orange-warm);
+  z-index:0;pointer-events:none;
+}
+.about-img{position:relative;z-index:1;}
+.about-text .section-title{color:#fff;}
+.about-text .section-title em{color:var(--orange-warm);}
+.about-text p{
+  font-size:.9rem;font-weight:300;
+  line-height:1.9;color:rgba(255,255,255,.65);
+  margin-top:1.5rem;
+}
+.about-stats{
+  display:flex;gap:2.5rem;margin-top:2.5rem;
+  flex-wrap:wrap;
+}
+.stat-num{
+  font-size:2.8rem;font-weight:900;
+  color:var(--violet-light);line-height:1;
+}
+.stat-label{
+  font-size:.6rem;font-weight:600;
+  letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(255,255,255,.4);margin-top:.2rem;
+}
+
+/* ──────────────── TURNERO ──────────────── */
+#turnero{
+  padding:6rem;
+  background:var(--violet-pale);
+  min-height:80vh;
+}
+.turnero-header{text-align:center;margin-bottom:3rem;}
+.turnero-header .section-title{color:var(--dark);}
+.turnero-header p{
+  font-size:.9rem;font-weight:300;color:var(--gray);
+  margin-top:1rem;line-height:1.7;
+}
+
+/* STEPS */
+.steps-bar{
+  display:flex;align-items:center;justify-content:center;
+  gap:0;margin-bottom:3rem;
+}
+.step{
+  display:flex;flex-direction:column;align-items:center;
+  gap:.4rem;
+  position:relative;
+}
+.step-num{
+  width:2.5rem;height:2.5rem;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.75rem;font-weight:800;
+  background:var(--gray-light);color:#fff;
+  transition:background .4s;
+}
+.step.active .step-num{background:var(--violet-mid);}
+.step.done .step-num{background:var(--orange-hot);}
+.step-label{
+  font-size:.58rem;font-weight:700;
+  letter-spacing:.15em;text-transform:uppercase;
+  color:var(--gray-light);transition:color .4s;
+  white-space:nowrap;
+}
+.step.active .step-label{color:var(--violet-mid);}
+.step.done .step-label{color:var(--orange-hot);}
+.step-connector{
+  width:80px;height:2px;
+  background:var(--gray-light);
+  margin:0 .5rem;margin-bottom:1rem;
+  transition:background .4s;
+}
+.step-connector.done{background:var(--orange-hot);}
+
+/* PANELS */
+.turnero-panel{display:none;}
+.turnero-panel.active{display:block;}
+
+/* Step 1 - Servicio */
+.services-select-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:1rem;
+}
+.svc-select-card{
+  background:#fff;border:2px solid transparent;
+  padding:1.4rem 1.5rem;cursor:pointer;
+  border-radius:4px;
+  transition:all .25s;
+  position:relative;
+  overflow:hidden;
+}
+.svc-select-card::before{
+  content:'';position:absolute;bottom:0;left:0;
+  width:0;height:3px;background:var(--violet-mid);
+  transition:width .3s;
+}
+.svc-select-card:hover::before,.svc-select-card.selected::before{width:100%;}
+.svc-select-card:hover{border-color:var(--violet-light);transform:translateY(-3px);box-shadow:0 8px 24px rgba(136,80,190,.12);}
+.svc-select-card.selected{border-color:var(--violet-mid);background:var(--violet-pale);}
+.svc-card-name{font-size:.95rem;font-weight:700;color:var(--dark);}
+.svc-card-dur{
+  font-size:.65rem;font-weight:600;
+  letter-spacing:.12em;color:var(--orange-hot);
+  margin-top:.3rem;
+}
+.svc-card-check{
+  position:absolute;top:.8rem;right:.8rem;
+  width:1.3rem;height:1.3rem;
+  background:var(--violet-mid);border-radius:50%;
+  display:none;align-items:center;justify-content:center;
+  color:#fff;font-size:.7rem;
+}
+.svc-select-card.selected .svc-card-check{display:flex;}
+
+/* Step 2 - Calendario */
+.calendar-wrap{
+  background:#fff;border-radius:4px;
+  padding:2rem;max-width:420px;margin:0 auto 2rem;
+  box-shadow:0 4px 24px rgba(136,80,190,.08);
+}
+.cal-header{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:1.5rem;
+}
+.cal-title{font-size:1rem;font-weight:800;color:var(--dark);}
+.cal-nav{
+  background:none;border:none;cursor:pointer;
+  font-size:1.2rem;color:var(--violet-mid);
+  transition:transform .2s;
+}
+.cal-nav:hover{transform:scale(1.2);}
+.cal-grid{
+  display:grid;grid-template-columns:repeat(7,1fr);
+  gap:4px;text-align:center;
+}
+.cal-day-name{
+  font-size:.6rem;font-weight:700;
+  letter-spacing:.12em;color:var(--gray-light);
+  padding-bottom:.5rem;
+}
+.cal-day{
+  aspect-ratio:1;display:flex;align-items:center;justify-content:center;
+  font-size:.8rem;font-weight:600;color:var(--dark);
+  cursor:pointer;border-radius:50%;
+  transition:all .2s;
+}
+.cal-day:hover{background:var(--violet-pale);color:var(--violet-mid);}
+.cal-day.selected{background:var(--violet-mid);color:#fff;}
+.cal-day.today{border:2px solid var(--orange-warm);}
+.cal-day.disabled{color:var(--gray-light);cursor:default;pointer-events:none;}
+.cal-day.empty{cursor:default;pointer-events:none;}
+
+/* Step 3 - Horarios */
+.time-notice{
+  background:linear-gradient(135deg,var(--violet-pale),var(--orange-pale));
+  border-left:4px solid var(--violet-mid);
+  padding:1rem 1.5rem;margin-bottom:2rem;
+  border-radius:0 4px 4px 0;
+  font-size:.82rem;font-weight:500;color:var(--dark);
+  max-width:600px;margin-left:auto;margin-right:auto;
+}
+.time-notice strong{color:var(--orange-hot);}
+.time-slots{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));
+  gap:.7rem;max-width:600px;margin:0 auto;
+}
+.time-slot{
+  background:#fff;border:2px solid transparent;
+  padding:.65rem;text-align:center;cursor:pointer;
+  border-radius:4px;
+  font-size:.82rem;font-weight:700;color:var(--dark);
+  transition:all .25s;
+}
+.time-slot:hover{border-color:var(--violet-light);background:var(--violet-pale);}
+.time-slot.selected{background:var(--violet-mid);color:#fff;border-color:var(--violet-mid);}
+.time-slot.unavailable{
+  background:#f5f5f5;color:var(--gray-light);
+  cursor:default;pointer-events:none;
+  text-decoration:line-through;
+}
+
+/* Step 4 - Datos */
+.datos-form{
+  max-width:560px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;
+}
+.fg{display:flex;flex-direction:column;gap:.4rem;}
+.fg.full{grid-column:span 2;}
+.fg label{
+  font-size:.62rem;font-weight:700;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--violet-mid);
+}
+.fg input,.fg select,.fg textarea{
+  background:#fff;
+  border:1.5px solid rgba(136,80,190,.2);
+  color:var(--dark);
+  padding:.75rem 1rem;
+  font-family:'Montserrat',sans-serif;
+  font-size:.88rem;font-weight:500;
+  outline:none;border-radius:2px;
+  transition:border-color .3s;
+}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--violet-mid);}
+.fg select option{background:#fff;}
+.notif-choice{
+  display:flex;gap:1rem;margin-top:.3rem;
+}
+.notif-opt{
+  display:flex;align-items:center;gap:.5rem;cursor:pointer;
+  font-size:.8rem;font-weight:600;color:var(--gray);
+}
+.notif-opt input[type=radio]{accent-color:var(--violet-mid);}
+
+/* Step 5 - Confirmado */
+.confirm-wrap{
+  max-width:500px;margin:0 auto;text-align:center;
+  padding:3rem;background:#fff;border-radius:4px;
+  box-shadow:0 8px 40px rgba(136,80,190,.12);
+}
+.confirm-icon{
+  width:5rem;height:5rem;
+  background:linear-gradient(135deg,var(--violet-mid),var(--orange-warm));
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 1.5rem;font-size:2rem;
+}
+.confirm-title{
+  font-size:1.6rem;font-weight:900;
+  text-transform:uppercase;color:var(--dark);margin-bottom:.5rem;
+}
+.confirm-detail{
+  font-size:.85rem;font-weight:300;
+  line-height:1.8;color:var(--gray);margin-bottom:1.5rem;
+}
+.confirm-detail strong{font-weight:700;color:var(--violet-mid);}
+.confirm-notif{
+  background:var(--violet-pale);
+  border-radius:4px;padding:1rem;
+  font-size:.78rem;font-weight:600;color:var(--violet-deep);
+  margin-bottom:1.5rem;
+}
+
+/* NAV BTNS TURNERO */
+.turnero-nav{
+  display:flex;justify-content:center;gap:1rem;margin-top:2.5rem;
+}
+
+/* ──────────────── GALLERY ──────────────── */
+#galeria{padding:6rem;}
+#galeria .gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  grid-template-rows:280px 280px;
+  gap:10px;margin-top:3rem;
+}
+.gi{overflow:hidden;position:relative;}
+.gi:nth-child(1){grid-column:span 2;}
+.gi:nth-child(5){grid-column:span 2;}
+.gi img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease;display:block;}
+.gi:hover img{transform:scale(1.07);}
+.gi::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(136,80,190,.3),transparent);
+  opacity:0;transition:opacity .4s;
+}
+.gi:hover::after{opacity:1;}
+
+/* ──────────────── CONTACT ──────────────── */
+#contacto{
+  padding:6rem;
+  display:grid;grid-template-columns:1fr 1fr;gap:5rem;
+  background:var(--dark);
+}
+#contacto .section-title{color:#fff;}
+#contacto .section-title em{color:var(--orange-warm);}
+.contact-items{margin-top:2rem;display:flex;flex-direction:column;gap:1.5rem;}
+.contact-item{display:flex;gap:1rem;align-items:flex-start;}
+.c-icon{
+  width:2.5rem;height:2.5rem;flex-shrink:0;
+  border:1.5px solid rgba(136,80,190,.4);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;color:var(--violet-light);
+}
+.c-label{
+  font-size:.6rem;font-weight:700;
+  letter-spacing:.2em;text-transform:uppercase;
+  color:var(--orange-warm);margin-bottom:.2rem;
+}
+.c-val{font-size:.9rem;font-weight:300;color:rgba(255,255,255,.7);line-height:1.6;}
+.hours-block{
+  margin-top:2.5rem;border-top:1px solid rgba(255,255,255,.08);
+  padding-top:2rem;
+}
+.hours-block h3{
+  font-size:.65rem;font-weight:700;
+  letter-spacing:.2em;text-transform:uppercase;
+  color:var(--violet-light);margin-bottom:1rem;
+}
+.h-row{
+  display:flex;justify-content:space-between;
+  font-size:.85rem;font-weight:300;
+  color:rgba(255,255,255,.55);
+  padding:.5rem 0;
+  border-bottom:1px solid rgba(255,255,255,.05);
+}
+.h-row span:last-child{color:var(--orange-warm);font-weight:600;}
+.map-ph{
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(136,80,190,.2);
+  min-height:300px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:.5rem;
+  font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(255,255,255,.25);
+  border-radius:2px;
+}
+.map-ph .pin{font-size:2.5rem;}
+
+/* ──────────────── FOOTER ──────────────── */
+footer{
+  background:var(--dark);
+  border-top:1px solid rgba(136,80,190,.15);
+  padding:2.5rem 5rem;
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:1rem;
+}
+.footer-logo-name{
+  font-size:1.4rem;font-weight:900;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:var(--violet-light);
+}
+.footer-logo-sub{
+  font-size:.5rem;font-weight:300;
+  letter-spacing:.3em;text-transform:uppercase;
+  color:rgba(255,255,255,.35);
+}
+.footer-copy{font-size:.65rem;font-weight:300;color:rgba(255,255,255,.3);}
+.socials{display:flex;gap:.7rem;}
+.socials a{
+  width:2.2rem;height:2.2rem;
+  border:1.5px solid rgba(136,80,190,.3);
+  display:flex;align-items:center;justify-content:center;
+  text-decoration:none;font-size:.75rem;
+  font-weight:700;color:rgba(255,255,255,.5);
+  transition:all .3s;
+}
+.socials a:hover{border-color:var(--orange-warm);color:var(--orange-warm);}
+
+/* ──────────────── WA FLOAT ──────────────── */
+.wa{
+  position:fixed;bottom:2rem;right:2rem;z-index:300;
+  background:#25D366;color:#fff;
+  width:3.5rem;height:3.5rem;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.6rem;text-decoration:none;
+  box-shadow:0 4px 20px rgba(37,211,102,.4);
+  transition:transform .3s,box-shadow .3s;
+}
+.wa:hover{transform:scale(1.12);box-shadow:0 8px 32px rgba(37,211,102,.55);}
+
+/* ──────────────── FADE ANIMATIONS ──────────────── */
+.fade-up{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease;}
+.fade-up.vis{opacity:1;transform:translateY(0);}
+
+/* ──────────────── RESPONSIVE ──────────────── */
+@media(max-width:900px){
+  nav{padding:1rem 1.5rem;}
+  .nav-links{display:none;}
+  #hero{grid-template-columns:1fr;}
+  .hero-right{height:50vw;}
+  .hero-left{padding:5rem 2rem 3rem;}
+  #servicios,#nosotros,#turnero,#galeria,#contacto{padding:4rem 1.5rem;}
+  .services-list{grid-template-columns:1fr;}
+  #nosotros,#contacto{grid-template-columns:1fr;}
+  #galeria .gallery-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto;}
+  .gi:nth-child(1),.gi:nth-child(5){grid-column:span 1;}
+  .datos-form{grid-template-columns:1fr;}
+  .fg.full{grid-column:span 1;}
+  .band{padding:.9rem 2rem;gap:2rem;}
+  footer{padding:2rem 1.5rem;}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-logo">
+    <div class="nav-logo-name">Nina</div>
+    <div class="nav-logo-sub">Peluquería</div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#nosotros">Nosotros</a></li>
+    <li><a href="#turnero">Turnos</a></li>
+    <li><a href="#galeria">Galería</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('turnero').scrollIntoView({behavior:'smooth'})">Reservar turno</button>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-tag">Buenos Aires · Palermo</div>
+    <h1 class="hero-h1">
+      Tu pelo,<br>tu estilo
+      <span>Arte en cada corte.</span>
+    </h1>
+    <p class="hero-desc">
+      En <strong>Nina Peluquería</strong> creemos que el cabello es tu mejor accesorio. Combinamos técnica, pasión y las últimas tendencias para transformar cada visita en una experiencia.
+    </p>
+    <div class="hero-btns">
+      <button class="btn-v" onclick="document.getElementById('turnero').scrollIntoView({behavior:'smooth'})">Sacar turno</button>
+      <button class="btn-o" onclick="document.getElementById('servicios').scrollIntoView({behavior:'smooth'})">Ver servicios</button>
+    </div>
+  </div>
+  <div class="hero-right">
+    <img class="hero-img" src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=900&q=80" alt="Nina Peluquería"/>
+    <div class="hero-right-content">
+      <div class="hero-pill">✦ Tendencias 2025</div>
+      <div class="hero-quote">Porque <em>transformarte</em><br>es un arte</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── BAND ── -->
+<div class="band">
+  <div class="band-item"><span class="band-dot">✦</span> Cortes &amp; Coloración</div>
+  <div class="band-item"><span class="band-dot">✦</span> Balayage &amp; Mechas</div>
+  <div class="band-item"><span class="band-dot">✦</span> Tratamientos capilares</div>
+  <div class="band-item"><span class="band-dot">✦</span> Peinados de fiesta</div>
+  <div class="band-item"><span class="band-dot">✦</span> Alisados &amp; Keratina</div>
+  <div class="band-item"><span class="band-dot">✦</span> Cortes &amp; Coloración</div>
+  <div class="band-item"><span class="band-dot">✦</span> Balayage &amp; Mechas</div>
+</div>
+
+<!-- ── SERVICES ── -->
+<section id="servicios">
+  <div class="services-header fade-up">
+    <div>
+      <div class="section-eyebrow">Lo que hacemos</div>
+      <div class="section-title">Servicios <em>&amp; precios</em></div>
+    </div>
+    <div class="services-cats">
+      <button class="cat-btn active" onclick="filterCat(this,'all')">Todos</button>
+      <button class="cat-btn" onclick="filterCat(this,'corte')">Cortes</button>
+      <button class="cat-btn" onclick="filterCat(this,'color')">Color</button>
+      <button class="cat-btn" onclick="filterCat(this,'trat')">Tratamientos</button>
+      <button class="cat-btn" onclick="filterCat(this,'estilo')">Estilismo</button>
+    </div>
+  </div>
+  <div class="services-list fade-up" id="svcList">
+    <!-- corte -->
+    <div class="svc-item" data-cat="corte">
+      <div class="svc-left"><div class="svc-name">Corte masculino</div><div class="svc-time">Barbería &amp; caballero</div></div>
+      <div class="svc-right"><span class="svc-duration-badge">30 min</span><div class="svc-price">$3.500</div></div>
+    </div>
+    <div class="svc-item" data-cat="corte">
+      <div class="svc-left"><div class="svc-name">Corte femenino</div><div class="svc-time">Tijera &amp; navaja</div></div>
+      <div class="svc-right"><span class="svc-duration-badge">60 min</span><div class="svc-price">$5.000</div></div>
+    </div>
+    <div class="svc-item" data-cat="corte">
+      <div class="svc-left"><div class="svc-name">Corte + Brushing</div><div class="svc-time">Corte y secado</div></div>
+      <div class="svc-right"><span class="svc-duration-badge">75 min</span><div class="svc-price">$6.500</div></div>
+    </div>
+    <div class="svc-item" data-cat="estilo">
+      <div class="svc-left"><div class="svc-name">Brushing</div><div class="svc-time">Lavado y modelado</div></div>
+      <div class="svc-right"><span class="svc-duration-badge">45–60 min</span><div class="svc-price">$4.000</div></div>
+    </div>
+    <div class="svc-item" data-cat="estilo">
+      <div class="svc-left"><div class="svc-name">Lavado + Secado</div><div class="svc-time">Servicio express</div></div>
+      <div class="svc-right"><span class="svc-duration-badge">30 min</span><div class="svc-price">$2.500</div></div>
+    </div>
+    <div class="svc-item" data-cat="estilo">
+      <div class="svc-left"><div class="svc-name">Peinado social</div><div class="svc-time">Eventos &amp; reuniones</div></div>
+      <div class="svc-right"><span class="svc-duration-badge">90–120 min</span><div class="svc-price">$7.000</div></div>
+    </div>
+    <!-- color -->
+    <div class="svc-item" data-cat="color">
+      <div class="svc-left"><div class="svc-name">Coloración global</div><div class="svc-time">Tinte completo</div></div>
+      <div class="svc-right"><span class="svc-duration-badge">90 min</span><div class="svc-price">$9.000</div></div>
+    </div>
+    <div class="svc-item" data-cat="color">
+      <div class="svc-left"><div class="svc-name">Retoque de raíces</div><div class="svc-time">Mantenimiento color</div></div>
+      <div class="svc-right"><span class="svc-duration-badge">60–75 min</span><div class="svc-price">$6.500</div></div>
+    </div>
+    <div class="svc-item" data-cat="color">
+      <div class="svc-left"><div class="svc-name">Baño de color</div><div class="svc-time">Tonalización</div></div>
+      <div class="svc-right"><span class="svc-duration-badge">45 min</span><div class="svc-price">$5.500</div></div>
+    </div>
+    <div class="svc-item" data-cat="color">
+      <div class="svc-left"><div class="svc-name">Mechas tradicionales</div><div class="svc-time">Técnica clásica</div></div>
+      <div class="svc-right"><span class="svc-duration-badge">2–3 hs</span><div class="svc-price">$14.000</div></div>
+    </div>
+    <div class="svc-item" data-cat="color">
+      <div class="svc-left"><div class="svc-name">Balayage</div><div class="svc-time">Degradé moderno</div></div>
+      <div class="svc-right"><span class="svc-duration-badge">3–4 hs</span><div class="svc-price">$18.000</div></div>
+    </div>
+    <div class="svc-item" data-cat="color">
+      <div class="svc-left"><div class="svc-name">Babylights</div><div class="svc-time">Aclaraciones finas</div></div>
+      <div class="svc-right"><span class="svc-duration-badge">3 hs</span><div class="svc-price">$16.000</div></div>
+    </div>
+    <div class="svc-item" data-cat="color">
+      <div class="svc-left"><div class="svc-name">Decoloración global</div><div class="svc-time">Aclarado total</div></div>
+      <div class="svc-right"><span class="svc-duration-badge">2–3 hs</span><div class="svc-price">$15.000</div></div>
+    </div>
+    <div class="svc-item" data-cat="color">
+      <div class="svc-left"><div class="svc-name">Corrección de color</div><div class="svc-time">Cambio &amp; corrección</div></div>
+      <div class="svc-right"><span class="svc-duration-badge">3–5 hs</span><div class="svc-price">desde $20.000</div></div>
+    </div>
+    <!-- trat -->
+    <div class="svc-item" data-cat="trat">
+      <div class="svc-left"><div class="svc-name">Tratamiento capilar</div><div class="svc-time">Hidratación &amp; reconstrucción</div></div>
+      <div class="svc-right"><span class="svc-duration-badge">45–60 min</span><div class="svc-price">$8.000</div></div>
+    </div>
+    <div class="svc-item" data-cat="trat">
+      <div class="svc-left"><div class="svc-name">Botox capilar</div><div class="svc-time">Relleno &amp; brillo</div></div>
+      <div class="svc-right"><span class="svc-duration-badge">90 min</span><div class="svc-price">$12.000</div></div>
+    </div>
+    <div class="svc-item" data-cat="trat">
+      <div class="svc-left"><div class="svc-name">Alisado / Keratina</div><div class="svc-time">Progresivo &amp; definitivo</div></div>
+      <div class="svc-right"><span class="svc-duration-badge">2–3 hs</span><div class="svc-price">desde $16.000</div></div>
+    </div>
+    <div class="svc-item" data-cat="trat">
+      <div class="svc-left"><div class="svc-name">Permanente / Ondulación</div><div class="svc-time">Rulos &amp; ondas</div></div>
+      <div class="svc-right"><span class="svc-duration-badge">2–3 hs</span><div class="svc-price">$14.000</div></div>
+    </div>
+    <!-- estilo -->
+    <div class="svc-item" data-cat="estilo">
+      <div class="svc-left"><div class="svc-name">Recogido / Peinado de fiesta</div><div class="svc-time">Eventos &amp; casamientos</div></div>
+      <div class="svc-right"><span class="svc-duration-badge">2 hs</span><div class="svc-price">$10.000</div></div>
+    </div>
+    <div class="svc-item" data-cat="estilo">
+      <div class="svc-left"><div class="svc-name">Trenzas / Styling elaborado</div><div class="svc-time">Diseño &amp; creación</div></div>
+      <div class="svc-right"><span class="svc-duration-badge">60–120 min</span><div class="svc-price">desde $7.000</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ABOUT ── -->
+<section id="nosotros">
+  <div class="about-img-wrap fade-up">
+    <div class="about-accent-box"></div>
+    <img class="about-img" src="https://images.unsplash.com/photo-1562322140-8baeececf3df?w=700&q=80" alt="Nina Peluquería"/>
+  </div>
+  <div class="about-text fade-up">
+    <div class="section-eyebrow">Quiénes somos</div>
+    <div class="section-title">Más que un<br>salón, <em>una experiencia</em></div>
+    <p>Nina Peluquería nació de una pasión genuina por el arte del cabello. Nuestro equipo de estilistas certificados combina técnicas clásicas europeas con las últimas tendencias para ofrecerte un resultado que supere cada expectativa.</p>
+    <p>Cada cliente es único. Cada cabello tiene su historia. Nos tomamos el tiempo para entenderte y crear el look perfecto para vos.</p>
+    <div class="about-stats">
+      <div><div class="stat-num">10+</div><div class="stat-label">Años</div></div>
+      <div><div class="stat-num">5K+</div><div class="stat-label">Clientes</div></div>
+      <div><div class="stat-num">8</div><div class="stat-label">Estilistas</div></div>
+      <div><div class="stat-num">4.9★</div><div class="stat-label">Rating</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TURNERO ── -->
+<section id="turnero">
+  <div class="turnero-header fade-up">
+    <div class="section-eyebrow">Sistema de turnos</div>
+    <div class="section-title">Reservá tu <em>turno online</em></div>
+    <p>Elegí tu servicio, fecha y horario. Te confirmamos por WhatsApp o email en minutos.</p>
+  </div>
+
+  <!-- STEPS BAR -->
+  <div class="steps-bar" id="stepsBar">
+    <div class="step active" id="step-ind-1">
+      <div class="step-num">1</div>
+      <div class="step-label">Servicio</div>
+    </div>
+    <div class="step-connector" id="conn-1"></div>
+    <div class="step" id="step-ind-2">
+      <div class="step-num">2</div>
+      <div class="step-label">Fecha</div>
+    </div>
+    <div class="step-connector" id="conn-2"></div>
+    <div class="step" id="step-ind-3">
+      <div class="step-num">3</div>
+      <div class="step-label">Horario</div>
+    </div>
+    <div class="step-connector" id="conn-3"></div>
+    <div class="step" id="step-ind-4">
+      <div class="step-num">4</div>
+      <div class="step-label">Tus datos</div>
+    </div>
+    <div class="step-connector" id="conn-4"></div>
+    <div class="step" id="step-ind-5">
+      <div class="step-num">5</div>
+      <div class="step-label">¡Listo!</div>
+    </div>
+  </div>
+
+  <!-- PANEL 1: SERVICIO -->
+  <div class="turnero-panel active" id="panel-1">
+    <div class="services-select-grid" id="svcSelectGrid"></div>
+    <div class="turnero-nav">
+      <button class="btn-v" id="btnP1Next" onclick="goStep(2)" disabled style="opacity:.4;cursor:not-allowed">Siguiente →</button>
+    </div>
+  </div>
+
+  <!-- PANEL 2: FECHA -->
+  <div class="turnero-panel" id="panel-2">
+    <div class="calendar-wrap">
+      <div class="cal-header">
+        <button class="cal-nav" onclick="calPrev()">‹</button>
+        <div class="cal-title" id="calTitle"></div>
+        <button class="cal-nav" onclick="calNext()">›</button>
+      </div>
+      <div class="cal-grid">
+        <div class="cal-day-name">Dom</div>
+        <div class="cal-day-name">Lun</div>
+        <div class="cal-day-name">Mar</div>
+        <div class="cal-day-name">Mié</div>
+        <div class="cal-day-name">Jue</div>
+        <div class="cal-day-name">Vie</div>
+        <div class="cal-day-name">Sáb</div>
+        <div id="calDays"></div>
+      </div>
+    </div>
+    <div class="turnero-nav">
+      <button class="btn-o" onclick="goStep(1)">← Volver</button>
+      <button class="btn-v" id="btnP2Next" onclick="goStep(3)" disabled style="opacity:.4;cursor:not-allowed">Siguiente →</button>
+    </div>
+  </div>
+
+  <!-- PANEL 3: HORARIO -->
+  <div class="turnero-panel" id="panel-3">
+    <div class="time-notice" id="timeNotice"></div>
+    <div class="time-slots" id="timeSlots"></div>
+    <div class="turnero-nav">
+      <button class="btn-o" onclick="goStep(2)">← Volver</button>
+      <button class="btn-v" id="btnP3Next" onclick="goStep(4)" disabled style="opacity:.4;cursor:not-allowed">Siguiente →</button>
+    </div>
+  </div>
+
+  <!-- PANEL 4: DATOS -->
+  <div class="turnero-panel" id="panel-4">
+    <div class="datos-form">
+      <div class="fg">
+        <label>Nombre</label>
+        <input type="text" id="dNombre" placeholder="Tu nombre"/>
+      </div>
+      <div class="fg">
+        <label>Apellido</label>
+        <input type="text" id="dApellido" placeholder="Tu apellido"/>
+      </div>
+      <div class="fg">
+        <label>WhatsApp</label>
+        <input type="tel" id="dWA" placeholder="+54 11 0000-0000"/>
+      </div>
+      <div class="fg">
+        <label>Email</label>
+        <input type="email" id="dEmail" placeholder="tu@email.com"/>
+      </div>
+      <div class="fg full">
+        <label>¿Cómo querés recibir la confirmación?</label>
+        <div class="notif-choice">
+          <label class="notif-opt"><input type="radio" name="notif" value="whatsapp" checked/> 📱 WhatsApp</label>
+          <label class="notif-opt"><input type="radio" name="notif" value="email"/> 📧 Email</label>
+          <label class="notif-opt"><input type="radio" name="notif" value="ambos"/> ✅ Ambos</label>
+        </div>
+      </div>
+      <div class="fg full">
+        <label>Nota opcional</label>
+        <textarea placeholder="¿Alguna referencia o aclaración especial?" rows="3" id="dNota"></textarea>
+      </div>
+    </div>
+    <div class="turnero-nav">
+      <button class="btn-o" onclick="goStep(3)">← Volver</button>
+      <button class="btn-v" onclick="confirmarTurno()">Confirmar turno ✓</button>
+    </div>
+  </div>
+
+  <!-- PANEL 5: CONFIRMADO -->
+  <div class="turnero-panel" id="panel-5">
+    <div class="confirm-wrap">
+      <div class="confirm-icon">✓</div>
+      <div class="confirm-title">¡Turno reservado!</div>
+      <div class="confirm-detail" id="confirmDetail"></div>
+      <div class="confirm-notif" id="confirmNotif"></div>
+      <button class="btn-v" onclick="resetTurnero()" style="width:100%">Reservar otro turno</button>
+    </div>
+  </div>
+</section>
+
+<!-- ── GALLERY ── -->
+<section id="galeria">
+  <div class="fade-up">
+    <div class="section-eyebrow">Trabajos</div>
+    <div class="section-title">Nuestra <em>galería</em></div>
+  </div>
+  <div class="gallery-grid fade-up">
+    <div class="gi"><img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=700&q=80" alt=""/></div>
+    <div class="gi"><img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&q=80" alt=""/></div>
+    <div class="gi"><img src="https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?w=400&q=80" alt=""/></div>
+    <div class="gi"><img src="https://images.unsplash.com/photo-1519699047748-de8e457a634e?w=400&q=80" alt=""/></div>
+    <div class="gi"><img src="https://images.unsplash.com/photo-1562322140-8baeececf3df?w=700&q=80" alt=""/></div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section id="contacto">
+  <div class="fade-up">
+    <div class="section-eyebrow">Encontranos</div>
+    <div class="section-title">Contacto <em>&amp; horarios</em></div>
+    <div class="contact-items">
+      <div class="contact-item">
+        <div class="c-icon">📍</div>
+        <div><div class="c-label">Dirección</div><div class="c-val">Av. Santa Fe 2450, Palermo<br>Buenos Aires, Argentina</div></div>
+      </div>
+      <div class="contact-item">
+        <div class="c-icon">📱</div>
+        <div><div class="c-label">WhatsApp</div><div class="c-val">+54 11 4832-1122</div></div>
+      </div>
+      <div class="contact-item">
+        <div class="c-icon">📧</div>
+        <div><div class="c-label">Email</div><div class="c-val">hola@ninapeluqueria.com.ar</div></div>
+      </div>
+    </div>
+    <div class="hours-block">
+      <h3>Horarios</h3>
+      <div class="h-row"><span>Lunes — Viernes</span><span>09:00 — 20:00</span></div>
+      <div class="h-row"><span>Sábados</span><span>09:00 — 18:00</span></div>
+      <div class="h-row"><span>Domingos</span><span>10:00 — 15:00</span></div>
+    </div>
+  </div>
+  <div class="map-ph fade-up">
+    <div class="pin">📍</div>
+    <span>Av. Santa Fe 2450, Palermo</span>
+    <small style="margin-top:.5rem;font-size:.6rem;opacity:.4">Integrá tu Google Maps aquí</small>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div>
+    <div class="footer-logo-name">Nina</div>
+    <div class="footer-logo-sub">Peluquería</div>
+  </div>
+  <div class="footer-copy">© 2025 Nina Peluquería · Todos los derechos reservados</div>
+  <div class="socials">
+    <a href="#">IG</a>
+    <a href="#">FB</a>
+    <a href="#">TK</a>
+  </div>
+</footer>
+
+<a class="wa" href="https://wa.me/5491148321122" target="_blank" title="WhatsApp">💬</a>
+
+<script>
+/* ── CURSOR ── */
+const cur=document.getElementById('cursor');
+document.addEventListener('mousemove',e=>{
+  cur.style.left=e.clientX-6+'px';
+  cur.style.top=e.clientY-6+'px';
+});
+
+/* ── FADE ON SCROLL ── */
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis')}),{threshold:.1});
+document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
+
+/* ── SERVICE FILTER ── */
+function filterCat(btn,cat){
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.svc-item').forEach(item=>{
+    item.style.display=(cat==='all'||item.dataset.cat===cat)?'flex':'none';
+  });
+}
+
+/* ── TURNERO DATA ── */
+const SERVICES=[
+  {id:'cm',name:'Corte masculino',dur:30,cat:'corte'},
+  {id:'cf',name:'Corte femenino',dur:60,cat:'corte'},
+  {id:'cb',name:'Corte + Brushing',dur:75,cat:'corte'},
+  {id:'ps',name:'Peinado social',dur:105,cat:'estilo'},
+  {id:'br',name:'Brushing',dur:52,cat:'estilo'},
+  {id:'ls',name:'Lavado + Secado',dur:30,cat:'estilo'},
+  {id:'cg',name:'Coloración global',dur:90,cat:'color'},
+  {id:'rr',name:'Retoque de raíces',dur:67,cat:'color'},
+  {id:'bc',name:'Baño de color',dur:45,cat:'color'},
+  {id:'mt',name:'Mechas tradicionales',dur:150,cat:'color'},
+  {id:'bl',name:'Balayage',dur:210,cat:'color'},
+  {id:'by',name:'Babylights',dur:180,cat:'color'},
+  {id:'dg',name:'Decoloración global',dur:150,cat:'color'},
+  {id:'cc',name:'Corrección de color',dur:240,cat:'color'},
+  {id:'tc',name:'Tratamiento capilar',dur:52,cat:'trat'},
+  {id:'bo',name:'Botox capilar',dur:90,cat:'trat'},
+  {id:'al',name:'Alisado / Keratina',dur:150,cat:'trat'},
+  {id:'pe',name:'Permanente / Ondulación',dur:150,cat:'trat'},
+  {id:'rf',name:'Recogido / Peinado de fiesta',dur:120,cat:'estilo'},
+  {id:'tr',name:'Trenzas / Styling elaborado',dur:90,cat:'estilo'},
+];
+
+const OPEN_HOUR=9, CLOSE_HOUR=20;
+
+let selectedSvc=null, selectedDate=null, selectedTime=null;
+let calYear, calMonth;
+
+/* Build service cards */
+(function buildSvcCards(){
+  const g=document.getElementById('svcSelectGrid');
+  const cats={corte:'Cortes',color:'Color',trat:'Tratamientos',estilo:'Estilismo'};
+  ['corte','color','trat','estilo'].forEach(cat=>{
+    const header=document.createElement('div');
+    header.style.cssText='grid-column:1/-1;font-size:.6rem;font-weight:800;letter-spacing:.25em;text-transform:uppercase;color:var(--violet-mid);padding:.5rem 0 .2rem;border-bottom:2px solid var(--violet-pale);margin-top:1rem;';
+    header.textContent=cats[cat];
+    g.appendChild(header);
+    SERVICES.filter(s=>s.cat===cat).forEach(s=>{
+      const d=document.createElement('div');
+      d.className='svc-select-card';
+      d.dataset.id=s.id;
+      d.innerHTML=`
+        <div class="svc-card-check">✓</div>
+        <div class="svc-card-name">${s.name}</div>
+        <div class="svc-card-dur">⏱ ${formatDur(s.dur)}</div>`;
+      d.addEventListener('click',()=>selectSvc(s,d));
+      g.appendChild(d);
+    });
+  });
+})();
+
+function formatDur(min){
+  if(min<60)return min+' min';
+  const h=Math.floor(min/60),m=min%60;
+  return m?`${h}h ${m}min`:`${h} hs`;
+}
+
+function selectSvc(s,el){
+  document.querySelectorAll('.svc-select-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedSvc=s;
+  const btn=document.getElementById('btnP1Next');
+  btn.disabled=false;btn.style.opacity='1';btn.style.cursor='pointer';
+}
+
+/* ── CALENDAR ── */
+function initCal(){
+  const now=new Date();
+  calYear=now.getFullYear();calMonth=now.getMonth();
+  renderCal();
+}
+function renderCal(){
+  const months=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+  document.getElementById('calTitle').textContent=months[calMonth]+' '+calYear;
+  const container=document.getElementById('calDays');
+  container.innerHTML='';
+  const first=new Date(calYear,calMonth,1).getDay();
+  const days=new Date(calYear,calMonth+1,0).getDate();
+  const today=new Date();
+  for(let i=0;i<first;i++){
+    const e=document.createElement('div');e.className='cal-day empty';container.appendChild(e);
+  }
+  for(let d=1;d<=days;d++){
+    const e=document.createElement('div');e.className='cal-day';
+    e.textContent=d;
+    const dateObj=new Date(calYear,calMonth,d);
+    const isPast=dateObj<new Date(today.getFullYear(),today.getMonth(),today.getDate());
+    if(isPast){e.classList.add('disabled');}
+    else{
+      if(dateObj.getDate()===today.getDate()&&dateObj.getMonth()===today.getMonth()&&dateObj.getFullYear()===today.getFullYear())e.classList.add('today');
+      e.addEventListener('click',()=>selectDate(dateObj,e));
+    }
+    container.appendChild(e);
+  }
+  if(selectedDate){
+    document.querySelectorAll('.cal-day').forEach(el=>{
+      if(parseInt(el.textContent)===selectedDate.getDate()&&!el.classList.contains('disabled')&&!el.classList.contains('empty')){
+        if(selectedDate.getMonth()===calMonth&&selectedDate.getFullYear()===calYear)el.classList.add('selected');
+      }
+    });
+  }
+}
+function calPrev(){calMonth--;if(calMonth<0){calMonth=11;calYear--;}renderCal();}
+function calNext(){calMonth++;if(calMonth>11){calMonth=0;calYear++;}renderCal();}
+function selectDate(d,el){
+  document.querySelectorAll('.cal-day').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedDate=d;
+  const btn=document.getElementById('btnP2Next');
+  btn.disabled=false;btn.style.opacity='1';btn.style.cursor='pointer';
+}
+
+/* ── TIME SLOTS ── */
+function buildTimeSlots(){
+  if(!selectedSvc||!selectedDate)return;
+  const dur=selectedSvc.dur;
+  const lastStart=CLOSE_HOUR*60-(dur);
+  const slots=[];
+  for(let m=OPEN_HOUR*60;m<=lastStart;m+=30){
+    const hh=Math.floor(m/60).toString().padStart(2,'0');
+    const mm=(m%60).toString().padStart(2,'0');
+    slots.push({label:`${hh}:${mm}`,min:m});
+  }
+  const container=document.getElementById('timeSlots');
+  container.innerHTML='';
+
+  const lastH=Math.floor(lastStart/60);const lastM=lastStart%60;
+  const lastTime=`${lastH.toString().padStart(2,'0')}:${lastM.toString().padStart(2,'0')}`;
+  document.getElementById('timeNotice').innerHTML=
+    `<strong>Servicio: ${selectedSvc.name}</strong> — dura ${formatDur(dur)}.<br>
+    El local cierra a las <strong>20:00 hs</strong>. Último turno disponible: <strong>${lastTime} hs</strong>.`;
+
+  slots.forEach(s=>{
+    const el=document.createElement('div');
+    el.className='time-slot';
+    el.textContent=s.label;
+    el.addEventListener('click',()=>{
+      document.querySelectorAll('.time-slot').forEach(t=>t.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedTime=s.label;
+      const btn=document.getElementById('btnP3Next');
+      btn.disabled=false;btn.style.opacity='1';btn.style.cursor='pointer';
+    });
+    container.appendChild(el);
+  });
+}
+
+/* ── STEPS NAVIGATION ── */
+function goStep(n){
+  if(n===2)initCal();
+  if(n===3){buildTimeSlots();selectedTime=null;const b=document.getElementById('btnP3Next');b.disabled=true;b.style.opacity='.4';b.style.cursor='not-allowed';}
+  for(let i=1;i<=5;i++){
+    document.getElementById('panel-'+i).classList.toggle('active',i===n);
+    const si=document.getElementById('step-ind-'+i);
+    si.classList.toggle('active',i===n);
+    si.classList.toggle('done',i<n);
+    if(i<5){
+      const c=document.getElementById('conn-'+i);
+      c.classList.toggle('done',i<n);
+    }
+  }
+  document.getElementById('turnero').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+/* ── CONFIRM ── */
+function confirmarTurno(){
+  const nombre=document.getElementById('dNombre').value.trim();
+  const wa=document.getElementById('dWA').value.trim();
+  const email=document.getElementById('dEmail').value.trim();
+  if(!nombre||(!wa&&!email)){alert('Por favor completá nombre y al menos un dato de contacto.');return;}
+  const notif=document.querySelector('input[name=notif]:checked').value;
+  const days=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+  const months2=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  const dateStr=`${days[selectedDate.getDay()]} ${selectedDate.getDate()} de ${months2[selectedDate.getMonth()]} de ${selectedDate.getFullYear()}`;
+
+  document.getElementById('confirmDetail').innerHTML=
+    `<strong>${nombre}</strong>, tu turno quedó reservado:<br><br>
+    ✂️ <strong>${selectedSvc.name}</strong><br>
+    📅 <strong>${dateStr}</strong><br>
+    🕐 <strong>${selectedTime} hs</strong><br>
+    ⏱ Duración aproximada: <strong>${formatDur(selectedSvc.dur)}</strong>`;
+
+  let notifMsg='';
+  if(notif==='whatsapp'||notif==='ambos'){
+    notifMsg+=`📱 Enviando confirmación a <strong>${wa}</strong> por WhatsApp. `;
+    const msg=encodeURIComponent(`Hola Nina Peluquería! Confirmé mi turno:\n✂️ ${selectedSvc.name}\n📅 ${dateStr}\n🕐 ${selectedTime} hs\n👤 ${nombre}`);
+    setTimeout(()=>window.open(`https://wa.me/5491148321122?text=${msg}`,'_blank'),800);
+  }
+  if(notif==='email'||notif==='ambos'){
+    notifMsg+=`📧 Enviando confirmación a <strong>${email}</strong> por email.`;
+  }
+  document.getElementById('confirmNotif').innerHTML=notifMsg||'✅ Turno confirmado correctamente.';
+  goStep(5);
+}
+
+function resetTurnero(){
+  selectedSvc=null;selectedDate=null;selectedTime=null;
+  document.querySelectorAll('.svc-select-card').forEach(c=>c.classList.remove('selected'));
+  const b=document.getElementById('btnP1Next');b.disabled=true;b.style.opacity='.4';b.style.cursor='not-allowed';
+  document.getElementById('dNombre').value='';
+  document.getElementById('dApellido').value='';
+  document.getElementById('dWA').value='';
+  document.getElementById('dEmail').value='';
+  document.getElementById('dNota').value='';
+  goStep(1);
+}
+</script>
+</body>
+</html>
