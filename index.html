@@ -207,17 +207,28 @@ body.dark .logo-night{display:block;}
 /* ──────────────── BAND ──────────────── */
 .band{
   background:var(--violet-mid);
-  padding:.9rem 6rem;
-  display:flex;gap:4rem;align-items:center;overflow:hidden;
+  padding:.85rem 0;
+  overflow:hidden;
+  white-space:nowrap;
+}
+.band-track{
+  display:inline-flex;gap:4rem;align-items:center;
+  animation:marquee 28s linear infinite;
+  will-change:transform;
+}
+.band:hover .band-track{animation-play-state:paused;}
+@keyframes marquee{
+  from{transform:translateX(0);}
+  to{transform:translateX(-50%);}
 }
 .band-item{
-  display:flex;align-items:center;gap:.7rem;
+  display:inline-flex;align-items:center;gap:.7rem;
   white-space:nowrap;
   font-size:.65rem;font-weight:700;
   letter-spacing:.2em;text-transform:uppercase;
-  color:rgba(255,255,255,0.8);
+  color:rgba(255,255,255,0.85);flex-shrink:0;
 }
-.band-dot{color:var(--orange-warm);font-size:1.2rem;}
+.band-dot{color:var(--orange-warm);font-size:1.1rem;}
 
 /* ──────────────── SECTION COMMONS ──────────────── */
 .section-eyebrow{
@@ -1025,14 +1036,26 @@ body.dark .socials a{color:var(--gray-light);}
 </section>
 
 <!-- ── BAND ── -->
-<div class="band">
-  <div class="band-item"><span class="band-dot">✦</span> Cortes &amp; Coloración</div>
-  <div class="band-item"><span class="band-dot">✦</span> Balayage &amp; Mechas</div>
-  <div class="band-item"><span class="band-dot">✦</span> Tratamientos capilares</div>
-  <div class="band-item"><span class="band-dot">✦</span> Peinados de fiesta</div>
-  <div class="band-item"><span class="band-dot">✦</span> Alisados &amp; Keratina</div>
-  <div class="band-item"><span class="band-dot">✦</span> Cortes &amp; Coloración</div>
-  <div class="band-item"><span class="band-dot">✦</span> Balayage &amp; Mechas</div>
+<div class="band" aria-hidden="true">
+  <div class="band-track">
+    <div class="band-item"><span class="band-dot">✦</span> Cortes &amp; Coloración</div>
+    <div class="band-item"><span class="band-dot">✦</span> Balayage &amp; Mechas</div>
+    <div class="band-item"><span class="band-dot">✦</span> Tratamientos capilares</div>
+    <div class="band-item"><span class="band-dot">✦</span> Peinados de fiesta</div>
+    <div class="band-item"><span class="band-dot">✦</span> Alisados &amp; Keratina</div>
+    <div class="band-item"><span class="band-dot">✦</span> Botox capilar</div>
+    <div class="band-item"><span class="band-dot">✦</span> Brushing profesional</div>
+    <div class="band-item"><span class="band-dot">✦</span> Coloración global</div>
+    <!-- duplicado para loop sin corte -->
+    <div class="band-item"><span class="band-dot">✦</span> Cortes &amp; Coloración</div>
+    <div class="band-item"><span class="band-dot">✦</span> Balayage &amp; Mechas</div>
+    <div class="band-item"><span class="band-dot">✦</span> Tratamientos capilares</div>
+    <div class="band-item"><span class="band-dot">✦</span> Peinados de fiesta</div>
+    <div class="band-item"><span class="band-dot">✦</span> Alisados &amp; Keratina</div>
+    <div class="band-item"><span class="band-dot">✦</span> Botox capilar</div>
+    <div class="band-item"><span class="band-dot">✦</span> Brushing profesional</div>
+    <div class="band-item"><span class="band-dot">✦</span> Coloración global</div>
+  </div>
 </div>
 
 <!-- ── SERVICES ── -->
