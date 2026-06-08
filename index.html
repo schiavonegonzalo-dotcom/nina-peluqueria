@@ -419,19 +419,6 @@ nav{
 }
 .svc-select-card.selected .svc-card-check{display:flex;}
 
-.svc-summary{
-  margin:1.5rem 0 0;
-  background:linear-gradient(135deg,var(--violet-pale),var(--orange-pale));
-  border-radius:6px;padding:.85rem 1.5rem;
-  display:flex;align-items:center;
-  justify-content:space-between;gap:1rem;
-  border-left:4px solid var(--violet-mid);
-  animation:bsFadeIn .3s ease;
-}
-.svc-summary-text{font-size:.82rem;font-weight:600;color:var(--dark);}
-.svc-summary-text strong{color:var(--violet-mid);}
-@media(max-width:600px){.svc-summary{flex-direction:column;text-align:center;}}
-
 /* Step 2 - Calendario */
 .calendar-wrap{
   background:#fff;border-radius:4px;
@@ -1091,9 +1078,8 @@ footer{
   <!-- PANEL 1: SERVICIO -->
   <div class="turnero-panel active" id="panel-1">
     <div class="services-select-grid" id="svcSelectGrid"></div>
-    <div class="svc-summary" id="svcSummary" style="display:none">
-      <span class="svc-summary-text" id="svcSummaryText"></span>
-      <button class="btn-v" onclick="goStep(2)">Continuar →</button>
+    <div class="turnero-nav">
+      <button class="btn-v" id="btnP1Next" onclick="goStep(2)" disabled style="opacity:.4;cursor:not-allowed">Siguiente →</button>
     </div>
   </div>
 
@@ -1406,9 +1392,8 @@ function selectSvc(s,el){
   document.querySelectorAll('.svc-select-card').forEach(c=>c.classList.remove('selected'));
   el.classList.add('selected');
   selectedSvc=s;
-  document.getElementById('svcSummaryText').innerHTML=
-    `✂️ <strong>${s.name}</strong> &nbsp;·&nbsp; ⏱ <strong>${formatDur(s.dur)}</strong>`;
-  document.getElementById('svcSummary').style.display='flex';
+  const btn=document.getElementById('btnP1Next');
+  btn.disabled=false;btn.style.opacity='1';btn.style.cursor='pointer';
 }
 
 /* ── CALENDAR ── */
@@ -1701,7 +1686,7 @@ async function confirmarTurno(){
 function resetTurnero(){
   selectedSvc=null;selectedDate=null;selectedTime=null;
   document.querySelectorAll('.svc-select-card').forEach(c=>c.classList.remove('selected'));
-  document.getElementById('svcSummary').style.display='none';
+  const b=document.getElementById('btnP1Next');b.disabled=true;b.style.opacity='.4';b.style.cursor='not-allowed';
   document.getElementById('dNombre').value='';
   document.getElementById('dWA').value='';
   document.getElementById('dEmail').value='';
