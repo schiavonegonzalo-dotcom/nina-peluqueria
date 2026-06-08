@@ -74,6 +74,37 @@ nav{
 }
 .nav-cta:hover{background:var(--orange-warm);transform:translateY(-2px);}
 
+/* ── THEME TOGGLE ── */
+.theme-toggle{
+  width:50px;height:28px;border-radius:14px;
+  background:var(--violet-pale);
+  border:1.5px solid var(--violet-light);
+  cursor:pointer;position:relative;
+  flex-shrink:0;transition:background .35s,border-color .35s;
+  padding:0;
+}
+.theme-toggle::after{
+  content:'';position:absolute;
+  width:22px;height:22px;border-radius:50%;
+  background:var(--violet-mid);
+  top:2px;left:2px;
+  transition:left .35s,background .35s;
+}
+.theme-toggle .t-icon{
+  position:absolute;top:50%;transform:translateY(-50%);
+  font-size:.7rem;pointer-events:none;
+  transition:opacity .2s;line-height:1;
+}
+.theme-toggle .t-sun{left:5px;opacity:1;}
+.theme-toggle .t-moon{right:4px;opacity:.35;}
+body.dark .theme-toggle{background:#2A1E3C;border-color:var(--violet-mid);}
+body.dark .theme-toggle::after{left:24px;background:var(--orange-warm);}
+body.dark .theme-toggle .t-sun{opacity:.35;}
+body.dark .theme-toggle .t-moon{opacity:1;}
+.logo-night{display:none;}
+body.dark .logo-day{display:none;}
+body.dark .logo-night{display:block;}
+
 /* ──────────────── HERO ──────────────── */
 #hero{
   min-height:100vh;
@@ -849,6 +880,97 @@ footer{
   .band{padding:.9rem 2rem;gap:2rem;}
   footer{padding:2rem 1.5rem;}
 }
+
+/* ──────────────── DARK MODE ──────────────── */
+body.dark{
+  --violet-deep:  #C490F0;
+  --violet-mid:   #A870D8;
+  --violet-light: #5A3880;
+  --violet-pale:  #1E1530;
+  --orange-hot:   #FF6B35;
+  --orange-warm:  #FF8456;
+  --orange-peach: #7A3018;
+  --orange-pale:  #28120A;
+  --white:        #0E0B14;
+  --dark:         #EDE4F8;
+  --gray:         #C0B0D0;
+  --gray-light:   #5E5070;
+  background:#0E0B14;color:#EDE4F8;
+}
+/* Nav */
+body.dark nav{
+  background:rgba(10,7,16,.96);
+  border-bottom-color:rgba(168,112,216,.15);
+}
+/* Hero */
+body.dark #hero{background:linear-gradient(135deg,#1A1030 0%,#0E0B14 100%);}
+body.dark .hero-tag{color:var(--orange-warm);}
+body.dark .hero-tag::before{background:var(--orange-warm);}
+body.dark .hero-h1{color:var(--dark);}
+body.dark .hero-quote{color:var(--gray);}
+/* Services section */
+body.dark #servicios{background:#0E0B14;}
+body.dark .section-eyebrow{color:var(--orange-hot);}
+body.dark .services-list{background:rgba(168,112,216,.1);border-color:rgba(168,112,216,.1);}
+body.dark .svc-item{background:#19152A;}
+body.dark .svc-item:hover,body.dark .svc-item.open{background:#231D35;}
+body.dark .svc-name{color:var(--dark);}
+body.dark .svc-desc{border-top-color:rgba(168,112,216,.2);color:var(--gray);}
+body.dark .cat-btn{border-color:var(--gray-light);color:var(--gray);}
+/* Sobre mí */
+body.dark #nosotros{background:#0A0810;}
+body.dark .about-text p{color:var(--gray);}
+body.dark .stat-label{color:var(--gray-light);}
+/* Turnero */
+body.dark #turnero{background:#0E0B14;}
+body.dark .turnero-header p{color:var(--gray);}
+body.dark .step-num{background:#251B38;color:var(--gray);}
+body.dark .step-connector{background:rgba(168,112,216,.2);}
+body.dark .svc-select-card{background:#19152A;border-color:transparent;}
+body.dark .svc-select-card:hover{background:#231D35;border-color:var(--violet-light);}
+body.dark .svc-select-card.selected{background:var(--violet-pale);border-color:var(--violet-mid);}
+body.dark .svc-card-name{color:var(--dark);}
+body.dark .calendar-card{background:#19152A;}
+body.dark .cal-title{color:var(--dark);}
+body.dark .cal-day{color:var(--dark);}
+body.dark .cal-day.disabled{color:var(--gray-light);}
+body.dark .cal-day:hover{background:var(--violet-pale);color:var(--violet-mid);}
+body.dark .slots-card{background:#19152A;}
+body.dark .slots-date-title{color:var(--dark);}
+body.dark .slot-row.libre{background:var(--violet-pale);}
+body.dark .slot-row.libre:hover{background:#2A1E3C;}
+body.dark .slot-row.ocupado{background:#141018;}
+body.dark .slot-time{color:var(--dark);}
+body.dark .tl-compact{background:var(--violet-pale);}
+body.dark .tl-float-lbl{background:#19152A;box-shadow:0 1px 5px rgba(0,0,0,.5);}
+body.dark .tl-hr-lbl{color:var(--gray-light);}
+body.dark .booking-summary{background:linear-gradient(135deg,#1E1530,#1E0E08);}
+body.dark .booking-summary-text{color:var(--dark);}
+body.dark .panel2-svc-lbl{color:var(--violet-mid);}
+/* Formulario */
+body.dark .datos-form{background:transparent;}
+body.dark .fg input,body.dark .fg textarea{
+  background:#19152A;
+  border-color:rgba(168,112,216,.25);
+  color:var(--dark);
+}
+body.dark .fg input::placeholder,body.dark .fg textarea::placeholder{color:var(--gray-light);}
+body.dark .fg input:focus,body.dark .fg textarea:focus{border-color:var(--violet-mid);}
+body.dark .notif-opt{color:var(--gray);}
+body.dark .confirm-wrap{background:#19152A;box-shadow:0 8px 40px rgba(0,0,0,.5);}
+/* Galería */
+body.dark #galeria{background:#0A0810;}
+/* Contacto */
+body.dark #contacto{background:#0A0810;}
+body.dark .c-label{color:var(--orange-hot);}
+body.dark .c-val{color:var(--gray);}
+body.dark .hours-block h3{color:var(--dark);}
+body.dark .h-row span:first-child{color:var(--gray);}
+body.dark .map-ph iframe{filter:grayscale(20%) invert(92%) hue-rotate(180deg);}
+/* Footer */
+body.dark footer{background:#06040A;}
+body.dark .footer-copy{color:var(--gray-light);}
+body.dark .socials a{color:var(--gray-light);}
 </style>
 </head>
 <body>
@@ -857,7 +979,10 @@ footer{
 
 <!-- ── NAV ── -->
 <nav>
-  <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;"><img src="assets/logo-bajada-violeta.png" alt="Nina Peluquería" class="nav-logo"></a>
+  <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">
+    <img src="assets/logo-bajada-violeta.png" alt="Nina Peluquería" class="nav-logo logo-day">
+    <img src="assets/logo-bajada-blanco.png" alt="Nina Peluquería" class="nav-logo logo-night">
+  </a>
   <ul class="nav-links">
     <li><a href="#servicios">Servicios</a></li>
     <li><a href="#nosotros">Nosotros</a></li>
@@ -865,7 +990,13 @@ footer{
     <li><a href="#galeria">Galería</a></li>
     <li><a href="#contacto">Contacto</a></li>
   </ul>
-  <button class="nav-cta" onclick="document.getElementById('turnero').scrollIntoView({behavior:'smooth'})">Reservar turno</button>
+  <div style="display:flex;align-items:center;gap:1rem;">
+    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Cambiar modo día/noche">
+      <span class="t-icon t-sun">☀</span>
+      <span class="t-icon t-moon">☽</span>
+    </button>
+    <button class="nav-cta" onclick="document.getElementById('turnero').scrollIntoView({behavior:'smooth'})">Reservar turno</button>
+  </div>
 </nav>
 
 <!-- ── HERO ── -->
@@ -1246,6 +1377,17 @@ footer{
 <a class="wa" href="https://wa.me/5492616627238" target="_blank" title="WhatsApp">💬</a>
 
 <script>
+/* ── THEME ── */
+(function(){
+  const saved=localStorage.getItem('nina-theme');
+  const prefersDark=window.matchMedia('(prefers-color-scheme:dark)').matches;
+  if(saved==='dark'||(saved===null&&prefersDark))document.body.classList.add('dark');
+})();
+function toggleTheme(){
+  const isDark=document.body.classList.toggle('dark');
+  localStorage.setItem('nina-theme',isDark?'dark':'light');
+}
+
 /* ── EMAILJS CONFIG ── completar con tus credenciales de emailjs.com ── */
 const EJS_PUBLIC_KEY     = 'TU_PUBLIC_KEY';       // Account → API Keys
 const EJS_SERVICE_ID     = 'TU_SERVICE_ID';       // Email Services → Service ID
