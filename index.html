@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>NINA Peluquería</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<script>
+/* Aplica dark mode ANTES de renderizar — evita flash */
+(function(){
+  var saved=localStorage.getItem('nina-theme');
+  var prefersDark=window.matchMedia('(prefers-color-scheme:dark)').matches;
+  if(saved==='dark'||(saved===null&&prefersDark))document.documentElement.classList.add('dark');
+})();
+</script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <style>
 :root {
@@ -97,13 +105,13 @@ nav{
 }
 .theme-toggle .t-sun{left:5px;opacity:1;}
 .theme-toggle .t-moon{right:4px;opacity:.35;}
-body.dark .theme-toggle{background:#2A1E3C;border-color:var(--violet-mid);}
-body.dark .theme-toggle::after{left:24px;background:var(--orange-warm);}
-body.dark .theme-toggle .t-sun{opacity:.35;}
-body.dark .theme-toggle .t-moon{opacity:1;}
+html.dark .theme-toggle{background:#2A1E3C;border-color:var(--violet-mid);}
+html.dark .theme-toggle::after{left:24px;background:var(--orange-warm);}
+html.dark .theme-toggle .t-sun{opacity:.35;}
+html.dark .theme-toggle .t-moon{opacity:1;}
 .logo-night{display:none;}
-body.dark .logo-day{display:none;}
-body.dark .logo-night{display:block;}
+html.dark .logo-day{display:none;}
+html.dark .logo-night{display:block;}
 
 /* ──────────────── HERO ──────────────── */
 #hero{
@@ -893,7 +901,7 @@ footer{
 }
 
 /* ──────────────── DARK MODE ──────────────── */
-body.dark{
+html.dark{
   --violet-deep:  #C490F0;
   --violet-mid:   #A870D8;
   --violet-light: #5A3880;
@@ -909,79 +917,79 @@ body.dark{
   background:#0E0B14;color:#EDE4F8;
 }
 /* Nav */
-body.dark nav{
+html.dark nav{
   background:rgba(58,26,104,.97);
   border-bottom-color:rgba(168,112,216,.25);
 }
 /* Hero */
-body.dark #hero{background:linear-gradient(135deg,#1A1030 0%,#0E0B14 100%);}
-body.dark .hero-tag{color:var(--orange-warm);}
-body.dark .hero-tag::before{background:var(--orange-warm);}
-body.dark .hero-h1{color:var(--dark);}
-body.dark .hero-quote{color:var(--gray);}
+html.dark #hero{background:linear-gradient(135deg,#1A1030 0%,#0E0B14 100%);}
+html.dark .hero-tag{color:var(--orange-warm);}
+html.dark .hero-tag::before{background:var(--orange-warm);}
+html.dark .hero-h1{color:var(--dark);}
+html.dark .hero-quote{color:var(--gray);}
 /* Services section */
-body.dark #servicios{background:#0E0B14;}
-body.dark .section-eyebrow{color:var(--orange-hot);}
-body.dark .services-list{background:rgba(168,112,216,.1);border-color:rgba(168,112,216,.1);}
-body.dark .svc-item{background:#19152A;}
-body.dark .svc-item:hover,body.dark .svc-item.open{background:#231D35;}
-body.dark .svc-name{color:var(--dark);}
-body.dark .svc-desc{border-top-color:rgba(168,112,216,.2);color:var(--gray);}
-body.dark .cat-btn{border-color:var(--gray-light);color:var(--gray);}
+html.dark #servicios{background:#0E0B14;}
+html.dark .section-eyebrow{color:var(--orange-hot);}
+html.dark .services-list{background:rgba(168,112,216,.1);border-color:rgba(168,112,216,.1);}
+html.dark .svc-item{background:#19152A;}
+html.dark .svc-item:hover,html.dark .svc-item.open{background:#231D35;}
+html.dark .svc-name{color:var(--dark);}
+html.dark .svc-desc{border-top-color:rgba(168,112,216,.2);color:var(--gray);}
+html.dark .cat-btn{border-color:var(--gray-light);color:var(--gray);}
 /* Sobre mí */
-body.dark #nosotros{background:#0A0810;}
-body.dark .about-text p{color:var(--gray);}
-body.dark .stat-label{color:var(--gray-light);}
+html.dark #nosotros{background:#0A0810;}
+html.dark .about-text p{color:var(--gray);}
+html.dark .stat-label{color:var(--gray-light);}
 /* Turnero */
-body.dark #turnero{background:#0E0B14;}
-body.dark .turnero-header p{color:var(--gray);}
-body.dark .step-num{background:#251B38;color:var(--gray);}
-body.dark .step-connector{background:rgba(168,112,216,.2);}
-body.dark .svc-select-card{background:#19152A;border-color:transparent;}
-body.dark .svc-select-card:hover{background:#231D35;border-color:var(--violet-light);}
-body.dark .svc-select-card.selected{background:var(--violet-pale);border-color:var(--violet-mid);}
-body.dark .svc-card-name{color:var(--dark);}
-body.dark .calendar-card{background:#19152A;}
-body.dark .cal-title{color:var(--dark);}
-body.dark .cal-day{color:var(--dark);}
-body.dark .cal-day.disabled{color:var(--gray-light);}
-body.dark .cal-day:hover{background:var(--violet-pale);color:var(--violet-mid);}
-body.dark .slots-card{background:#19152A;}
-body.dark .slots-date-title{color:var(--dark);}
-body.dark .slot-row.libre{background:var(--violet-pale);}
-body.dark .slot-row.libre:hover{background:#2A1E3C;}
-body.dark .slot-row.ocupado{background:#141018;}
-body.dark .slot-time{color:var(--dark);}
-body.dark .tl-compact{background:var(--violet-pale);}
-body.dark .tl-float-lbl{background:#19152A;box-shadow:0 1px 5px rgba(0,0,0,.5);}
-body.dark .tl-hr-lbl{color:var(--gray-light);}
-body.dark .booking-summary{background:linear-gradient(135deg,#1E1530,#1E0E08);}
-body.dark .booking-summary-text{color:var(--dark);}
-body.dark .panel2-svc-lbl{color:var(--violet-mid);}
+html.dark #turnero{background:#0E0B14;}
+html.dark .turnero-header p{color:var(--gray);}
+html.dark .step-num{background:#251B38;color:var(--gray);}
+html.dark .step-connector{background:rgba(168,112,216,.2);}
+html.dark .svc-select-card{background:#19152A;border-color:transparent;}
+html.dark .svc-select-card:hover{background:#231D35;border-color:var(--violet-light);}
+html.dark .svc-select-card.selected{background:var(--violet-pale);border-color:var(--violet-mid);}
+html.dark .svc-card-name{color:var(--dark);}
+html.dark .calendar-card{background:#19152A;}
+html.dark .cal-title{color:var(--dark);}
+html.dark .cal-day{color:var(--dark);}
+html.dark .cal-day.disabled{color:var(--gray-light);}
+html.dark .cal-day:hover{background:var(--violet-pale);color:var(--violet-mid);}
+html.dark .slots-card{background:#19152A;}
+html.dark .slots-date-title{color:var(--dark);}
+html.dark .slot-row.libre{background:var(--violet-pale);}
+html.dark .slot-row.libre:hover{background:#2A1E3C;}
+html.dark .slot-row.ocupado{background:#141018;}
+html.dark .slot-time{color:var(--dark);}
+html.dark .tl-compact{background:var(--violet-pale);}
+html.dark .tl-float-lbl{background:#19152A;box-shadow:0 1px 5px rgba(0,0,0,.5);}
+html.dark .tl-hr-lbl{color:var(--gray-light);}
+html.dark .booking-summary{background:linear-gradient(135deg,#1E1530,#1E0E08);}
+html.dark .booking-summary-text{color:var(--dark);}
+html.dark .panel2-svc-lbl{color:var(--violet-mid);}
 /* Formulario */
-body.dark .datos-form{background:transparent;}
-body.dark .fg input,body.dark .fg textarea{
+html.dark .datos-form{background:transparent;}
+html.dark .fg input,html.dark .fg textarea{
   background:#19152A;
   border-color:rgba(168,112,216,.25);
   color:var(--dark);
 }
-body.dark .fg input::placeholder,body.dark .fg textarea::placeholder{color:var(--gray-light);}
-body.dark .fg input:focus,body.dark .fg textarea:focus{border-color:var(--violet-mid);}
-body.dark .notif-opt{color:var(--gray);}
-body.dark .confirm-wrap{background:#19152A;box-shadow:0 8px 40px rgba(0,0,0,.5);}
+html.dark .fg input::placeholder,html.dark .fg textarea::placeholder{color:var(--gray-light);}
+html.dark .fg input:focus,html.dark .fg textarea:focus{border-color:var(--violet-mid);}
+html.dark .notif-opt{color:var(--gray);}
+html.dark .confirm-wrap{background:#19152A;box-shadow:0 8px 40px rgba(0,0,0,.5);}
 /* Galería */
-body.dark #galeria{background:#0A0810;}
+html.dark #galeria{background:#0A0810;}
 /* Contacto */
-body.dark #contacto{background:#0A0810;}
-body.dark .c-label{color:var(--orange-hot);}
-body.dark .c-val{color:var(--gray);}
-body.dark .hours-block h3{color:var(--dark);}
-body.dark .h-row span:first-child{color:var(--gray);}
-body.dark .map-ph iframe{filter:grayscale(20%) invert(92%) hue-rotate(180deg);}
+html.dark #contacto{background:#0A0810;}
+html.dark .c-label{color:var(--orange-hot);}
+html.dark .c-val{color:var(--gray);}
+html.dark .hours-block h3{color:var(--dark);}
+html.dark .h-row span:first-child{color:var(--gray);}
+html.dark .map-ph iframe{filter:grayscale(20%) invert(92%) hue-rotate(180deg);}
 /* Footer */
-body.dark footer{background:#06040A;}
-body.dark .footer-copy{color:var(--gray-light);}
-body.dark .socials a{color:var(--gray-light);}
+html.dark footer{background:#06040A;}
+html.dark .footer-copy{color:var(--gray-light);}
+html.dark .socials a{color:var(--gray-light);}
 </style>
 </head>
 <body>
@@ -1401,13 +1409,8 @@ body.dark .socials a{color:var(--gray-light);}
 
 <script>
 /* ── THEME ── */
-(function(){
-  const saved=localStorage.getItem('nina-theme');
-  const prefersDark=window.matchMedia('(prefers-color-scheme:dark)').matches;
-  if(saved==='dark'||(saved===null&&prefersDark))document.body.classList.add('dark');
-})();
 function toggleTheme(){
-  const isDark=document.body.classList.toggle('dark');
+  const isDark=document.documentElement.classList.toggle('dark');
   localStorage.setItem('nina-theme',isDark?'dark':'light');
 }
 
