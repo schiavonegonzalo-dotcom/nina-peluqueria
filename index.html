@@ -971,6 +971,16 @@ footer{
   .hero-left{padding:5rem 2rem 3rem;}
   #servicios,#nosotros,#turnero,#galeria,#contacto{padding:4rem 1.5rem;}
   .services-list{grid-template-columns:1fr;}
+  /* ── Category accordion (mobile) ── */
+  .cat-section-hd{position:relative;cursor:pointer;padding-right:2rem;}
+  .cat-section-hd::after{
+    content:'+';position:absolute;right:0;top:50%;transform:translateY(-50%);
+    font-size:1.3rem;font-weight:300;line-height:1;color:var(--violet-mid);
+    transition:transform .25s;
+  }
+  .cat-section.cat-open .cat-section-hd::after{transform:translateY(-50%) rotate(45deg);}
+  .cat-section .services-list{display:none;}
+  .cat-section.cat-open .services-list{display:grid;}
   #nosotros,#contacto{grid-template-columns:1fr;}
   #galeria .gallery-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto;}
   .gi:nth-child(1),.gi:nth-child(5){grid-column:span 1;}
@@ -1595,6 +1605,16 @@ document.querySelectorAll('.svc-item').forEach(item=>{
     const isOpen=this.classList.contains('open');
     document.querySelectorAll('.svc-item.open').forEach(el=>el.classList.remove('open'));
     if(!isOpen)this.classList.add('open');
+  });
+});
+
+/* ── CATEGORY ACCORDION (mobile) ── */
+document.querySelectorAll('.cat-section-hd').forEach(hd=>{
+  hd.addEventListener('click',function(){
+    const cat=this.closest('.cat-section');
+    const isOpen=cat.classList.contains('cat-open');
+    document.querySelectorAll('.cat-section.cat-open').forEach(el=>el.classList.remove('cat-open'));
+    if(!isOpen)cat.classList.add('cat-open');
   });
 });
 
