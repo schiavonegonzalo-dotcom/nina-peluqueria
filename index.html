@@ -1037,8 +1037,7 @@ html.dark .socials a{color:var(--gray-light);}
     <img src="assets/logo-bajada-blanco.png" alt="Nina Peluquería" class="nav-logo logo-night">
   </a>
   <ul class="nav-links">
-    <li><a href="#turnero">Turnos</a></li>
-    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#turnero">Servicios & Turnos</a></li>
     <li><a href="#nosotros">Nosotros</a></li>
     <li><a href="#galeria">Galería</a></li>
     <li><a href="#contacto">Contacto</a></li>
@@ -1065,7 +1064,7 @@ html.dark .socials a{color:var(--gray-light);}
     </p>
     <div class="hero-btns">
       <button class="btn-v" onclick="document.getElementById('turnero').scrollIntoView({behavior:'smooth'})">Sacar turno</button>
-      <button class="btn-o" onclick="document.getElementById('servicios').scrollIntoView({behavior:'smooth'})">Ver servicios</button>
+      <button class="btn-o" onclick="document.getElementById('nosotros').scrollIntoView({behavior:'smooth'})">Sobre mí</button>
     </div>
   </div>
   <div class="hero-right">
@@ -1133,112 +1132,6 @@ html.dark .socials a{color:var(--gray-light);}
 
   <!-- PANEL 1: SERVICIO -->
   <div class="turnero-panel active" id="panel-1">
-    <div class="services-select-grid" id="svcSelectGrid"></div>
-    <div class="turnero-nav">
-      <button class="btn-v" id="btnP1Next" onclick="goStep(2)" disabled style="opacity:.4;cursor:not-allowed">Siguiente →</button>
-    </div>
-  </div>
-
-  <!-- PANEL 2: CUÁNDO -->
-  <div class="turnero-panel" id="panel-2">
-    <div class="panel2-svc-lbl" id="panel2SvcLbl"></div>
-    <div class="cal-slot-wrap">
-      <div class="calendar-card">
-        <div class="cal-header">
-          <button class="cal-nav" onclick="calPrev()">‹</button>
-          <div class="cal-title" id="calTitle"></div>
-          <button class="cal-nav" onclick="calNext()">›</button>
-        </div>
-        <div class="cal-grid" id="calGrid">
-          <div class="cal-day-name">Dom</div>
-          <div class="cal-day-name">Lun</div>
-          <div class="cal-day-name">Mar</div>
-          <div class="cal-day-name">Mié</div>
-          <div class="cal-day-name">Jue</div>
-          <div class="cal-day-name">Vie</div>
-          <div class="cal-day-name">Sáb</div>
-        </div>
-      </div>
-      <div class="slots-card" id="slotsCard">
-        <div class="slots-empty-state" id="slotsEmpty">
-          <div style="font-size:2rem;margin-bottom:.6rem">📅</div>
-          Elegí un día para<br>ver disponibilidad
-        </div>
-        <div id="slotsContent" style="display:none">
-          <div class="slots-date-title" id="slotsDayTitle"></div>
-          <div class="tl-wrap tl-compact">
-            <div class="tl-visual">
-              <div class="tl-float-lbl" id="tlFlStart"></div>
-              <div class="tl-float-lbl" id="tlFlEnd"></div>
-              <div class="tl-track" id="tlTrack">
-                <div class="tl-bar ghost" id="tlGhost"></div>
-                <div class="tl-bar solid" id="tlSolid"></div>
-              </div>
-              <div class="tl-hrs" id="tlHrs"></div>
-            </div>
-            <div class="tl-hint" id="tlHint">Pasá el cursor para previsualizar tu turno</div>
-          </div>
-          <div class="slots-list" id="slotsList"></div>
-        </div>
-      </div>
-    </div>
-    <div class="booking-summary" id="bookingSummary" style="display:none">
-      <span class="booking-summary-text" id="summaryText"></span>
-      <button class="btn-v" onclick="goStep(3)">Continuar →</button>
-    </div>
-    <div class="turnero-nav">
-      <button class="btn-o" onclick="goStep(1)">← Volver</button>
-    </div>
-  </div>
-
-  <!-- PANEL 3: DATOS -->
-  <div class="turnero-panel" id="panel-3">
-    <div class="datos-form">
-      <div class="fg full">
-        <label>Nombre completo</label>
-        <input type="text" id="dNombre" placeholder="Tu nombre y apellido"/>
-      </div>
-      <div class="fg" id="fgWA">
-        <label>WhatsApp</label>
-        <input type="tel" id="dWA" placeholder="+54 11 0000-0000"/>
-      </div>
-      <div class="fg" id="fgEmail">
-        <label>Email</label>
-        <input type="email" id="dEmail" placeholder="tu@email.com"/>
-      </div>
-      <div class="fg full">
-        <label>¿Cómo querés recibir la confirmación?</label>
-        <div class="notif-choice">
-          <label class="notif-opt"><input type="radio" name="notif" value="whatsapp" checked onchange="toggleContactFields()"/> 📱 WhatsApp</label>
-          <label class="notif-opt"><input type="radio" name="notif" value="email" onchange="toggleContactFields()"/> 📧 Email</label>
-          <label class="notif-opt"><input type="radio" name="notif" value="ambos" onchange="toggleContactFields()"/> 📱📧 Ambos</label>
-        </div>
-      </div>
-      <div class="fg full">
-        <label>Nota opcional</label>
-        <textarea placeholder="¿Alguna referencia o aclaración especial?" rows="3" id="dNota"></textarea>
-      </div>
-    </div>
-    <div class="turnero-nav">
-      <button class="btn-o" onclick="goStep(2)">← Volver</button>
-      <button class="btn-v" onclick="confirmarTurno()">Confirmar turno ✓</button>
-    </div>
-  </div>
-
-  <!-- PANEL 4: CONFIRMADO -->
-  <div class="turnero-panel" id="panel-4">
-    <div class="confirm-wrap">
-      <div class="confirm-icon">✓</div>
-      <div class="confirm-title">¡Turno reservado!</div>
-      <div class="confirm-detail" id="confirmDetail"></div>
-      <div class="confirm-notif" id="confirmNotif"></div>
-      <button class="btn-v" onclick="resetTurnero()" style="width:100%">Reservar otro turno</button>
-    </div>
-  </div>
-</section>
-
-<!-- ── SERVICES ── -->
-<section id="servicios">
   <div class="services-header fade-up">
     <div>
       <div class="section-eyebrow">Lo que hacemos</div>
@@ -1448,7 +1341,107 @@ html.dark .socials a{color:var(--gray-light);}
       </div>
     </div>
   </div>
+  </div>
+
+  <!-- PANEL 2: CUÁNDO -->
+  <div class="turnero-panel" id="panel-2">
+    <div class="panel2-svc-lbl" id="panel2SvcLbl"></div>
+    <div class="cal-slot-wrap">
+      <div class="calendar-card">
+        <div class="cal-header">
+          <button class="cal-nav" onclick="calPrev()">‹</button>
+          <div class="cal-title" id="calTitle"></div>
+          <button class="cal-nav" onclick="calNext()">›</button>
+        </div>
+        <div class="cal-grid" id="calGrid">
+          <div class="cal-day-name">Dom</div>
+          <div class="cal-day-name">Lun</div>
+          <div class="cal-day-name">Mar</div>
+          <div class="cal-day-name">Mié</div>
+          <div class="cal-day-name">Jue</div>
+          <div class="cal-day-name">Vie</div>
+          <div class="cal-day-name">Sáb</div>
+        </div>
+      </div>
+      <div class="slots-card" id="slotsCard">
+        <div class="slots-empty-state" id="slotsEmpty">
+          <div style="font-size:2rem;margin-bottom:.6rem">📅</div>
+          Elegí un día para<br>ver disponibilidad
+        </div>
+        <div id="slotsContent" style="display:none">
+          <div class="slots-date-title" id="slotsDayTitle"></div>
+          <div class="tl-wrap tl-compact">
+            <div class="tl-visual">
+              <div class="tl-float-lbl" id="tlFlStart"></div>
+              <div class="tl-float-lbl" id="tlFlEnd"></div>
+              <div class="tl-track" id="tlTrack">
+                <div class="tl-bar ghost" id="tlGhost"></div>
+                <div class="tl-bar solid" id="tlSolid"></div>
+              </div>
+              <div class="tl-hrs" id="tlHrs"></div>
+            </div>
+            <div class="tl-hint" id="tlHint">Pasá el cursor para previsualizar tu turno</div>
+          </div>
+          <div class="slots-list" id="slotsList"></div>
+        </div>
+      </div>
+    </div>
+    <div class="booking-summary" id="bookingSummary" style="display:none">
+      <span class="booking-summary-text" id="summaryText"></span>
+      <button class="btn-v" onclick="goStep(3)">Continuar →</button>
+    </div>
+    <div class="turnero-nav">
+      <button class="btn-o" onclick="goStep(1)">← Volver</button>
+    </div>
+  </div>
+
+  <!-- PANEL 3: DATOS -->
+  <div class="turnero-panel" id="panel-3">
+    <div class="datos-form">
+      <div class="fg full">
+        <label>Nombre completo</label>
+        <input type="text" id="dNombre" placeholder="Tu nombre y apellido"/>
+      </div>
+      <div class="fg" id="fgWA">
+        <label>WhatsApp</label>
+        <input type="tel" id="dWA" placeholder="+54 11 0000-0000"/>
+      </div>
+      <div class="fg" id="fgEmail">
+        <label>Email</label>
+        <input type="email" id="dEmail" placeholder="tu@email.com"/>
+      </div>
+      <div class="fg full">
+        <label>¿Cómo querés recibir la confirmación?</label>
+        <div class="notif-choice">
+          <label class="notif-opt"><input type="radio" name="notif" value="whatsapp" checked onchange="toggleContactFields()"/> 📱 WhatsApp</label>
+          <label class="notif-opt"><input type="radio" name="notif" value="email" onchange="toggleContactFields()"/> 📧 Email</label>
+          <label class="notif-opt"><input type="radio" name="notif" value="ambos" onchange="toggleContactFields()"/> 📱📧 Ambos</label>
+        </div>
+      </div>
+      <div class="fg full">
+        <label>Nota opcional</label>
+        <textarea placeholder="¿Alguna referencia o aclaración especial?" rows="3" id="dNota"></textarea>
+      </div>
+    </div>
+    <div class="turnero-nav">
+      <button class="btn-o" onclick="goStep(2)">← Volver</button>
+      <button class="btn-v" onclick="confirmarTurno()">Confirmar turno ✓</button>
+    </div>
+  </div>
+
+  <!-- PANEL 4: CONFIRMADO -->
+  <div class="turnero-panel" id="panel-4">
+    <div class="confirm-wrap">
+      <div class="confirm-icon">✓</div>
+      <div class="confirm-title">¡Turno reservado!</div>
+      <div class="confirm-detail" id="confirmDetail"></div>
+      <div class="confirm-notif" id="confirmNotif"></div>
+      <button class="btn-v" onclick="resetTurnero()" style="width:100%">Reservar otro turno</button>
+    </div>
+  </div>
 </section>
+
+
 
 <!-- ── ABOUT ── -->
 <section id="nosotros">
@@ -1570,13 +1563,12 @@ function filterCat(btn,cat){
   });
 }
 
-/* ── SERVICE EXPAND ── */
+/* ── SERVICE CLICK → BOOKING DIRECTO ── */
 document.querySelectorAll('.svc-item').forEach(item=>{
   item.addEventListener('click',function(e){
     if(e.target.classList.contains('svc-book-btn'))return;
-    const wasOpen=this.classList.contains('open');
-    document.querySelectorAll('.svc-item.open').forEach(el=>el.classList.remove('open'));
-    if(!wasOpen)this.classList.add('open');
+    const svcId=this.dataset.svcId;
+    if(svcId)bookFromService(svcId);
   });
 });
 
@@ -1584,10 +1576,8 @@ document.querySelectorAll('.svc-item').forEach(item=>{
 function bookFromService(svcId){
   const svc=SERVICES.find(s=>s.id===svcId);
   if(!svc)return;
-  const card=document.querySelector(`.svc-select-card[data-id="${svcId}"]`);
-  if(card)selectSvc(svc,card);
+  selectedSvc=svc;
   goStep(2);
-  document.getElementById('turnero').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
 /* ── TURNERO DATA ── */
@@ -1660,40 +1650,10 @@ let selectedSvc=null, selectedDate=null, selectedTime=null;
 let calYear, calMonth;
 
 /* Build service cards */
-(function buildSvcCards(){
-  const g=document.getElementById('svcSelectGrid');
-  const cats={corte:'Cortes',color:'Color',trat:'Tratamientos',estilo:'Estilismo'};
-  ['corte','color','trat','estilo'].forEach(cat=>{
-    const header=document.createElement('div');
-    header.style.cssText='grid-column:1/-1;font-size:.6rem;font-weight:800;letter-spacing:.25em;text-transform:uppercase;color:var(--violet-mid);padding:.5rem 0 .2rem;border-bottom:2px solid var(--violet-pale);margin-top:1rem;';
-    header.textContent=cats[cat];
-    g.appendChild(header);
-    SERVICES.filter(s=>s.cat===cat).forEach(s=>{
-      const d=document.createElement('div');
-      d.className='svc-select-card';
-      d.dataset.id=s.id;
-      d.innerHTML=`
-        <div class="svc-card-check">✓</div>
-        <div class="svc-card-name">${s.name}</div>
-        <div class="svc-card-dur">⏱ ${formatDur(s.dur)}</div>`;
-      d.addEventListener('click',()=>selectSvc(s,d));
-      g.appendChild(d);
-    });
-  });
-})();
-
 function formatDur(min){
   if(min<60)return min+' min';
   const h=Math.floor(min/60),m=min%60;
   return m?`${h}h ${m}min`:`${h} hs`;
-}
-
-function selectSvc(s,el){
-  document.querySelectorAll('.svc-select-card').forEach(c=>c.classList.remove('selected'));
-  el.classList.add('selected');
-  selectedSvc=s;
-  const btn=document.getElementById('btnP1Next');
-  btn.disabled=false;btn.style.opacity='1';btn.style.cursor='pointer';
 }
 
 /* ── CALENDAR ── */
@@ -1985,8 +1945,6 @@ async function confirmarTurno(){
 
 function resetTurnero(){
   selectedSvc=null;selectedDate=null;selectedTime=null;
-  document.querySelectorAll('.svc-select-card').forEach(c=>c.classList.remove('selected'));
-  const b=document.getElementById('btnP1Next');b.disabled=true;b.style.opacity='.4';b.style.cursor='not-allowed';
   document.getElementById('dNombre').value='';
   document.getElementById('dWA').value='';
   document.getElementById('dEmail').value='';
