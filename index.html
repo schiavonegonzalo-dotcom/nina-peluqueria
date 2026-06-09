@@ -1003,9 +1003,9 @@ html.dark .socials a{color:var(--gray-light);}
     <img src="assets/logo-bajada-blanco.png" alt="Nina Peluquería" class="nav-logo logo-night">
   </a>
   <ul class="nav-links">
+    <li><a href="#turnero">Turnos</a></li>
     <li><a href="#servicios">Servicios</a></li>
     <li><a href="#nosotros">Nosotros</a></li>
-    <li><a href="#turnero">Turnos</a></li>
     <li><a href="#galeria">Galería</a></li>
     <li><a href="#contacto">Contacto</a></li>
   </ul>
@@ -1065,6 +1065,143 @@ html.dark .socials a{color:var(--gray-light);}
     <div class="band-item"><span class="band-dot">✦</span> Coloración global</div>
   </div>
 </div>
+
+<!-- ── TURNERO ── -->
+<section id="turnero">
+  <div class="turnero-header fade-up">
+    <div class="section-eyebrow">Sistema de turnos</div>
+    <div class="section-title">Reservá tu <em>turno online</em></div>
+    <p>Elegí tu servicio, fecha y horario. Te confirmamos por WhatsApp o email en minutos.</p>
+  </div>
+
+  <!-- STEPS BAR -->
+  <div class="steps-bar" id="stepsBar">
+    <div class="step active" id="step-ind-1">
+      <div class="step-num">1</div>
+      <div class="step-label">Servicio</div>
+    </div>
+    <div class="step-connector" id="conn-1"></div>
+    <div class="step" id="step-ind-2">
+      <div class="step-num">2</div>
+      <div class="step-label">Cuándo</div>
+    </div>
+    <div class="step-connector" id="conn-2"></div>
+    <div class="step" id="step-ind-3">
+      <div class="step-num">3</div>
+      <div class="step-label">Tus datos</div>
+    </div>
+    <div class="step-connector" id="conn-3"></div>
+    <div class="step" id="step-ind-4">
+      <div class="step-num">4</div>
+      <div class="step-label">¡Listo!</div>
+    </div>
+  </div>
+
+  <!-- PANEL 1: SERVICIO -->
+  <div class="turnero-panel active" id="panel-1">
+    <div class="services-select-grid" id="svcSelectGrid"></div>
+    <div class="turnero-nav">
+      <button class="btn-v" id="btnP1Next" onclick="goStep(2)" disabled style="opacity:.4;cursor:not-allowed">Siguiente →</button>
+    </div>
+  </div>
+
+  <!-- PANEL 2: CUÁNDO -->
+  <div class="turnero-panel" id="panel-2">
+    <div class="panel2-svc-lbl" id="panel2SvcLbl"></div>
+    <div class="cal-slot-wrap">
+      <div class="calendar-card">
+        <div class="cal-header">
+          <button class="cal-nav" onclick="calPrev()">‹</button>
+          <div class="cal-title" id="calTitle"></div>
+          <button class="cal-nav" onclick="calNext()">›</button>
+        </div>
+        <div class="cal-grid" id="calGrid">
+          <div class="cal-day-name">Dom</div>
+          <div class="cal-day-name">Lun</div>
+          <div class="cal-day-name">Mar</div>
+          <div class="cal-day-name">Mié</div>
+          <div class="cal-day-name">Jue</div>
+          <div class="cal-day-name">Vie</div>
+          <div class="cal-day-name">Sáb</div>
+        </div>
+      </div>
+      <div class="slots-card" id="slotsCard">
+        <div class="slots-empty-state" id="slotsEmpty">
+          <div style="font-size:2rem;margin-bottom:.6rem">📅</div>
+          Elegí un día para<br>ver disponibilidad
+        </div>
+        <div id="slotsContent" style="display:none">
+          <div class="slots-date-title" id="slotsDayTitle"></div>
+          <div class="tl-wrap tl-compact">
+            <div class="tl-visual">
+              <div class="tl-float-lbl" id="tlFlStart"></div>
+              <div class="tl-float-lbl" id="tlFlEnd"></div>
+              <div class="tl-track" id="tlTrack">
+                <div class="tl-bar ghost" id="tlGhost"></div>
+                <div class="tl-bar solid" id="tlSolid"></div>
+              </div>
+              <div class="tl-hrs" id="tlHrs"></div>
+            </div>
+            <div class="tl-hint" id="tlHint">Pasá el cursor para previsualizar tu turno</div>
+          </div>
+          <div class="slots-list" id="slotsList"></div>
+        </div>
+      </div>
+    </div>
+    <div class="booking-summary" id="bookingSummary" style="display:none">
+      <span class="booking-summary-text" id="summaryText"></span>
+      <button class="btn-v" onclick="goStep(3)">Continuar →</button>
+    </div>
+    <div class="turnero-nav">
+      <button class="btn-o" onclick="goStep(1)">← Volver</button>
+    </div>
+  </div>
+
+  <!-- PANEL 3: DATOS -->
+  <div class="turnero-panel" id="panel-3">
+    <div class="datos-form">
+      <div class="fg full">
+        <label>Nombre completo</label>
+        <input type="text" id="dNombre" placeholder="Tu nombre y apellido"/>
+      </div>
+      <div class="fg" id="fgWA">
+        <label>WhatsApp</label>
+        <input type="tel" id="dWA" placeholder="+54 11 0000-0000"/>
+      </div>
+      <div class="fg" id="fgEmail">
+        <label>Email</label>
+        <input type="email" id="dEmail" placeholder="tu@email.com"/>
+      </div>
+      <div class="fg full">
+        <label>¿Cómo querés recibir la confirmación?</label>
+        <div class="notif-choice">
+          <label class="notif-opt"><input type="radio" name="notif" value="whatsapp" checked onchange="toggleContactFields()"/> 📱 WhatsApp</label>
+          <label class="notif-opt"><input type="radio" name="notif" value="email" onchange="toggleContactFields()"/> 📧 Email</label>
+          <label class="notif-opt"><input type="radio" name="notif" value="ambos" onchange="toggleContactFields()"/> 📱📧 Ambos</label>
+        </div>
+      </div>
+      <div class="fg full">
+        <label>Nota opcional</label>
+        <textarea placeholder="¿Alguna referencia o aclaración especial?" rows="3" id="dNota"></textarea>
+      </div>
+    </div>
+    <div class="turnero-nav">
+      <button class="btn-o" onclick="goStep(2)">← Volver</button>
+      <button class="btn-v" onclick="confirmarTurno()">Confirmar turno ✓</button>
+    </div>
+  </div>
+
+  <!-- PANEL 4: CONFIRMADO -->
+  <div class="turnero-panel" id="panel-4">
+    <div class="confirm-wrap">
+      <div class="confirm-icon">✓</div>
+      <div class="confirm-title">¡Turno reservado!</div>
+      <div class="confirm-detail" id="confirmDetail"></div>
+      <div class="confirm-notif" id="confirmNotif"></div>
+      <button class="btn-v" onclick="resetTurnero()" style="width:100%">Reservar otro turno</button>
+    </div>
+  </div>
+</section>
 
 <!-- ── SERVICES ── -->
 <section id="servicios">
@@ -1202,143 +1339,6 @@ html.dark .socials a{color:var(--gray-light);}
       <div><div class="stat-num">2K+</div><div class="stat-label">Clientes atendidas</div></div>
       <div><div class="stat-num">100%</div><div class="stat-label">Atención personalizada</div></div>
       <div><div class="stat-num">4.9★</div><div class="stat-label">Calificación promedio</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- ── TURNERO ── -->
-<section id="turnero">
-  <div class="turnero-header fade-up">
-    <div class="section-eyebrow">Sistema de turnos</div>
-    <div class="section-title">Reservá tu <em>turno online</em></div>
-    <p>Elegí tu servicio, fecha y horario. Te confirmamos por WhatsApp o email en minutos.</p>
-  </div>
-
-  <!-- STEPS BAR -->
-  <div class="steps-bar" id="stepsBar">
-    <div class="step active" id="step-ind-1">
-      <div class="step-num">1</div>
-      <div class="step-label">Servicio</div>
-    </div>
-    <div class="step-connector" id="conn-1"></div>
-    <div class="step" id="step-ind-2">
-      <div class="step-num">2</div>
-      <div class="step-label">Cuándo</div>
-    </div>
-    <div class="step-connector" id="conn-2"></div>
-    <div class="step" id="step-ind-3">
-      <div class="step-num">3</div>
-      <div class="step-label">Tus datos</div>
-    </div>
-    <div class="step-connector" id="conn-3"></div>
-    <div class="step" id="step-ind-4">
-      <div class="step-num">4</div>
-      <div class="step-label">¡Listo!</div>
-    </div>
-  </div>
-
-  <!-- PANEL 1: SERVICIO -->
-  <div class="turnero-panel active" id="panel-1">
-    <div class="services-select-grid" id="svcSelectGrid"></div>
-    <div class="turnero-nav">
-      <button class="btn-v" id="btnP1Next" onclick="goStep(2)" disabled style="opacity:.4;cursor:not-allowed">Siguiente →</button>
-    </div>
-  </div>
-
-  <!-- PANEL 2: CUÁNDO -->
-  <div class="turnero-panel" id="panel-2">
-    <div class="panel2-svc-lbl" id="panel2SvcLbl"></div>
-    <div class="cal-slot-wrap">
-      <div class="calendar-card">
-        <div class="cal-header">
-          <button class="cal-nav" onclick="calPrev()">‹</button>
-          <div class="cal-title" id="calTitle"></div>
-          <button class="cal-nav" onclick="calNext()">›</button>
-        </div>
-        <div class="cal-grid" id="calGrid">
-          <div class="cal-day-name">Dom</div>
-          <div class="cal-day-name">Lun</div>
-          <div class="cal-day-name">Mar</div>
-          <div class="cal-day-name">Mié</div>
-          <div class="cal-day-name">Jue</div>
-          <div class="cal-day-name">Vie</div>
-          <div class="cal-day-name">Sáb</div>
-        </div>
-      </div>
-      <div class="slots-card" id="slotsCard">
-        <div class="slots-empty-state" id="slotsEmpty">
-          <div style="font-size:2rem;margin-bottom:.6rem">📅</div>
-          Elegí un día para<br>ver disponibilidad
-        </div>
-        <div id="slotsContent" style="display:none">
-          <div class="slots-date-title" id="slotsDayTitle"></div>
-          <div class="tl-wrap tl-compact">
-            <div class="tl-visual">
-              <div class="tl-float-lbl" id="tlFlStart"></div>
-              <div class="tl-float-lbl" id="tlFlEnd"></div>
-              <div class="tl-track" id="tlTrack">
-                <div class="tl-bar ghost" id="tlGhost"></div>
-                <div class="tl-bar solid" id="tlSolid"></div>
-              </div>
-              <div class="tl-hrs" id="tlHrs"></div>
-            </div>
-            <div class="tl-hint" id="tlHint">Pasá el cursor para previsualizar tu turno</div>
-          </div>
-          <div class="slots-list" id="slotsList"></div>
-        </div>
-      </div>
-    </div>
-    <div class="booking-summary" id="bookingSummary" style="display:none">
-      <span class="booking-summary-text" id="summaryText"></span>
-      <button class="btn-v" onclick="goStep(3)">Continuar →</button>
-    </div>
-    <div class="turnero-nav">
-      <button class="btn-o" onclick="goStep(1)">← Volver</button>
-    </div>
-  </div>
-
-  <!-- PANEL 3: DATOS -->
-  <div class="turnero-panel" id="panel-3">
-    <div class="datos-form">
-      <div class="fg full">
-        <label>Nombre completo</label>
-        <input type="text" id="dNombre" placeholder="Tu nombre y apellido"/>
-      </div>
-      <div class="fg" id="fgWA">
-        <label>WhatsApp</label>
-        <input type="tel" id="dWA" placeholder="+54 11 0000-0000"/>
-      </div>
-      <div class="fg" id="fgEmail">
-        <label>Email</label>
-        <input type="email" id="dEmail" placeholder="tu@email.com"/>
-      </div>
-      <div class="fg full">
-        <label>¿Cómo querés recibir la confirmación?</label>
-        <div class="notif-choice">
-          <label class="notif-opt"><input type="radio" name="notif" value="whatsapp" checked onchange="toggleContactFields()"/> 📱 WhatsApp</label>
-          <label class="notif-opt"><input type="radio" name="notif" value="email" onchange="toggleContactFields()"/> 📧 Email</label>
-          <label class="notif-opt"><input type="radio" name="notif" value="ambos" onchange="toggleContactFields()"/> 📱📧 Ambos</label>
-        </div>
-      </div>
-      <div class="fg full">
-        <label>Nota opcional</label>
-        <textarea placeholder="¿Alguna referencia o aclaración especial?" rows="3" id="dNota"></textarea>
-      </div>
-    </div>
-    <div class="turnero-nav">
-      <button class="btn-o" onclick="goStep(2)">← Volver</button>
-      <button class="btn-v" onclick="confirmarTurno()">Confirmar turno ✓</button>
-    </div>
-  </div>
-
-  <!-- PANEL 4: CONFIRMADO -->
-  <div class="turnero-panel" id="panel-4">
-    <div class="confirm-wrap">
-      <div class="confirm-icon">✓</div>
-      <div class="confirm-title">¡Turno reservado!</div>
-      <div class="confirm-detail" id="confirmDetail"></div>
-      <div class="confirm-notif" id="confirmNotif"></div>
-      <button class="btn-v" onclick="resetTurnero()" style="width:100%">Reservar otro turno</button>
     </div>
   </div>
 </section>
