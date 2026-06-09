@@ -343,6 +343,33 @@ html.dark .logo-night{display:block;}
 }
 .svc-book-btn:hover{background:var(--violet-deep);}
 
+/* ── CATEGORY SHOWCASE ── */
+.cat-showcase{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:3.5rem;}
+.cat-card{
+  position:relative;border-radius:4px;overflow:hidden;
+  height:200px;cursor:pointer;text-decoration:none;display:block;
+}
+.cat-card img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease;}
+.cat-card:hover img{transform:scale(1.06);}
+.cat-card-ov{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(26,16,24,.88) 0%,rgba(26,16,24,.15) 100%);
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:1.1rem 1.2rem;transition:background .35s;
+}
+.cat-card:hover .cat-card-ov{background:linear-gradient(to top,rgba(107,63,160,.9) 0%,rgba(107,63,160,.25) 100%);}
+.cat-card-name{font-size:1rem;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:.06em;}
+.cat-card-desc{font-size:.7rem;color:rgba(255,255,255,.72);margin-top:.3rem;line-height:1.4;}
+/* ── CATEGORY SECTIONS ── */
+.cat-section{margin-bottom:3rem;}
+.cat-section-hd{
+  display:flex;align-items:baseline;gap:2rem;flex-wrap:wrap;
+  margin-bottom:1.2rem;padding-bottom:.9rem;
+  border-bottom:2px solid var(--violet-pale);
+}
+.cat-section-title{font-size:1rem;font-weight:800;color:var(--dark);text-transform:uppercase;letter-spacing:.08em;}
+.cat-section-desc{font-size:.78rem;color:var(--gray);line-height:1.5;}
+
 /* ──────────────── ABOUT ──────────────── */
 #nosotros{
   padding:6rem;
@@ -935,6 +962,9 @@ html.dark #servicios{background:#0E0B14;}
 html.dark .section-eyebrow{color:var(--orange-hot);}
 html.dark .services-list{background:transparent;border:none;}
 html.dark .svc-item{background:#19152A;border-color:rgba(168,112,216,.18);}
+html.dark .cat-section-hd{border-bottom-color:rgba(168,112,216,.18);}
+html.dark .cat-section-title{color:var(--dark);}
+html.dark .cat-section-desc{color:var(--gray);}
 html.dark .svc-item:hover,html.dark .svc-item.open{background:#231D35;}
 html.dark .svc-name{color:var(--dark);}
 html.dark .svc-desc{border-top-color:rgba(168,112,216,.2);color:var(--gray);}
@@ -1213,114 +1243,172 @@ html.dark .socials a{color:var(--gray-light);}
       <div class="section-eyebrow">Lo que hacemos</div>
       <div class="section-title">Servicios <em>&amp; precios</em></div>
     </div>
-    <div class="services-cats">
-      <button class="cat-btn active" onclick="filterCat(this,'all')">Todos</button>
-      <button class="cat-btn" onclick="filterCat(this,'corte')">Cortes</button>
-      <button class="cat-btn" onclick="filterCat(this,'color')">Color</button>
-      <button class="cat-btn" onclick="filterCat(this,'trat')">Tratamientos</button>
-      <button class="cat-btn" onclick="filterCat(this,'estilo')">Estilismo</button>
+  </div>
+
+  <div class="cat-showcase fade-up">
+    <a class="cat-card" href="#cat-corte">
+      <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=600&q=80" alt="Cortes"/>
+      <div class="cat-card-ov">
+        <div class="cat-card-name">Cortes</div>
+        <div class="cat-card-desc">Tijera, navaja o máquina. Adaptados a tu estilo y estructura facial.</div>
+      </div>
+    </a>
+    <a class="cat-card" href="#cat-color">
+      <img src="https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?w=600&q=80" alt="Color y mechas"/>
+      <div class="cat-card-ov">
+        <div class="cat-card-name">Color &amp; Mechas</div>
+        <div class="cat-card-desc">Desde retoques hasta balayage. Técnicas para transformar tu color.</div>
+      </div>
+    </a>
+    <a class="cat-card" href="#cat-trat">
+      <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&q=80" alt="Tratamientos"/>
+      <div class="cat-card-ov">
+        <div class="cat-card-name">Tratamientos</div>
+        <div class="cat-card-desc">Hidratación, botox capilar, alisado y keratina. Cuidado profundo.</div>
+      </div>
+    </a>
+    <a class="cat-card" href="#cat-estilo">
+      <img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=600&q=80" alt="Estilismo"/>
+      <div class="cat-card-ov">
+        <div class="cat-card-name">Estilismo</div>
+        <div class="cat-card-desc">Brushing, peinados de fiesta y styling para cada ocasión especial.</div>
+      </div>
+    </a>
+  </div>
+
+  <div id="cat-corte" class="cat-section fade-up">
+    <div class="cat-section-hd">
+      <div class="cat-section-title">Cortes</div>
+      <div class="cat-section-desc">Personalizados para cada tipo de cabello y forma de rostro.</div>
+    </div>
+    <div class="services-list">
+      <div class="svc-item" data-cat="corte" data-svc-id="cm">
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Corte masculino</div><div class="svc-time">Barbería &amp; caballero</div></div><div class="svc-price">$16000</div></div>
+        <div class="svc-meta"><span class="svc-duration-badge">30 min</span><span class="svc-toggle">+</span></div>
+        <div class="svc-desc">Corte a tijera o máquina adaptado a tu estilo y estructura facial. Incluye lavado y peinado final. Ideal para un look prolijo y definido.<br><button class="svc-book-btn" onclick="bookFromService('cm');event.stopPropagation()">Sacar turno →</button></div>
+      </div>
+      <div class="svc-item" data-cat="corte" data-svc-id="cf">
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Corte femenino</div><div class="svc-time">Tijera &amp; navaja</div></div><div class="svc-price">$23000</div></div>
+        <div class="svc-meta"><span class="svc-duration-badge">60 min</span><span class="svc-toggle">+</span></div>
+        <div class="svc-desc">Corte personalizado según la forma de tu rostro y tipo de cabello. Buscamos el largo, movimiento y textura perfecta para vos.<br><button class="svc-book-btn" onclick="bookFromService('cf');event.stopPropagation()">Sacar turno →</button></div>
+      </div>
+      <div class="svc-item" data-cat="corte" data-svc-id="cb">
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Corte + Brushing</div><div class="svc-time">Corte y secado</div></div><div class="svc-price">$24000</div></div>
+        <div class="svc-meta"><span class="svc-duration-badge">75 min</span><span class="svc-toggle">+</span></div>
+        <div class="svc-desc">Combinación de corte personalizado y secado con brushing profesional. Resultado voluminoso, con brillo y movimiento natural.<br><button class="svc-book-btn" onclick="bookFromService('cb');event.stopPropagation()">Sacar turno →</button></div>
+      </div>
     </div>
   </div>
-  <div class="services-list fade-up" id="svcList">
-    <div class="svc-item" data-cat="corte" data-svc-id="cm">
-      <div class="svc-main"><div class="svc-left"><div class="svc-name">Corte masculino</div><div class="svc-time">Barbería &amp; caballero</div></div><div class="svc-price">$16000</div></div>
-      <div class="svc-meta"><span class="svc-duration-badge">30 min</span><span class="svc-toggle">+</span></div>
-      <div class="svc-desc">Corte a tijera o máquina adaptado a tu estilo y estructura facial. Incluye lavado y peinado final. Ideal para un look prolijo y definido.<br><button class="svc-book-btn" onclick="bookFromService('cm');event.stopPropagation()">Sacar turno →</button></div>
+
+  <div id="cat-color" class="cat-section fade-up">
+    <div class="cat-section-hd">
+      <div class="cat-section-title">Color &amp; Mechas</div>
+      <div class="cat-section-desc">Técnicas de coloración desde raíz a puntas. Resultados duraderos con máximo cuidado de la fibra capilar.</div>
     </div>
-    <div class="svc-item" data-cat="corte" data-svc-id="cf">
-      <div class="svc-main"><div class="svc-left"><div class="svc-name">Corte femenino</div><div class="svc-time">Tijera &amp; navaja</div></div><div class="svc-price">$23000</div></div>
-      <div class="svc-meta"><span class="svc-duration-badge">60 min</span><span class="svc-toggle">+</span></div>
-      <div class="svc-desc">Corte personalizado según la forma de tu rostro y tipo de cabello. Buscamos el largo, movimiento y textura perfecta para vos.<br><button class="svc-book-btn" onclick="bookFromService('cf');event.stopPropagation()">Sacar turno →</button></div>
+    <div class="services-list">
+      <div class="svc-item" data-cat="color" data-svc-id="cg">
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Coloración global</div><div class="svc-time">Tinte completo</div></div><div class="svc-price">$40000</div></div>
+        <div class="svc-meta"><span class="svc-duration-badge">90 min</span><span class="svc-toggle">+</span></div>
+        <div class="svc-desc">Aplicación de tinte de raíz a puntas para un cambio de color uniforme y duradero. Incluye tratamiento post-color para proteger la fibra capilar.<br><button class="svc-book-btn" onclick="bookFromService('cg');event.stopPropagation()">Sacar turno →</button></div>
+      </div>
+      <div class="svc-item" data-cat="color" data-svc-id="rr">
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Retoque de raíces</div><div class="svc-time">Mantenimiento color</div></div><div class="svc-price">$24000</div></div>
+        <div class="svc-meta"><span class="svc-duration-badge">60–75 min</span><span class="svc-toggle">+</span></div>
+        <div class="svc-desc">Retoque de color solo en la zona de crecimiento para mantener tu color actual vibrante y sin raíces visibles. Ideal cada 4 a 6 semanas.<br><button class="svc-book-btn" onclick="bookFromService('rr');event.stopPropagation()">Sacar turno →</button></div>
+      </div>
+      <div class="svc-item" data-cat="color" data-svc-id="bc">
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Baño de color</div><div class="svc-time">Tonalización</div></div><div class="svc-price">$24000</div></div>
+        <div class="svc-meta"><span class="svc-duration-badge">45 min</span><span class="svc-toggle">+</span></div>
+        <div class="svc-desc">Tonalización suave que aporta color, brillo y vida al cabello sin dañar la fibra. Resultado natural con duración de 4 a 6 semanas.<br><button class="svc-book-btn" onclick="bookFromService('bc');event.stopPropagation()">Sacar turno →</button></div>
+      </div>
+      <div class="svc-item" data-cat="color" data-svc-id="mt">
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Mechas tradicionales</div><div class="svc-time">Técnica clásica</div></div><div class="svc-price">$62000</div></div>
+        <div class="svc-meta"><span class="svc-duration-badge">2–3 hs</span><span class="svc-toggle">+</span></div>
+        <div class="svc-desc">Mechas a papel para un efecto de aclarado uniforme y prolijo. Técnica de alta precisión para resultados naturales y duraderos.<br><button class="svc-book-btn" onclick="bookFromService('mt');event.stopPropagation()">Sacar turno →</button></div>
+      </div>
+      <div class="svc-item" data-cat="color" data-svc-id="bl">
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Balayage</div><div class="svc-time">Degradé moderno</div></div><div class="svc-price">$80000</div></div>
+        <div class="svc-meta"><span class="svc-duration-badge">3–4 hs</span><span class="svc-toggle">+</span></div>
+        <div class="svc-desc">Técnica francesa de aclarado a mano alzada para un efecto degradé natural y moderno. Sin marcas de crecimiento, con resultados que duran meses.<br><button class="svc-book-btn" onclick="bookFromService('bl');event.stopPropagation()">Sacar turno →</button></div>
+      </div>
+      <div class="svc-item" data-cat="color" data-svc-id="by">
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Babylights</div><div class="svc-time">Aclaraciones finas</div></div><div class="svc-price">$72000</div></div>
+        <div class="svc-meta"><span class="svc-duration-badge">3 hs</span><span class="svc-toggle">+</span></div>
+        <div class="svc-desc">Mechas ultrafinas que imitan las aclaraciones naturales del sol. Efecto hiperrealista y luminoso, ideal para rubias, castañas y pelirrojas.<br><button class="svc-book-btn" onclick="bookFromService('by');event.stopPropagation()">Sacar turno →</button></div>
+      </div>
+      <div class="svc-item" data-cat="color" data-svc-id="dg">
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Decoloración global</div><div class="svc-time">Aclarado total</div></div><div class="svc-price">$67000</div></div>
+        <div class="svc-meta"><span class="svc-duration-badge">2–3 hs</span><span class="svc-toggle">+</span></div>
+        <div class="svc-desc">Aclarado de toda la cabellera para cambios de color extremos o preparación para coloraciones vibrantes. Proceso cuidadoso con tratamiento de reparación incluido.<br><button class="svc-book-btn" onclick="bookFromService('dg');event.stopPropagation()">Sacar turno →</button></div>
+      </div>
+      <div class="svc-item" data-cat="color" data-svc-id="cc">
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Corrección de color</div><div class="svc-time">Cambio &amp; corrección</div></div><div class="svc-price">desde $89000</div></div>
+        <div class="svc-meta"><span class="svc-duration-badge">3–5 hs</span><span class="svc-toggle">+</span></div>
+        <div class="svc-desc">Servicio especializado para corregir coloraciones fallidas, decoloraciones desiguales o cambios drásticos de tono. Requiere diagnóstico previo personalizado.<br><button class="svc-book-btn" onclick="bookFromService('cc');event.stopPropagation()">Sacar turno →</button></div>
+      </div>
     </div>
-    <div class="svc-item" data-cat="corte" data-svc-id="cb">
-      <div class="svc-main"><div class="svc-left"><div class="svc-name">Corte + Brushing</div><div class="svc-time">Corte y secado</div></div><div class="svc-price">$24000</div></div>
-      <div class="svc-meta"><span class="svc-duration-badge">75 min</span><span class="svc-toggle">+</span></div>
-      <div class="svc-desc">Combinación de corte personalizado y secado con brushing profesional. Resultado voluminoso, con brillo y movimiento natural.<br><button class="svc-book-btn" onclick="bookFromService('cb');event.stopPropagation()">Sacar turno →</button></div>
+  </div>
+
+  <div id="cat-trat" class="cat-section fade-up">
+    <div class="cat-section-hd">
+      <div class="cat-section-title">Tratamientos</div>
+      <div class="cat-section-desc">Recuperá la salud, el brillo y la suavidad de tu cabello con tratamientos profesionales.</div>
     </div>
-    <div class="svc-item" data-cat="estilo" data-svc-id="br">
-      <div class="svc-main"><div class="svc-left"><div class="svc-name">Brushing</div><div class="svc-time">Lavado y modelado</div></div><div class="svc-price">$18000</div></div>
-      <div class="svc-meta"><span class="svc-duration-badge">45–60 min</span><span class="svc-toggle">+</span></div>
-      <div class="svc-desc">Lavado con productos premium y secado con brushing para un cabello liso, brillante y con volumen. Resultado de salón que dura varios días.<br><button class="svc-book-btn" onclick="bookFromService('br');event.stopPropagation()">Sacar turno →</button></div>
+    <div class="services-list">
+      <div class="svc-item" data-cat="trat" data-svc-id="tc">
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Tratamiento capilar</div><div class="svc-time">Hidratación &amp; reconstrucción</div></div><div class="svc-price">$35000</div></div>
+        <div class="svc-meta"><span class="svc-duration-badge">45–60 min</span><span class="svc-toggle">+</span></div>
+        <div class="svc-desc">Tratamiento de hidratación y reconstrucción profunda para cabellos secos, dañados o con frizz. Devuelve el brillo, suavidad y elasticidad natural.<br><button class="svc-book-btn" onclick="bookFromService('tc');event.stopPropagation()">Sacar turno →</button></div>
+      </div>
+      <div class="svc-item" data-cat="trat" data-svc-id="bo">
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Botox capilar</div><div class="svc-time">Relleno &amp; brillo</div></div><div class="svc-price">$54000</div></div>
+        <div class="svc-meta"><span class="svc-duration-badge">90 min</span><span class="svc-toggle">+</span></div>
+        <div class="svc-desc">Relleno de la fibra capilar con queratina y colágeno para un cabello liso, brillante y sin frizz. Efecto inmediato con duración de 2 a 3 meses.<br><button class="svc-book-btn" onclick="bookFromService('bo');event.stopPropagation()">Sacar turno →</button></div>
+      </div>
+      <div class="svc-item" data-cat="trat" data-svc-id="al">
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Alisado / Keratina</div><div class="svc-time">Progresivo &amp; definitivo</div></div><div class="svc-price">desde $72000</div></div>
+        <div class="svc-meta"><span class="svc-duration-badge">2–3 hs</span><span class="svc-toggle">+</span></div>
+        <div class="svc-desc">Tratamiento que alisa y define el cabello reduciendo volumen y frizz de forma duradera. Resultado por 3 a 6 meses según el tipo de cabello.<br><button class="svc-book-btn" onclick="bookFromService('al');event.stopPropagation()">Sacar turno →</button></div>
+      </div>
+      <div class="svc-item" data-cat="trat" data-svc-id="pe">
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Permanente / Ondulación</div><div class="svc-time">Rulos &amp; ondas</div></div><div class="svc-price">$62000</div></div>
+        <div class="svc-meta"><span class="svc-duration-badge">2–3 hs</span><span class="svc-toggle">+</span></div>
+        <div class="svc-desc">Técnica química para crear ondas o rulos permanentes y definidos. Ideal para dar volumen y textura duradera a cabellos lisos o sin forma.<br><button class="svc-book-btn" onclick="bookFromService('pe');event.stopPropagation()">Sacar turno →</button></div>
+      </div>
     </div>
-    <div class="svc-item" data-cat="estilo" data-svc-id="ls">
-      <div class="svc-main"><div class="svc-left"><div class="svc-name">Lavado + Secado</div><div class="svc-time">Servicio express</div></div><div class="svc-price">$11000</div></div>
-      <div class="svc-meta"><span class="svc-duration-badge">30 min</span><span class="svc-toggle">+</span></div>
-      <div class="svc-desc">Servicio express de lavado con productos de hidratación y secado a mano. Ideal para refrescar y dar vida al cabello rápidamente.<br><button class="svc-book-btn" onclick="bookFromService('ls');event.stopPropagation()">Sacar turno →</button></div>
+  </div>
+
+  <div id="cat-estilo" class="cat-section fade-up">
+    <div class="cat-section-hd">
+      <div class="cat-section-title">Estilismo</div>
+      <div class="cat-section-desc">Desde un brushing cotidiano hasta recogidos elaborados para tus eventos más especiales.</div>
     </div>
-    <div class="svc-item" data-cat="estilo" data-svc-id="ps">
-      <div class="svc-main"><div class="svc-left"><div class="svc-name">Peinado social</div><div class="svc-time">Eventos &amp; reuniones</div></div><div class="svc-price">$31000</div></div>
-      <div class="svc-meta"><span class="svc-duration-badge">90–120 min</span><span class="svc-toggle">+</span></div>
-      <div class="svc-desc">Peinado elegante para eventos, reuniones o salidas especiales. Adaptado a tu look y vestimenta, con terminación duradera y profesional.<br><button class="svc-book-btn" onclick="bookFromService('ps');event.stopPropagation()">Sacar turno →</button></div>
-    </div>
-    <div class="svc-item" data-cat="color" data-svc-id="cg">
-      <div class="svc-main"><div class="svc-left"><div class="svc-name">Coloración global</div><div class="svc-time">Tinte completo</div></div><div class="svc-price">$40000</div></div>
-      <div class="svc-meta"><span class="svc-duration-badge">90 min</span><span class="svc-toggle">+</span></div>
-      <div class="svc-desc">Aplicación de tinte de raíz a puntas para un cambio de color uniforme y duradero. Incluye tratamiento post-color para proteger la fibra capilar.<br><button class="svc-book-btn" onclick="bookFromService('cg');event.stopPropagation()">Sacar turno →</button></div>
-    </div>
-    <div class="svc-item" data-cat="color" data-svc-id="rr">
-      <div class="svc-main"><div class="svc-left"><div class="svc-name">Retoque de raíces</div><div class="svc-time">Mantenimiento color</div></div><div class="svc-price">$24000</div></div>
-      <div class="svc-meta"><span class="svc-duration-badge">60–75 min</span><span class="svc-toggle">+</span></div>
-      <div class="svc-desc">Retoque de color solo en la zona de crecimiento para mantener tu color actual vibrante y sin raíces visibles. Ideal cada 4 a 6 semanas.<br><button class="svc-book-btn" onclick="bookFromService('rr');event.stopPropagation()">Sacar turno →</button></div>
-    </div>
-    <div class="svc-item" data-cat="color" data-svc-id="bc">
-      <div class="svc-main"><div class="svc-left"><div class="svc-name">Baño de color</div><div class="svc-time">Tonalización</div></div><div class="svc-price">$24000</div></div>
-      <div class="svc-meta"><span class="svc-duration-badge">45 min</span><span class="svc-toggle">+</span></div>
-      <div class="svc-desc">Tonalización suave que aporta color, brillo y vida al cabello sin dañar la fibra. Resultado natural con duración de 4 a 6 semanas.<br><button class="svc-book-btn" onclick="bookFromService('bc');event.stopPropagation()">Sacar turno →</button></div>
-    </div>
-    <div class="svc-item" data-cat="color" data-svc-id="mt">
-      <div class="svc-main"><div class="svc-left"><div class="svc-name">Mechas tradicionales</div><div class="svc-time">Técnica clásica</div></div><div class="svc-price">$62000</div></div>
-      <div class="svc-meta"><span class="svc-duration-badge">2–3 hs</span><span class="svc-toggle">+</span></div>
-      <div class="svc-desc">Mechas a papel para un efecto de aclarado uniforme y prolijo. Técnica de alta precisión para resultados naturales y duraderos.<br><button class="svc-book-btn" onclick="bookFromService('mt');event.stopPropagation()">Sacar turno →</button></div>
-    </div>
-    <div class="svc-item" data-cat="color" data-svc-id="bl">
-      <div class="svc-main"><div class="svc-left"><div class="svc-name">Balayage</div><div class="svc-time">Degradé moderno</div></div><div class="svc-price">$80000</div></div>
-      <div class="svc-meta"><span class="svc-duration-badge">3–4 hs</span><span class="svc-toggle">+</span></div>
-      <div class="svc-desc">Técnica francesa de aclarado a mano alzada para un efecto degradé natural y moderno. Sin marcas de crecimiento, con resultados que duran meses.<br><button class="svc-book-btn" onclick="bookFromService('bl');event.stopPropagation()">Sacar turno →</button></div>
-    </div>
-    <div class="svc-item" data-cat="color" data-svc-id="by">
-      <div class="svc-main"><div class="svc-left"><div class="svc-name">Babylights</div><div class="svc-time">Aclaraciones finas</div></div><div class="svc-price">$72000</div></div>
-      <div class="svc-meta"><span class="svc-duration-badge">3 hs</span><span class="svc-toggle">+</span></div>
-      <div class="svc-desc">Mechas ultrafinas que imitan las aclaraciones naturales del sol. Efecto hiperrealista y luminoso, ideal para rubias, castañas y pelirrojas.<br><button class="svc-book-btn" onclick="bookFromService('by');event.stopPropagation()">Sacar turno →</button></div>
-    </div>
-    <div class="svc-item" data-cat="color" data-svc-id="dg">
-      <div class="svc-main"><div class="svc-left"><div class="svc-name">Decoloración global</div><div class="svc-time">Aclarado total</div></div><div class="svc-price">$67000</div></div>
-      <div class="svc-meta"><span class="svc-duration-badge">2–3 hs</span><span class="svc-toggle">+</span></div>
-      <div class="svc-desc">Aclarado de toda la cabellera para cambios de color extremos o preparación para coloraciones vibrantes. Proceso cuidadoso con tratamiento de reparación incluido.<br><button class="svc-book-btn" onclick="bookFromService('dg');event.stopPropagation()">Sacar turno →</button></div>
-    </div>
-    <div class="svc-item" data-cat="color" data-svc-id="cc">
-      <div class="svc-main"><div class="svc-left"><div class="svc-name">Corrección de color</div><div class="svc-time">Cambio &amp; corrección</div></div><div class="svc-price">desde $89000</div></div>
-      <div class="svc-meta"><span class="svc-duration-badge">3–5 hs</span><span class="svc-toggle">+</span></div>
-      <div class="svc-desc">Servicio especializado para corregir coloraciones fallidas, decoloraciones desiguales o cambios drásticos de tono. Requiere diagnóstico previo personalizado.<br><button class="svc-book-btn" onclick="bookFromService('cc');event.stopPropagation()">Sacar turno →</button></div>
-    </div>
-    <div class="svc-item" data-cat="trat" data-svc-id="tc">
-      <div class="svc-main"><div class="svc-left"><div class="svc-name">Tratamiento capilar</div><div class="svc-time">Hidratación &amp; reconstrucción</div></div><div class="svc-price">$35000</div></div>
-      <div class="svc-meta"><span class="svc-duration-badge">45–60 min</span><span class="svc-toggle">+</span></div>
-      <div class="svc-desc">Tratamiento de hidratación y reconstrucción profunda para cabellos secos, dañados o con frizz. Devuelve el brillo, suavidad y elasticidad natural.<br><button class="svc-book-btn" onclick="bookFromService('tc');event.stopPropagation()">Sacar turno →</button></div>
-    </div>
-    <div class="svc-item" data-cat="trat" data-svc-id="bo">
-      <div class="svc-main"><div class="svc-left"><div class="svc-name">Botox capilar</div><div class="svc-time">Relleno &amp; brillo</div></div><div class="svc-price">$54000</div></div>
-      <div class="svc-meta"><span class="svc-duration-badge">90 min</span><span class="svc-toggle">+</span></div>
-      <div class="svc-desc">Relleno de la fibra capilar con queratina y colágeno para un cabello liso, brillante y sin frizz. Efecto inmediato con duración de 2 a 3 meses.<br><button class="svc-book-btn" onclick="bookFromService('bo');event.stopPropagation()">Sacar turno →</button></div>
-    </div>
-    <div class="svc-item" data-cat="trat" data-svc-id="al">
-      <div class="svc-main"><div class="svc-left"><div class="svc-name">Alisado / Keratina</div><div class="svc-time">Progresivo &amp; definitivo</div></div><div class="svc-price">desde $72000</div></div>
-      <div class="svc-meta"><span class="svc-duration-badge">2–3 hs</span><span class="svc-toggle">+</span></div>
-      <div class="svc-desc">Tratamiento que alisa y define el cabello reduciendo volumen y frizz de forma duradera. Resultado por 3 a 6 meses según el tipo de cabello.<br><button class="svc-book-btn" onclick="bookFromService('al');event.stopPropagation()">Sacar turno →</button></div>
-    </div>
-    <div class="svc-item" data-cat="trat" data-svc-id="pe">
-      <div class="svc-main"><div class="svc-left"><div class="svc-name">Permanente / Ondulación</div><div class="svc-time">Rulos &amp; ondas</div></div><div class="svc-price">$62000</div></div>
-      <div class="svc-meta"><span class="svc-duration-badge">2–3 hs</span><span class="svc-toggle">+</span></div>
-      <div class="svc-desc">Técnica química para crear ondas o rulos permanentes y definidos. Ideal para dar volumen y textura duradera a cabellos lisos o sin forma.<br><button class="svc-book-btn" onclick="bookFromService('pe');event.stopPropagation()">Sacar turno →</button></div>
-    </div>
-    <div class="svc-item" data-cat="estilo" data-svc-id="rf">
-      <div class="svc-main"><div class="svc-left"><div class="svc-name">Recogido / Peinado de fiesta</div><div class="svc-time">Eventos &amp; casamientos</div></div><div class="svc-price">$45000</div></div>
-      <div class="svc-meta"><span class="svc-duration-badge">2 hs</span><span class="svc-toggle">+</span></div>
-      <div class="svc-desc">Peinado elaborado para ocasiones especiales: casamientos, quinceañeros y eventos de gala. Con adornos y terminaciones de laca profesional de larga duración.<br><button class="svc-book-btn" onclick="bookFromService('rf');event.stopPropagation()">Sacar turno →</button></div>
-    </div>
-    <div class="svc-item" data-cat="estilo" data-svc-id="tr">
-      <div class="svc-main"><div class="svc-left"><div class="svc-name">Trenzas / Styling elaborado</div><div class="svc-time">Diseño &amp; creación</div></div><div class="svc-price">desde $31000</div></div>
-      <div class="svc-meta"><span class="svc-duration-badge">60–120 min</span><span class="svc-toggle">+</span></div>
-      <div class="svc-desc">Trenzas, nudos y peinados creativos para un look único y personalizado. Desde estilos casuales hasta elaboraciones artísticas para eventos especiales.<br><button class="svc-book-btn" onclick="bookFromService('tr');event.stopPropagation()">Sacar turno →</button></div>
+    <div class="services-list">
+      <div class="svc-item" data-cat="estilo" data-svc-id="br">
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Brushing</div><div class="svc-time">Lavado y modelado</div></div><div class="svc-price">$18000</div></div>
+        <div class="svc-meta"><span class="svc-duration-badge">45–60 min</span><span class="svc-toggle">+</span></div>
+        <div class="svc-desc">Lavado con productos premium y secado con brushing para un cabello liso, brillante y con volumen. Resultado de salón que dura varios días.<br><button class="svc-book-btn" onclick="bookFromService('br');event.stopPropagation()">Sacar turno →</button></div>
+      </div>
+      <div class="svc-item" data-cat="estilo" data-svc-id="ls">
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Lavado + Secado</div><div class="svc-time">Servicio express</div></div><div class="svc-price">$11000</div></div>
+        <div class="svc-meta"><span class="svc-duration-badge">30 min</span><span class="svc-toggle">+</span></div>
+        <div class="svc-desc">Servicio express de lavado con productos de hidratación y secado a mano. Ideal para refrescar y dar vida al cabello rápidamente.<br><button class="svc-book-btn" onclick="bookFromService('ls');event.stopPropagation()">Sacar turno →</button></div>
+      </div>
+      <div class="svc-item" data-cat="estilo" data-svc-id="ps">
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Peinado social</div><div class="svc-time">Eventos &amp; reuniones</div></div><div class="svc-price">$31000</div></div>
+        <div class="svc-meta"><span class="svc-duration-badge">90–120 min</span><span class="svc-toggle">+</span></div>
+        <div class="svc-desc">Peinado elegante para eventos, reuniones o salidas especiales. Adaptado a tu look y vestimenta, con terminación duradera y profesional.<br><button class="svc-book-btn" onclick="bookFromService('ps');event.stopPropagation()">Sacar turno →</button></div>
+      </div>
+      <div class="svc-item" data-cat="estilo" data-svc-id="rf">
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Recogido / Peinado de fiesta</div><div class="svc-time">Eventos &amp; casamientos</div></div><div class="svc-price">$45000</div></div>
+        <div class="svc-meta"><span class="svc-duration-badge">2 hs</span><span class="svc-toggle">+</span></div>
+        <div class="svc-desc">Peinado elaborado para ocasiones especiales: casamientos, quinceañeros y eventos de gala. Con adornos y terminaciones de laca profesional de larga duración.<br><button class="svc-book-btn" onclick="bookFromService('rf');event.stopPropagation()">Sacar turno →</button></div>
+      </div>
+      <div class="svc-item" data-cat="estilo" data-svc-id="tr">
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Trenzas / Styling elaborado</div><div class="svc-time">Diseño &amp; creación</div></div><div class="svc-price">desde $31000</div></div>
+        <div class="svc-meta"><span class="svc-duration-badge">60–120 min</span><span class="svc-toggle">+</span></div>
+        <div class="svc-desc">Trenzas, nudos y peinados creativos para un look único y personalizado. Desde estilos casuales hasta elaboraciones artísticas para eventos especiales.<br><button class="svc-book-btn" onclick="bookFromService('tr');event.stopPropagation()">Sacar turno →</button></div>
+      </div>
     </div>
   </div>
 </section>
