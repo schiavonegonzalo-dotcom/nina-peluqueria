@@ -930,6 +930,20 @@ footer{
 }
 .socials a:hover{border-color:var(--orange-warm);color:var(--orange-warm);}
 
+/* ── SOCIAL INLINE ── */
+.socials-inline{display:flex;gap:.6rem;margin-top:.4rem;flex-wrap:wrap;}
+.social-btn{
+  display:inline-flex;align-items:center;gap:.35rem;
+  padding:.35rem .75rem;
+  border:1.5px solid rgba(136,80,190,.3);
+  border-radius:4px;
+  text-decoration:none;
+  font-size:.7rem;font-weight:700;letter-spacing:.04em;
+  color:rgba(255,255,255,.65);
+  transition:border-color .25s,color .25s;
+}
+.social-btn:hover{border-color:var(--orange-warm);color:var(--orange-warm);}
+
 /* ──────────────── WA FLOAT ──────────────── */
 .wa{
   position:fixed;bottom:2rem;right:2rem;z-index:300;
@@ -1496,6 +1510,28 @@ html.dark .socials a{color:var(--gray-light);}
         <div class="c-icon">📧</div>
         <div><div class="c-label">Email</div><div class="c-val">ninapeluqueriamza@gmail.com</div></div>
       </div>
+      <div class="contact-item">
+        <div class="c-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </div>
+        <div>
+          <div class="c-label">Redes sociales</div>
+          <div class="socials-inline">
+            <a href="#" class="social-btn" title="Instagram">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+              Instagram
+            </a>
+            <a href="#" class="social-btn" title="Facebook">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+              Facebook
+            </a>
+            <a href="#" class="social-btn" title="X (Twitter)">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              X
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="hours-block">
       <h3>Horarios</h3>
@@ -1518,11 +1554,6 @@ html.dark .socials a{color:var(--gray-light);}
     <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;"><img src="assets/logo-blanco.png" alt="Nina Peluquería" class="footer-logo"></a>
   </div>
   <div class="footer-copy">© 2026 Nina Peluquería · Todos los derechos reservados</div>
-  <div class="socials">
-    <a href="#">IG</a>
-    <a href="#">FB</a>
-    <a href="#">TK</a>
-  </div>
 </footer>
 
 <a class="wa" href="https://wa.me/5492616627238" target="_blank" title="WhatsApp">
