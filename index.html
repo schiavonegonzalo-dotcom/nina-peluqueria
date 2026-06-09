@@ -345,6 +345,7 @@ html.dark .logo-night{display:block;}
 
 /* ── CATEGORY SHOWCASE ── */
 .cat-showcase{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:3.5rem;}
+.cat-card-featured{grid-column:1/-1;height:220px;}
 .cat-card{
   position:relative;border-radius:4px;overflow:hidden;
   height:200px;cursor:pointer;text-decoration:none;display:block;
@@ -1246,6 +1247,13 @@ html.dark .socials a{color:var(--gray-light);}
   </div>
 
   <div class="cat-showcase fade-up">
+    <a class="cat-card cat-card-featured" href="#cat-pack">
+      <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1200&q=80" alt="Packs Nina"/>
+      <div class="cat-card-ov">
+        <div class="cat-card-name">✦ Packs más elegidos</div>
+        <div class="cat-card-desc">Combinaciones pensadas para sacar el máximo partido a cada visita. Más servicio, mejor precio.</div>
+      </div>
+    </a>
     <a class="cat-card" href="#cat-corte">
       <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=600&q=80" alt="Cortes"/>
       <div class="cat-card-ov">
@@ -1274,6 +1282,35 @@ html.dark .socials a{color:var(--gray-light);}
         <div class="cat-card-desc">Brushing, peinados de fiesta y styling para cada ocasión especial.</div>
       </div>
     </a>
+  </div>
+
+  <div id="cat-pack" class="cat-section fade-up">
+    <div class="cat-section-hd">
+      <div class="cat-section-title">Packs más elegidos</div>
+      <div class="cat-section-desc">Combinaciones de servicios a precio especial. Más resultado, menos vueltas.</div>
+    </div>
+    <div class="services-list">
+      <div class="svc-item" data-cat="pack" data-svc-id="pk1">
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Pack Corte &amp; Color</div><div class="svc-time">Corte + Coloración global</div></div><div class="svc-price">$52000</div></div>
+        <div class="svc-meta"><span class="svc-duration-badge">2h 30min</span><span class="svc-toggle">+</span></div>
+        <div class="svc-desc">Combinación de corte personalizado más coloración global de raíz a puntas. Cambio de look completo en una sola sesión, con tratamiento post-color incluido.<br><button class="svc-book-btn" onclick="bookFromService('pk1');event.stopPropagation()">Sacar turno →</button></div>
+      </div>
+      <div class="svc-item" data-cat="pack" data-svc-id="pk2">
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Pack Mechas &amp; Nutrición</div><div class="svc-time">Balayage + Tratamiento capilar</div></div><div class="svc-price">$95000</div></div>
+        <div class="svc-meta"><span class="svc-duration-badge">3h 30min</span><span class="svc-toggle">+</span></div>
+        <div class="svc-desc">Balayage o mechas tradicionales más tratamiento de hidratación profunda. El aclarado cuidado tu cabello, no lo daña. Resultado luminoso y saludable.<br><button class="svc-book-btn" onclick="bookFromService('pk2');event.stopPropagation()">Sacar turno →</button></div>
+      </div>
+      <div class="svc-item" data-cat="pack" data-svc-id="pk3">
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Pack Fiesta Completo</div><div class="svc-time">Recogido + Botox capilar</div></div><div class="svc-price">$80000</div></div>
+        <div class="svc-meta"><span class="svc-duration-badge">3h</span><span class="svc-toggle">+</span></div>
+        <div class="svc-desc">Preparación completa para eventos especiales: botox capilar para máximo brillo y suavidad, más peinado recogido o de fiesta elaborado. Llega a tu evento perfecta.<br><button class="svc-book-btn" onclick="bookFromService('pk3');event.stopPropagation()">Sacar turno →</button></div>
+      </div>
+      <div class="svc-item" data-cat="pack" data-svc-id="pk4">
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Pack Color &amp; Cuidado</div><div class="svc-time">Baño de color + Tratamiento</div></div><div class="svc-price">$48000</div></div>
+        <div class="svc-meta"><span class="svc-duration-badge">1h 30min</span><span class="svc-toggle">+</span></div>
+        <div class="svc-desc">Baño de color para vibrar el tono más tratamiento de reconstrucción. Ideal para mantener el color fresco y el cabello en su mejor estado entre sesiones de tinte.<br><button class="svc-book-btn" onclick="bookFromService('pk4');event.stopPropagation()">Sacar turno →</button></div>
+      </div>
+    </div>
   </div>
 
   <div id="cat-corte" class="cat-section fade-up">
@@ -1555,6 +1592,10 @@ function bookFromService(svcId){
 
 /* ── TURNERO DATA ── */
 const SERVICES=[
+  {id:'pk1',name:'Pack Corte & Color',dur:150,cat:'pack'},
+  {id:'pk2',name:'Pack Mechas & Nutrición',dur:210,cat:'pack'},
+  {id:'pk3',name:'Pack Fiesta Completo',dur:180,cat:'pack'},
+  {id:'pk4',name:'Pack Color & Cuidado',dur:90,cat:'pack'},
   {id:'cm',name:'Corte masculino',dur:30,cat:'corte'},
   {id:'cf',name:'Corte femenino',dur:60,cat:'corte'},
   {id:'cb',name:'Corte + Brushing',dur:75,cat:'corte'},
