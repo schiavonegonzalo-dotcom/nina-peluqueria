@@ -337,6 +337,21 @@ html.dark .logo-night{display:block;}
 .svc-item.open .svc-desc{display:flex;flex-direction:column;gap:.75rem;}
 @keyframes descFade{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
 .svc-item.open .svc-desc{display:block;}
+.svc-options{display:flex;flex-direction:column;gap:.55rem;}
+.svc-option{
+  display:flex;align-items:center;justify-content:space-between;gap:.75rem;
+  padding:.65rem .85rem;
+  background:rgba(136,80,190,.06);
+  border:1px solid rgba(136,80,190,.12);
+  border-radius:4px;
+}
+.svc-option-left{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;}
+.svc-option-name{font-size:.78rem;font-weight:700;color:var(--dark);}
+.svc-option-price{font-size:.85rem;font-weight:800;color:var(--violet-mid);}
+.svc-option .svc-book-btn{margin-top:0;white-space:nowrap;}
+#cat-pack .svc-option{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12);}
+#cat-pack .svc-option-name{color:#fff;}
+#cat-pack .svc-option-price{color:#e8c6ff;}
 .svc-book-btn{
   display:inline-block;margin-top:.75rem;
   background:var(--violet-mid);color:#fff;border:none;
@@ -1228,9 +1243,29 @@ html.dark .socials a{color:var(--gray-light);}
         <div class="svc-desc"><span class="svc-desc-text">Tonalización suave que aporta color, brillo y vida al cabello sin dañar la fibra. Resultado natural con duración de 4 a 6 semanas.</span><button class="svc-book-btn" onclick="bookFromService('bc');event.stopPropagation()">Sacar turno →</button></div>
       </div>
       <div class="svc-item" data-cat="color" data-svc-id="mt">
-        <div class="svc-main"><div class="svc-left"><div class="svc-name">Mechas tradicionales</div><div class="svc-time">Técnica clásica</div></div><div class="svc-price">$62000</div></div>
-        <div class="svc-meta"><span class="svc-duration-badge">2–3 hs</span><span class="svc-toggle">+</span></div>
-        <div class="svc-desc"><span class="svc-desc-text">Mechas a papel para un efecto de aclarado uniforme y prolijo. Técnica de alta precisión para resultados naturales y duraderos.</span><button class="svc-book-btn" onclick="bookFromService('mt');event.stopPropagation()">Sacar turno →</button></div>
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Mechas tradicionales</div><div class="svc-time">Técnica clásica</div></div><div class="svc-price">desde $65000</div></div>
+        <div class="svc-meta"><span class="svc-duration-badge">1½–3 hs</span><span class="svc-toggle">+</span></div>
+        <div class="svc-desc">
+          <span class="svc-desc-text">Mechas a papel para un efecto de aclarado uniforme y prolijo. Técnica de alta precisión para resultados naturales y duraderos.</span>
+          <div class="svc-options">
+            <div class="svc-option">
+              <div class="svc-option-left">
+                <span class="svc-option-name">Cúspide</span>
+                <span class="svc-duration-badge">1h 30min</span>
+                <span class="svc-option-price">$65000</span>
+              </div>
+              <button class="svc-book-btn" onclick="bookFromService('mt1');event.stopPropagation()">Sacar turno →</button>
+            </div>
+            <div class="svc-option">
+              <div class="svc-option-left">
+                <span class="svc-option-name">Cabeza completa</span>
+                <span class="svc-duration-badge">3h</span>
+                <span class="svc-option-price">$90000</span>
+              </div>
+              <button class="svc-book-btn" onclick="bookFromService('mt2');event.stopPropagation()">Sacar turno →</button>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="svc-item" data-cat="color" data-svc-id="bl">
         <div class="svc-main"><div class="svc-left"><div class="svc-name">Balayage</div><div class="svc-time">Degradé moderno</div></div><div class="svc-price">$80000</div></div>
@@ -1570,7 +1605,8 @@ const SERVICES=[
   {id:'cg',name:'Coloración global',dur:90,cat:'color'},
   {id:'rr',name:'Retoque de raíces',dur:67,cat:'color'},
   {id:'bc',name:'Baño de color',dur:45,cat:'color'},
-  {id:'mt',name:'Mechas tradicionales',dur:150,cat:'color'},
+  {id:'mt1',name:'Mechas tradicionales — Cúspide',dur:90,cat:'color'},
+  {id:'mt2',name:'Mechas tradicionales — Cabeza completa',dur:180,cat:'color'},
   {id:'bl',name:'Balayage',dur:210,cat:'color'},
   {id:'by',name:'Babylights',dur:180,cat:'color'},
   {id:'dg',name:'Decoloración global',dur:150,cat:'color'},
