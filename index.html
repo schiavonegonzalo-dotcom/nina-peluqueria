@@ -39,16 +39,6 @@ body{
   overflow-x:hidden;
 }
 
-/* ──────────────── CURSOR ──────────────── */
-.cursor{
-  width:12px;height:12px;
-  background:var(--orange-hot);
-  border-radius:50%;
-  position:fixed;top:0;left:0;
-  pointer-events:none;z-index:9999;
-  transition:transform .15s ease, background .2s;
-  mix-blend-mode:multiply;
-}
 
 /* ──────────────── NAV ──────────────── */
 nav{
@@ -1071,7 +1061,6 @@ html.dark .socials a{color:var(--gray-light);}
 </head>
 <body>
 
-<div class="cursor" id="cursor"></div>
 
 <!-- ── NAV ── -->
 <nav>
@@ -1554,11 +1543,6 @@ const SALON_EMAIL        = 'ninapeluqueriamza@gmail.com';
 emailjs.init({ publicKey: EJS_PUBLIC_KEY });
 
 /* ── CURSOR ── */
-const cur=document.getElementById('cursor');
-document.addEventListener('mousemove',e=>{
-  cur.style.left=e.clientX-6+'px';
-  cur.style.top=e.clientY-6+'px';
-});
 
 /* ── FADE ON SCROLL ── */
 const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis')}),{threshold:.1});
