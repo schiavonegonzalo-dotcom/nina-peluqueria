@@ -392,10 +392,7 @@ html.dark .logo-night{display:block;}
   position:relative;
 }
 #cat-pack .cat-section-hd::before{
-  content:'✦ OFERTA ESPECIAL';
-  display:block;
-  font-size:.72rem;font-weight:700;letter-spacing:.14em;
-  color:var(--orange-hot);margin-bottom:.35rem;
+  display:none;
 }
 #cat-pack .cat-section-title{color:var(--dark);}
 #cat-pack .svc-item{
@@ -996,15 +993,18 @@ footer{
   #servicios,#nosotros,#turnero,#galeria,#contacto{padding:4rem 1.5rem;}
   .services-list{grid-template-columns:1fr;}
   /* ── Category accordion (mobile) ── */
-  .cat-section{margin-bottom:1rem;}
+  .cat-section{margin-bottom:0;border-bottom:1px solid rgba(136,80,190,.13);padding:.45rem 0;}
+  .cat-section:first-child{padding-top:0;}
+  .cat-section:last-child{border-bottom:none;padding-bottom:0;}
   .cat-section-hd{
     position:relative;cursor:pointer;
-    padding-right:2rem;padding-bottom:.1rem;
+    padding-right:2.2rem;padding-bottom:.1rem;
     margin-bottom:0;border-bottom:none;
+    align-items:center;
   }
   .cat-section-hd::after{
     content:'+';position:absolute;right:0;top:50%;transform:translateY(-50%);
-    font-size:1.3rem;font-weight:300;line-height:1;color:var(--violet-mid);
+    font-size:2rem;font-weight:700;line-height:1;color:var(--violet-mid);
     transition:transform .25s;
   }
   .cat-section.cat-open .cat-section-hd::after{transform:translateY(-50%) rotate(45deg);}
@@ -1023,7 +1023,6 @@ footer{
   .fg.full{grid-column:span 1;}
   .band{padding:.9rem 2rem;gap:2rem;}
   footer{padding:2rem 1.5rem;}
-  .hero-right{display:none;}
   .turnero-header p{display:none;}
   .steps-bar{margin-top:1rem;margin-bottom:1.2rem;}
 }
@@ -1231,27 +1230,27 @@ html.dark .socials a{color:var(--gray-light);}
     <div class="cat-section-hd"><div class="cat-section-title">Cortes</div></div>
     <div class="services-list">
       <div class="svc-item" data-cat="corte" data-svc-id="cf">
-        <div class="svc-main"><div class="svc-left"><div class="svc-name">Corte femenino</div><div class="svc-time">Tijera &amp; navaja</div></div><div class="svc-price">$12.000</div></div>
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Corte femenino</div><div class="svc-time">Tijera &amp; navaja</div></div><div class="svc-price">$22.800</div></div>
         <div class="svc-meta"><span class="svc-duration-badge">60 min</span><span class="svc-toggle">+</span></div>
         <div class="svc-desc"><span class="svc-desc-text">Corte personalizado según tu rostro y tipo de cabello. Buscamos el largo, movimiento y textura perfecta para vos.</span><button class="svc-book-btn" onclick="bookFromService('cf');event.stopPropagation()">Sacar turno →</button></div>
       </div>
       <div class="svc-item" data-cat="corte" data-svc-id="cm">
-        <div class="svc-main"><div class="svc-left"><div class="svc-name">Corte masculino</div><div class="svc-time">Tijera &amp; máquina</div></div><div class="svc-price">$8.000</div></div>
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Corte masculino</div><div class="svc-time">Tijera &amp; máquina</div></div><div class="svc-price">$15.200</div></div>
         <div class="svc-meta"><span class="svc-duration-badge">30 min</span><span class="svc-toggle">+</span></div>
         <div class="svc-desc"><span class="svc-desc-text">Corte a tijera o máquina adaptado a tu estilo y estructura facial. Incluye lavado y peinado final.</span><button class="svc-book-btn" onclick="bookFromService('cm');event.stopPropagation()">Sacar turno →</button></div>
       </div>
       <div class="svc-item" data-cat="corte" data-svc-id="cn">
-        <div class="svc-main"><div class="svc-left"><div class="svc-name">Corte niño</div><div class="svc-time">Hasta 12 años</div></div><div class="svc-price">$7.000</div></div>
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Corte niño</div><div class="svc-time">Hasta 12 años</div></div><div class="svc-price">$13.300</div></div>
         <div class="svc-meta"><span class="svc-duration-badge">30 min</span><span class="svc-toggle">+</span></div>
         <div class="svc-desc"><span class="svc-desc-text">Corte suave y preciso para los más chicos. Con la paciencia y el cuidado que se merecen.</span><button class="svc-book-btn" onclick="bookFromService('cn');event.stopPropagation()">Sacar turno →</button></div>
       </div>
       <div class="svc-item svc-item--pack" data-cat="corte" data-svc-id="pk-cf-rc">
-        <div class="svc-main"><div class="svc-left"><span class="svc-pack-badge">Pack</span><div class="svc-name">Corte femenino + ritual cuidado capilar</div><div class="svc-time">Corte + tratamiento</div></div><div class="svc-price">$18.000</div></div>
+        <div class="svc-main"><div class="svc-left"><span class="svc-pack-badge">Pack</span><div class="svc-name">Corte femenino + ritual cuidado capilar</div><div class="svc-time">Corte + tratamiento</div></div><div class="svc-price">$34.200</div></div>
         <div class="svc-meta"><span class="svc-duration-badge">90 min</span><span class="svc-toggle">+</span></div>
         <div class="svc-desc"><span class="svc-desc-text">Corte personalizado más ritual de cuidado capilar profundo. Cabello cortado y nutrido en una sola visita.</span><button class="svc-book-btn" onclick="bookFromService('pk-cf-rc');event.stopPropagation()">Sacar turno →</button></div>
       </div>
       <div class="svc-item svc-item--pack" data-cat="corte" data-svc-id="pk-cm-b">
-        <div class="svc-main"><div class="svc-left"><span class="svc-pack-badge">Pack</span><div class="svc-name">Corte masculino + barba</div><div class="svc-time">Corte + perfilado de barba</div></div><div class="svc-price">$13.000</div></div>
+        <div class="svc-main"><div class="svc-left"><span class="svc-pack-badge">Pack</span><div class="svc-name">Corte masculino + barba</div><div class="svc-time">Corte + perfilado de barba</div></div><div class="svc-price">$24.700</div></div>
         <div class="svc-meta"><span class="svc-duration-badge">60 min</span><span class="svc-toggle">+</span></div>
         <div class="svc-desc"><span class="svc-desc-text">Corte masculino más perfilado y definición de barba. Look completo y prolijo en una sesión.</span><button class="svc-book-btn" onclick="bookFromService('pk-cm-b');event.stopPropagation()">Sacar turno →</button></div>
       </div>
@@ -1262,7 +1261,7 @@ html.dark .socials a{color:var(--gray-light);}
     <div class="cat-section-hd"><div class="cat-section-title">Mechas</div></div>
     <div class="services-list">
       <div class="svc-item" data-cat="mechas" data-svc-id="mt1">
-        <div class="svc-main"><div class="svc-left"><div class="svc-name">Mechas tradicionales</div><div class="svc-time">Técnica a papel</div></div><div class="svc-price">desde $28.000</div></div>
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Mechas tradicionales</div><div class="svc-time">Técnica a papel</div></div><div class="svc-price">desde $53.200</div></div>
         <div class="svc-meta"><span class="svc-duration-badge">3h 30min</span><span class="svc-toggle">+</span></div>
         <div class="svc-desc">
           <span class="svc-desc-text">Mechas a papel para un efecto de aclarado natural y prolijo. Alta precisión con resultados duraderos.</span>
@@ -1271,7 +1270,7 @@ html.dark .socials a{color:var(--gray-light);}
               <div class="svc-option-left">
                 <span class="svc-option-name">Media cabeza</span>
                 <span class="svc-duration-badge">3h 30min</span>
-                <span class="svc-option-price">$28.000</span>
+                <span class="svc-option-price">$53.200</span>
               </div>
               <button class="svc-book-btn" onclick="bookFromService('mt1');event.stopPropagation()">Sacar turno →</button>
             </div>
@@ -1279,7 +1278,7 @@ html.dark .socials a{color:var(--gray-light);}
               <div class="svc-option-left">
                 <span class="svc-option-name">Cabeza completa</span>
                 <span class="svc-duration-badge">3h 30min</span>
-                <span class="svc-option-price">$42.000</span>
+                <span class="svc-option-price">$79.800</span>
               </div>
               <button class="svc-book-btn" onclick="bookFromService('mt2');event.stopPropagation()">Sacar turno →</button>
             </div>
@@ -1287,22 +1286,22 @@ html.dark .socials a{color:var(--gray-light);}
         </div>
       </div>
       <div class="svc-item" data-cat="mechas" data-svc-id="mb">
-        <div class="svc-main"><div class="svc-left"><div class="svc-name">Mechas balayage</div><div class="svc-time">Degradé moderno</div></div><div class="svc-price">$45.000</div></div>
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Mechas balayage</div><div class="svc-time">Degradé moderno</div></div><div class="svc-price">$85.500</div></div>
         <div class="svc-meta"><span class="svc-duration-badge">3h 30min</span><span class="svc-toggle">+</span></div>
         <div class="svc-desc"><span class="svc-desc-text">Técnica francesa de aclarado a mano alzada para un degradé natural y moderno. Sin marcas de crecimiento, con resultados que duran meses.</span><button class="svc-book-btn" onclick="bookFromService('mb');event.stopPropagation()">Sacar turno →</button></div>
       </div>
       <div class="svc-item" data-cat="mechas" data-svc-id="mby">
-        <div class="svc-main"><div class="svc-left"><div class="svc-name">Mechas babylight</div><div class="svc-time">Aclaraciones ultrafinas</div></div><div class="svc-price">$38.000</div></div>
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Mechas babylight</div><div class="svc-time">Aclaraciones ultrafinas</div></div><div class="svc-price">$72.200</div></div>
         <div class="svc-meta"><span class="svc-duration-badge">3h 30min</span><span class="svc-toggle">+</span></div>
         <div class="svc-desc"><span class="svc-desc-text">Mechas ultrafinas que imitan las aclaraciones naturales del sol. Efecto hiperrealista y luminoso para un look muy natural.</span><button class="svc-book-btn" onclick="bookFromService('mby');event.stopPropagation()">Sacar turno →</button></div>
       </div>
       <div class="svc-item" data-cat="mechas" data-svc-id="mf">
-        <div class="svc-main"><div class="svc-left"><div class="svc-name">Mechas fantasía</div><div class="svc-time">Colores vibrantes</div></div><div class="svc-price">$35.000</div></div>
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Mechas fantasía</div><div class="svc-time">Colores vibrantes</div></div><div class="svc-price">$66.500</div></div>
         <div class="svc-meta"><span class="svc-duration-badge">3h 30min</span><span class="svc-toggle">+</span></div>
         <div class="svc-desc"><span class="svc-desc-text">Mechas en colores no naturales para un look creativo y único. Consultanos los tonos disponibles según tu cabello.</span><button class="svc-book-btn" onclick="bookFromService('mf');event.stopPropagation()">Sacar turno →</button></div>
       </div>
       <div class="svc-item svc-item--pack" data-cat="mechas" data-svc-id="pk-m-cf">
-        <div class="svc-main"><div class="svc-left"><span class="svc-pack-badge">Pack</span><div class="svc-name">Mechas + corte femenino</div><div class="svc-time">Mechas + corte</div></div><div class="svc-price">$52.000</div></div>
+        <div class="svc-main"><div class="svc-left"><span class="svc-pack-badge">Pack</span><div class="svc-name">Mechas + corte femenino</div><div class="svc-time">Mechas + corte</div></div><div class="svc-price">$98.800</div></div>
         <div class="svc-meta"><span class="svc-duration-badge">4 hs</span><span class="svc-toggle">+</span></div>
         <div class="svc-desc"><span class="svc-desc-text">Mechas a elección más corte femenino personalizado. El combo ideal para una transformación completa en una sola sesión.</span><button class="svc-book-btn" onclick="bookFromService('pk-m-cf');event.stopPropagation()">Sacar turno →</button></div>
       </div>
@@ -1313,22 +1312,22 @@ html.dark .socials a{color:var(--gray-light);}
     <div class="cat-section-hd"><div class="cat-section-title">Color</div></div>
     <div class="services-list">
       <div class="svc-item" data-cat="color" data-svc-id="rr">
-        <div class="svc-main"><div class="svc-left"><div class="svc-name">Retoque de raíz</div><div class="svc-time">Mantenimiento color</div></div><div class="svc-price">$15.000</div></div>
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Retoque de raíz</div><div class="svc-time">Mantenimiento color</div></div><div class="svc-price">$28.500</div></div>
         <div class="svc-meta"><span class="svc-duration-badge">1h 30min</span><span class="svc-toggle">+</span></div>
         <div class="svc-desc"><span class="svc-desc-text">Aplicación de color solo en la zona de crecimiento para mantener tu tono actual sin raíces visibles. Ideal cada 4 a 6 semanas.</span><button class="svc-book-btn" onclick="bookFromService('rr');event.stopPropagation()">Sacar turno →</button></div>
       </div>
       <div class="svc-item" data-cat="color" data-svc-id="cg">
-        <div class="svc-main"><div class="svc-left"><div class="svc-name">Coloración global</div><div class="svc-time">Tinte completo</div></div><div class="svc-price">$22.000</div></div>
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Coloración global</div><div class="svc-time">Tinte completo</div></div><div class="svc-price">$41.800</div></div>
         <div class="svc-meta"><span class="svc-duration-badge">1h 30min</span><span class="svc-toggle">+</span></div>
         <div class="svc-desc"><span class="svc-desc-text">Aplicación de tinte de raíz a puntas para un cambio de color uniforme y duradero. Incluye tratamiento post-color.</span><button class="svc-book-btn" onclick="bookFromService('cg');event.stopPropagation()">Sacar turno →</button></div>
       </div>
       <div class="svc-item" data-cat="color" data-svc-id="bll">
-        <div class="svc-main"><div class="svc-left"><div class="svc-name">Baño de luz</div><div class="svc-time">Tonalización suave</div></div><div class="svc-price">$17.000</div></div>
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Baño de luz</div><div class="svc-time">Tonalización suave</div></div><div class="svc-price">$32.300</div></div>
         <div class="svc-meta"><span class="svc-duration-badge">1h 30min</span><span class="svc-toggle">+</span></div>
         <div class="svc-desc"><span class="svc-desc-text">Tonalización que aporta color, brillo y vida al cabello. Resultado luminoso con duración de 4 a 6 semanas.</span><button class="svc-book-btn" onclick="bookFromService('bll');event.stopPropagation()">Sacar turno →</button></div>
       </div>
       <div class="svc-item svc-item--pack" data-cat="color" data-svc-id="pk-col">
-        <div class="svc-main"><div class="svc-left"><span class="svc-pack-badge">Pack</span><div class="svc-name">Color + corte + ritual cuidado capilar</div><div class="svc-time">Color + corte + tratamiento</div></div><div class="svc-price">$38.000</div></div>
+        <div class="svc-main"><div class="svc-left"><span class="svc-pack-badge">Pack</span><div class="svc-name">Color + corte + ritual cuidado capilar</div><div class="svc-time">Color + corte + tratamiento</div></div><div class="svc-price">$72.200</div></div>
         <div class="svc-meta"><span class="svc-duration-badge">2 hs</span><span class="svc-toggle">+</span></div>
         <div class="svc-desc"><span class="svc-desc-text">Todo en una sesión: coloración a elección, corte personalizado y ritual de cuidado capilar. Transformación completa y cuidada.</span><button class="svc-book-btn" onclick="bookFromService('pk-col');event.stopPropagation()">Sacar turno →</button></div>
       </div>
@@ -1339,22 +1338,22 @@ html.dark .socials a{color:var(--gray-light);}
     <div class="cat-section-hd"><div class="cat-section-title">Peinados</div></div>
     <div class="services-list">
       <div class="svc-item" data-cat="peinados" data-svc-id="br">
-        <div class="svc-main"><div class="svc-left"><div class="svc-name">Brushing</div><div class="svc-time">Lavado y modelado</div></div><div class="svc-price">$9.000</div></div>
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Brushing</div><div class="svc-time">Lavado y modelado</div></div><div class="svc-price">$17.100</div></div>
         <div class="svc-meta"><span class="svc-duration-badge">1 hs</span><span class="svc-toggle">+</span></div>
         <div class="svc-desc"><span class="svc-desc-text">Lavado con productos premium y secado con brushing para un cabello liso, brillante y con volumen.</span><button class="svc-book-btn" onclick="bookFromService('br');event.stopPropagation()">Sacar turno →</button></div>
       </div>
       <div class="svc-item" data-cat="peinados" data-svc-id="oa">
-        <div class="svc-main"><div class="svc-left"><div class="svc-name">Ondas al agua</div><div class="svc-time">Modelado de ondas</div></div><div class="svc-price">$11.000</div></div>
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Ondas al agua</div><div class="svc-time">Modelado de ondas</div></div><div class="svc-price">$20.900</div></div>
         <div class="svc-meta"><span class="svc-duration-badge">1 hs</span><span class="svc-toggle">+</span></div>
         <div class="svc-desc"><span class="svc-desc-text">Peinado con ondas suaves y definidas. Ideal para eventos y looks sofisticados con un acabado elegante.</span><button class="svc-book-btn" onclick="bookFromService('oa');event.stopPropagation()">Sacar turno →</button></div>
       </div>
       <div class="svc-item" data-cat="peinados" data-svc-id="sr">
-        <div class="svc-main"><div class="svc-left"><div class="svc-name">Semirecogido</div><div class="svc-time">Peinado combinado</div></div><div class="svc-price">$14.000</div></div>
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Semirecogido</div><div class="svc-time">Peinado combinado</div></div><div class="svc-price">$26.600</div></div>
         <div class="svc-meta"><span class="svc-duration-badge">1 hs</span><span class="svc-toggle">+</span></div>
         <div class="svc-desc"><span class="svc-desc-text">Peinado que combina cabello suelto y recogido para un look elegante y versátil. Adaptado a tu tipo de evento.</span><button class="svc-book-btn" onclick="bookFromService('sr');event.stopPropagation()">Sacar turno →</button></div>
       </div>
       <div class="svc-item" data-cat="peinados" data-svc-id="rc">
-        <div class="svc-main"><div class="svc-left"><div class="svc-name">Recogido completo</div><div class="svc-time">Peinado de evento</div></div><div class="svc-price">$18.000</div></div>
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Recogido completo</div><div class="svc-time">Peinado de evento</div></div><div class="svc-price">$34.200</div></div>
         <div class="svc-meta"><span class="svc-duration-badge">1 hs</span><span class="svc-toggle">+</span></div>
         <div class="svc-desc"><span class="svc-desc-text">Recogido elaborado para ocasiones especiales. Con terminación prolija y duradera para toda la noche.</span><button class="svc-book-btn" onclick="bookFromService('rc');event.stopPropagation()">Sacar turno →</button></div>
       </div>
@@ -1370,27 +1369,27 @@ html.dark .socials a{color:var(--gray-light);}
     <div class="cat-section-hd"><div class="cat-section-title">Tratamientos</div></div>
     <div class="services-list">
       <div class="svc-item" data-cat="trat" data-svc-id="at">
-        <div class="svc-main"><div class="svc-left"><div class="svc-name">Alisado tradicional</div><div class="svc-time">Con formol</div></div><div class="svc-price">$32.000</div></div>
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Alisado tradicional</div><div class="svc-time">Con formol</div></div><div class="svc-price">$60.800</div></div>
         <div class="svc-meta"><span class="svc-duration-badge">2 hs</span><span class="svc-toggle">+</span></div>
         <div class="svc-desc"><span class="svc-desc-text">Alisado con formol para resultados lisos y duraderos. Elimina el frizz y reduce el volumen por 3 a 6 meses.</span><button class="svc-book-btn" onclick="bookFromService('at');event.stopPropagation()">Sacar turno →</button></div>
       </div>
       <div class="svc-item" data-cat="trat" data-svc-id="asf">
-        <div class="svc-main"><div class="svc-left"><div class="svc-name">Alisado sin formol</div><div class="svc-time">Fórmula suave</div></div><div class="svc-price">$48.000</div></div>
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Alisado sin formol</div><div class="svc-time">Fórmula suave</div></div><div class="svc-price">$91.200</div></div>
         <div class="svc-meta"><span class="svc-duration-badge">4 hs</span><span class="svc-toggle">+</span></div>
         <div class="svc-desc"><span class="svc-desc-text">Alisado libre de formol, más seguro y sin olor fuerte. Ideal para cabellos sensibles o teñidos. Resultado liso y nutritivo.</span><button class="svc-book-btn" onclick="bookFromService('asf');event.stopPropagation()">Sacar turno →</button></div>
       </div>
       <div class="svc-item" data-cat="trat" data-svc-id="sk">
-        <div class="svc-main"><div class="svc-left"><div class="svc-name">Shock de keratina</div><div class="svc-time">Sellado capilar</div></div><div class="svc-price">$28.000</div></div>
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Shock de keratina</div><div class="svc-time">Sellado capilar</div></div><div class="svc-price">$53.200</div></div>
         <div class="svc-meta"><span class="svc-duration-badge">2 hs</span><span class="svc-toggle">+</span></div>
         <div class="svc-desc"><span class="svc-desc-text">Tratamiento intensivo de keratina que sella la cutícula, elimina el frizz y aporta brillo inmediato.</span><button class="svc-book-btn" onclick="bookFromService('sk');event.stopPropagation()">Sacar turno →</button></div>
       </div>
       <div class="svc-item" data-cat="trat" data-svc-id="bo">
-        <div class="svc-main"><div class="svc-left"><div class="svc-name">Botox capilar</div><div class="svc-time">Relleno &amp; brillo</div></div><div class="svc-price">$25.000</div></div>
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Botox capilar</div><div class="svc-time">Relleno &amp; brillo</div></div><div class="svc-price">$47.500</div></div>
         <div class="svc-meta"><span class="svc-duration-badge">2 hs</span><span class="svc-toggle">+</span></div>
         <div class="svc-desc"><span class="svc-desc-text">Relleno de la fibra capilar con queratina y colágeno. Cabello liso, brillante y sin frizz con efecto inmediato.</span><button class="svc-book-btn" onclick="bookFromService('bo');event.stopPropagation()">Sacar turno →</button></div>
       </div>
       <div class="svc-item svc-item--pack" data-cat="trat" data-svc-id="pk-sk">
-        <div class="svc-main"><div class="svc-left"><span class="svc-pack-badge">Pack</span><div class="svc-name">Shock de keratina + corte</div><div class="svc-time">Keratina + corte</div></div><div class="svc-price">$34.000</div></div>
+        <div class="svc-main"><div class="svc-left"><span class="svc-pack-badge">Pack</span><div class="svc-name">Shock de keratina + corte</div><div class="svc-time">Keratina + corte</div></div><div class="svc-price">$64.600</div></div>
         <div class="svc-meta"><span class="svc-duration-badge">2h 30min</span><span class="svc-toggle">+</span></div>
         <div class="svc-desc"><span class="svc-desc-text">Shock de keratina intensivo más corte de puntas para un cabello sellado, brillante y sin daño.</span><button class="svc-book-btn" onclick="bookFromService('pk-sk');event.stopPropagation()">Sacar turno →</button></div>
       </div>
@@ -1401,22 +1400,22 @@ html.dark .socials a{color:var(--gray-light);}
     <div class="cat-section-hd"><div class="cat-section-title">Rituales cuidado capilar</div></div>
     <div class="services-list">
       <div class="svc-item" data-cat="ritual" data-svc-id="rit1">
-        <div class="svc-main"><div class="svc-left"><div class="svc-name">Tratamiento de reparación</div><div class="svc-time">Reconstrucción capilar</div></div><div class="svc-price">$12.000</div></div>
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Tratamiento de reparación</div><div class="svc-time">Reconstrucción capilar</div></div><div class="svc-price">$22.800</div></div>
         <div class="svc-meta"><span class="svc-duration-badge">1 hs</span><span class="svc-toggle">+</span></div>
         <div class="svc-desc"><span class="svc-desc-text">Tratamiento profundo para cabellos dañados por químicos o calor. Devuelve resistencia y elasticidad a la fibra capilar.</span><button class="svc-book-btn" onclick="bookFromService('rit1');event.stopPropagation()">Sacar turno →</button></div>
       </div>
       <div class="svc-item" data-cat="ritual" data-svc-id="rit2">
-        <div class="svc-main"><div class="svc-left"><div class="svc-name">Tratamiento de nutrición</div><div class="svc-time">Hidratación profunda</div></div><div class="svc-price">$13.000</div></div>
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Tratamiento de nutrición</div><div class="svc-time">Hidratación profunda</div></div><div class="svc-price">$24.700</div></div>
         <div class="svc-meta"><span class="svc-duration-badge">1 hs</span><span class="svc-toggle">+</span></div>
         <div class="svc-desc"><span class="svc-desc-text">Ritual de hidratación con aceites y proteínas para cabellos secos y opacos. Cabello suave, manejable y con brillo natural.</span><button class="svc-book-btn" onclick="bookFromService('rit2');event.stopPropagation()">Sacar turno →</button></div>
       </div>
       <div class="svc-item" data-cat="ritual" data-svc-id="rit3">
-        <div class="svc-main"><div class="svc-left"><div class="svc-name">Tratamiento de brillo</div><div class="svc-time">Luminosidad capilar</div></div><div class="svc-price">$11.000</div></div>
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Tratamiento de brillo</div><div class="svc-time">Luminosidad capilar</div></div><div class="svc-price">$20.900</div></div>
         <div class="svc-meta"><span class="svc-duration-badge">1 hs</span><span class="svc-toggle">+</span></div>
         <div class="svc-desc"><span class="svc-desc-text">Tratamiento que sella la cutícula y refleja la luz para un acabado espejado y luminoso. Ideal antes de eventos.</span><button class="svc-book-btn" onclick="bookFromService('rit3');event.stopPropagation()">Sacar turno →</button></div>
       </div>
       <div class="svc-item svc-item--pack" data-cat="ritual" data-svc-id="pk-rit">
-        <div class="svc-main"><div class="svc-left"><span class="svc-pack-badge">Pack</span><div class="svc-name">Ritual cuidado capilar + peinado ondas al agua</div><div class="svc-time">Ritual + peinado</div></div><div class="svc-price">$18.000</div></div>
+        <div class="svc-main"><div class="svc-left"><span class="svc-pack-badge">Pack</span><div class="svc-name">Ritual cuidado capilar + peinado ondas al agua</div><div class="svc-time">Ritual + peinado</div></div><div class="svc-price">$34.200</div></div>
         <div class="svc-meta"><span class="svc-duration-badge">2 hs</span><span class="svc-toggle">+</span></div>
         <div class="svc-desc"><span class="svc-desc-text">Ritual de cuidado capilar a elección más peinado de ondas al agua. Cabello nutrido y peinado para una salida especial.</span><button class="svc-book-btn" onclick="bookFromService('pk-rit');event.stopPropagation()">Sacar turno →</button></div>
       </div>
@@ -1427,32 +1426,32 @@ html.dark .socials a{color:var(--gray-light);}
     <div class="cat-section-hd"><div class="cat-section-title">Packs más elegidos</div></div>
     <div class="services-list">
       <div class="svc-item" data-cat="pack" data-svc-id="pk-cf-rc">
-        <div class="svc-main"><div class="svc-left"><div class="svc-name">Corte femenino + ritual cuidado capilar</div><div class="svc-time">Corte + tratamiento</div></div><div class="svc-price">$18.000</div></div>
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Corte femenino + ritual cuidado capilar</div><div class="svc-time">Corte + tratamiento</div></div><div class="svc-price">$34.200</div></div>
         <div class="svc-meta"><span class="svc-duration-badge">90 min</span><span class="svc-toggle">+</span></div>
         <div class="svc-desc"><span class="svc-desc-text">Corte personalizado más ritual de cuidado capilar profundo. Cabello cortado y nutrido en una sola visita.</span><button class="svc-book-btn" onclick="bookFromService('pk-cf-rc');event.stopPropagation()">Sacar turno →</button></div>
       </div>
       <div class="svc-item" data-cat="pack" data-svc-id="pk-cm-b">
-        <div class="svc-main"><div class="svc-left"><div class="svc-name">Corte masculino + barba</div><div class="svc-time">Corte + perfilado de barba</div></div><div class="svc-price">$13.000</div></div>
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Corte masculino + barba</div><div class="svc-time">Corte + perfilado de barba</div></div><div class="svc-price">$24.700</div></div>
         <div class="svc-meta"><span class="svc-duration-badge">60 min</span><span class="svc-toggle">+</span></div>
         <div class="svc-desc"><span class="svc-desc-text">Corte masculino más perfilado y definición de barba. Look completo y prolijo en una sesión.</span><button class="svc-book-btn" onclick="bookFromService('pk-cm-b');event.stopPropagation()">Sacar turno →</button></div>
       </div>
       <div class="svc-item" data-cat="pack" data-svc-id="pk-m-cf">
-        <div class="svc-main"><div class="svc-left"><div class="svc-name">Mechas + corte femenino</div><div class="svc-time">Mechas + corte</div></div><div class="svc-price">$52.000</div></div>
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Mechas + corte femenino</div><div class="svc-time">Mechas + corte</div></div><div class="svc-price">$98.800</div></div>
         <div class="svc-meta"><span class="svc-duration-badge">4 hs</span><span class="svc-toggle">+</span></div>
         <div class="svc-desc"><span class="svc-desc-text">Mechas a elección más corte femenino personalizado. El combo ideal para una transformación completa.</span><button class="svc-book-btn" onclick="bookFromService('pk-m-cf');event.stopPropagation()">Sacar turno →</button></div>
       </div>
       <div class="svc-item" data-cat="pack" data-svc-id="pk-col">
-        <div class="svc-main"><div class="svc-left"><div class="svc-name">Color + corte + ritual cuidado capilar</div><div class="svc-time">Color + corte + tratamiento</div></div><div class="svc-price">$38.000</div></div>
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Color + corte + ritual cuidado capilar</div><div class="svc-time">Color + corte + tratamiento</div></div><div class="svc-price">$72.200</div></div>
         <div class="svc-meta"><span class="svc-duration-badge">2 hs</span><span class="svc-toggle">+</span></div>
         <div class="svc-desc"><span class="svc-desc-text">Todo en una sesión: coloración a elección, corte personalizado y ritual de cuidado capilar.</span><button class="svc-book-btn" onclick="bookFromService('pk-col');event.stopPropagation()">Sacar turno →</button></div>
       </div>
       <div class="svc-item" data-cat="pack" data-svc-id="pk-sk">
-        <div class="svc-main"><div class="svc-left"><div class="svc-name">Shock de keratina + corte</div><div class="svc-time">Keratina + corte</div></div><div class="svc-price">$34.000</div></div>
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Shock de keratina + corte</div><div class="svc-time">Keratina + corte</div></div><div class="svc-price">$64.600</div></div>
         <div class="svc-meta"><span class="svc-duration-badge">2h 30min</span><span class="svc-toggle">+</span></div>
         <div class="svc-desc"><span class="svc-desc-text">Shock de keratina intensivo más corte de puntas para un cabello sellado, brillante y sin daño.</span><button class="svc-book-btn" onclick="bookFromService('pk-sk');event.stopPropagation()">Sacar turno →</button></div>
       </div>
       <div class="svc-item" data-cat="pack" data-svc-id="pk-rit">
-        <div class="svc-main"><div class="svc-left"><div class="svc-name">Ritual cuidado capilar + peinado ondas al agua</div><div class="svc-time">Ritual + peinado</div></div><div class="svc-price">$18.000</div></div>
+        <div class="svc-main"><div class="svc-left"><div class="svc-name">Ritual cuidado capilar + peinado ondas al agua</div><div class="svc-time">Ritual + peinado</div></div><div class="svc-price">$34.200</div></div>
         <div class="svc-meta"><span class="svc-duration-badge">2 hs</span><span class="svc-toggle">+</span></div>
         <div class="svc-desc"><span class="svc-desc-text">Ritual de cuidado capilar a elección más peinado de ondas al agua. Cabello nutrido y peinado para una salida especial.</span><button class="svc-book-btn" onclick="bookFromService('pk-rit');event.stopPropagation()">Sacar turno →</button></div>
       </div>
