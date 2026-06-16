@@ -14,6 +14,8 @@
 })();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 <style>
 :root {
   --violet-deep:   #6B3FA0;
@@ -2182,6 +2184,46 @@ async function confirmarTurno(){
   document.getElementById('confirmNotif').innerHTML = notifMsg || '✅ Turno confirmado.';
   goStep(4);
 }
+
+/* ── FIREBASE PRECIOS ── */
+(function(){
+  const fbCfg={
+    apiKey:"AIzaSyD4yzIDLTOjdmnDAb3yKepgHPIla45iMl0",
+    authDomain:"nina-peluqueria.firebaseapp.com",
+    databaseURL:"https://nina-peluqueria-default-rtdb.firebaseio.com",
+    projectId:"nina-peluqueria",
+    storageBucket:"nina-peluqueria.firebasestorage.app",
+    messagingSenderId:"109381661793",
+    appId:"1:109381661793:web:f78d9c7fa0eadcd15aa620"
+  };
+  if(!firebase.apps.length) firebase.initializeApp(fbCfg);
+
+  function fmt(n){ return '$'+Number(n).toLocaleString('es-AR'); }
+
+  function aplicarPrecios(p){
+    document.querySelectorAll('.svc-item[data-svc-id]').forEach(item=>{
+      const id=item.dataset.svcId;
+      if(p[id]===undefined) return;
+      const el=item.querySelector('.svc-main .svc-price');
+      if(!el||el.textContent==='Consultar'||el.textContent.startsWith('desde')) return;
+      el.textContent=fmt(p[id]);
+    });
+    // Mechas tradicionales: mt1=media cabeza, mt2=cabeza completa
+    const mt1=document.querySelector('[data-svc-id="mt1"]');
+    if(mt1){
+      const p1=p.mt1||0, p2=p.mt2||0;
+      const priceEl=mt1.querySelector('.svc-main .svc-price');
+      if(priceEl) priceEl.textContent='desde '+fmt(Math.min(p1,p2)||Math.max(p1,p2));
+      const opts=mt1.querySelectorAll('.svc-option-price');
+      if(opts[0]&&p.mt1) opts[0].textContent=fmt(p.mt1);
+      if(opts[1]&&p.mt2) opts[1].textContent=fmt(p.mt2);
+    }
+  }
+
+  firebase.database().ref('precios').on('value', snap=>{
+    if(snap.val()) aplicarPrecios(snap.val());
+  });
+})();
 
 function resetTurnero(){
   selectedSvc=null;selectedDate=null;selectedTime=null;

@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>NINA · Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Montserrat',sans-serif;background:#F0ECF8;color:#1A1018;min-height:100vh;}
@@ -498,8 +500,21 @@ body{font-family:'Montserrat',sans-serif;background:#F0ECF8;color:#1A1018;min-he
 <div class="toast" id="toast"></div>
 
 <script>
+/* ── FIREBASE INIT ── */
+const FB_CFG = {
+  apiKey:"AIzaSyD4yzIDLTOjdmnDAb3yKepgHPIla45iMl0",
+  authDomain:"nina-peluqueria.firebaseapp.com",
+  databaseURL:"https://nina-peluqueria-default-rtdb.firebaseio.com",
+  projectId:"nina-peluqueria",
+  storageBucket:"nina-peluqueria.firebasestorage.app",
+  messagingSenderId:"109381661793",
+  appId:"1:109381661793:web:f78d9c7fa0eadcd15aa620"
+};
+if(!firebase.apps.length) firebase.initializeApp(FB_CFG);
+const db = firebase.database();
+
 /* ══════════════════════════════════
-   CONFIG — datos mock (reemplazar con Firebase)
+   CONFIG — estructura local (sincronizada con Firebase al guardar)
 ══════════════════════════════════ */
 const CONFIG = {
   categories:[
@@ -867,15 +882,40 @@ function saveSection(sec){
     CONFIG.contact.instagram=document.getElementById('tf-instagram').value;
   }
 
-  /* Simula guardado (reemplazar con Firebase) */
-  setTimeout(()=>{
-    dirty[sec]=false;
-    btn.classList.remove('saving');
-    btn.classList.add('done');
-    btn.innerHTML='<span class="save-dot"></span>Guardado ✓';
-    showToast('✓ Cambios guardados');
-    setTimeout(()=>{btn.classList.remove('done');btn.innerHTML='<span class="save-dot"></span>Guardar';},2500);
-  },800);
+  /* Guardar en Firebase */
+  let fbRef = null;
+  if(sec==='precios'){
+    const precios={};
+    CONFIG.categories.forEach(cat=>{
+      cat.services.forEach(svc=>{
+        if(svc.price!==undefined) precios[svc.id]=svc.price;
+        if(svc.options) svc.options.forEach(o=>{ if(o.price!==undefined) precios[o.id]=o.price; });
+      });
+    });
+    fbRef = db.ref('precios').set(precios);
+  } else if(sec==='horarios'){
+    fbRef = db.ref('horarios').set(CONFIG.schedule);
+  } else if(sec==='textos'){
+    fbRef = db.ref('textos').set(CONFIG.contact);
+  } else {
+    fbRef = Promise.resolve();
+  }
+
+  fbRef
+    .then(()=>{
+      dirty[sec]=false;
+      btn.classList.remove('saving');
+      btn.classList.add('done');
+      btn.innerHTML='<span class="save-dot"></span>Guardado ✓';
+      showToast('✓ Cambios guardados');
+      setTimeout(()=>{btn.classList.remove('done');btn.innerHTML='<span class="save-dot"></span>Guardar';},2500);
+    })
+    .catch(err=>{
+      console.error('Firebase error:',err);
+      btn.classList.remove('saving');
+      btn.innerHTML='<span class="save-dot"></span>Guardar';
+      showToast('⚠️ Error al guardar. Revisá la conexión.');
+    });
 }
 
 /* ══════════════════ NAV ══════════════════ */
