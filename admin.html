@@ -614,7 +614,31 @@ function doLogout(){
 }
 
 /* ══ INIT ══ */
-function initAll(){
+async function initAll(){
+  /* Cargar datos actuales desde Firebase antes de renderizar */
+  try {
+    const snap = await db.ref('/').once('value');
+    const data = snap.val() || {};
+
+    if(data.precios){
+      CONFIG.categories.forEach(cat=>{
+        cat.services.forEach(svc=>{
+          if(data.precios[svc.id]!==undefined) svc.price=data.precios[svc.id];
+          if(svc.options) svc.options.forEach(o=>{
+            if(data.precios[o.id]!==undefined) o.price=data.precios[o.id];
+          });
+        });
+      });
+    }
+    if(data.horarios){
+      if(data.horarios.days)    CONFIG.schedule.days    = data.horarios.days;
+      if(data.horarios.blocked) CONFIG.schedule.blocked = data.horarios.blocked;
+    }
+    if(data.textos) Object.assign(CONFIG.contact, data.textos);
+  } catch(err){
+    console.warn('Firebase load error:', err);
+  }
+
   renderServices();
   renderDays();
   renderBlockedDates();
