@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NINA · Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Montserrat',sans-serif;background:#F0ECF8;color:#1A1018;min-height:100vh;}
+
+:root{
+  --violet:#8850BE;
+  --violet-deep:#6B3FA0;
+  --violet-pale:#F5EEFF;
+  --violet-light:#EBC8FF;
+  --orange:#FA3C01;
+  --dark:#1A1018;
+  --gray:#4A3F52;
+  --gray-light:#C8BDD0;
+  --success:#22C55E;
+  --danger:#EF4444;
+  --warn:#F59E0B;
+}
+
+/* ═══════════ LOGIN ═══════════ */
+#login-screen{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#1A1030 0%,#3A1A6A 100%);padding:1.5rem;
+}
+.login-card{
+  background:#fff;border-radius:14px;padding:2.8rem 2.2rem;
+  width:100%;max-width:360px;box-shadow:0 24px 64px rgba(0,0,0,.35);text-align:center;
+}
+.login-logo{height:52px;margin-bottom:1.8rem;display:block;margin-left:auto;margin-right:auto;}
+.login-title{font-size:.95rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--dark);margin-bottom:.3rem;}
+.login-sub{font-size:.68rem;color:var(--gray-light);font-weight:500;margin-bottom:2rem;}
+.login-input{
+  width:100%;padding:.9rem 1rem;border:1.5px solid rgba(136,80,190,.2);border-radius:8px;
+  font-family:'Montserrat',sans-serif;font-size:.88rem;font-weight:500;
+  color:var(--dark);outline:none;margin-bottom:.75rem;transition:border-color .2s,box-shadow .2s;
+}
+.login-input:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(136,80,190,.1);}
+.login-btn{
+  width:100%;padding:.95rem;background:var(--violet);color:#fff;border:none;border-radius:8px;
+  font-family:'Montserrat',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  cursor:pointer;transition:background .2s,transform .15s;
+}
+.login-btn:hover{background:var(--violet-deep);transform:translateY(-1px);}
+.login-error{margin-top:.85rem;font-size:.7rem;font-weight:600;color:var(--danger);}
+.login-hint{margin-top:1.5rem;font-size:.62rem;color:var(--gray-light);}
+
+/* ═══════════ SHELL ═══════════ */
+#admin-panel{display:flex;flex-direction:column;min-height:100vh;}
+
+.admin-header{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  background:#fff;border-bottom:1px solid rgba(136,80,190,.12);
+  padding:0 1.2rem;height:56px;
+  display:flex;align-items:center;justify-content:space-between;
+  box-shadow:0 2px 10px rgba(136,80,190,.08);
+}
+.admin-header-left{display:flex;align-items:center;gap:.7rem;}
+.admin-logo{height:30px;}
+.admin-badge{font-size:.5rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;background:var(--violet-pale);color:var(--violet);padding:.2rem .55rem;border-radius:20px;}
+.admin-user-info{
+  display:flex;align-items:center;gap:.45rem;
+  background:var(--violet-pale);border-radius:20px;
+  padding:.3rem .7rem .3rem .3rem;
+}
+.admin-user-avatar{
+  width:26px;height:26px;border-radius:50%;
+  background:var(--violet);color:#fff;
+  font-size:.65rem;font-weight:800;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.admin-user-name{font-size:.68rem;font-weight:700;color:var(--dark);}
+.admin-user-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--success);flex-shrink:0;
+}
+.admin-user-status{font-size:.58rem;font-weight:600;color:var(--success);}
+.admin-logout-btn{
+  background:none;border:1.5px solid rgba(136,80,190,.2);color:var(--gray-light);
+  padding:.35rem .9rem;border-radius:6px;font-family:'Montserrat',sans-serif;
+  font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .2s;
+}
+.admin-logout-btn:hover{border-color:var(--orange);color:var(--orange);}
+
+.admin-content{margin-top:56px;margin-bottom:56px;padding:1.4rem 1rem 2rem;max-width:680px;width:100%;}
+@media(min-width:700px){.admin-content{margin-left:auto;margin-right:auto;padding:2rem 1.5rem 3rem;}}
+
+/* ═══════════ SECTION COMMONS ═══════════ */
+.admin-sec{display:none;}
+.admin-sec.active{display:block;}
+
+.sec-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.2rem;gap:.75rem;flex-wrap:wrap;}
+.sec-eyebrow{font-size:.55rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--orange);margin-bottom:.2rem;}
+.sec-title{font-size:1.15rem;font-weight:900;text-transform:uppercase;color:var(--dark);}
+
+.info-banner{
+  background:linear-gradient(90deg,var(--violet-pale),#fff);border-left:3px solid var(--violet);
+  border-radius:0 6px 6px 0;padding:.7rem 1rem;
+  font-size:.7rem;font-weight:500;color:var(--gray);margin-bottom:1.2rem;line-height:1.55;
+}
+.info-banner strong{color:var(--violet);font-weight:700;}
+
+/* ── Btn guardar ── */
+.btn-save{
+  display:flex;align-items:center;gap:.5rem;
+  background:var(--gray-light);color:#fff;border:none;padding:.65rem 1.3rem;border-radius:8px;
+  font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  cursor:pointer;transition:background .25s,transform .15s;white-space:nowrap;flex-shrink:0;
+}
+.btn-save.dirty{background:var(--violet);}
+.btn-save.dirty:hover{background:var(--violet-deep);transform:translateY(-1px);}
+.btn-save.saving{background:var(--violet);opacity:.7;cursor:default;}
+.btn-save.done{background:var(--success);}
+.save-dot{width:6px;height:6px;border-radius:50%;background:var(--warn);display:none;}
+.btn-save.dirty .save-dot{display:block;animation:blink .8s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* ═══════════ PRECIOS ═══════════ */
+.cat-group{background:#fff;border-radius:10px;margin-bottom:.75rem;overflow:hidden;box-shadow:0 2px 10px rgba(136,80,190,.07);border:1px solid rgba(136,80,190,.1);}
+.cat-group-hd{display:flex;align-items:center;justify-content:space-between;padding:.85rem 1.1rem;background:var(--violet-pale);cursor:pointer;user-select:none;transition:background .15s;}
+.cat-group-hd:hover{background:#ede0ff;}
+.cat-group-name{display:flex;align-items:center;gap:.6rem;font-size:.68rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--violet);}
+.cat-count{font-size:.52rem;font-weight:700;background:rgba(136,80,190,.15);color:var(--violet);padding:.15rem .5rem;border-radius:20px;letter-spacing:.06em;}
+.cat-pack-lbl{font-size:.5rem;font-weight:700;background:var(--orange);color:#fff;padding:.1rem .4rem;border-radius:3px;letter-spacing:.1em;text-transform:uppercase;}
+.cat-arrow{font-size:.75rem;color:var(--gray-light);transition:transform .22s;}
+.cat-group.open .cat-arrow{transform:rotate(180deg);}
+.cat-group-body{display:none;}
+.cat-group.open .cat-group-body{display:block;}
+
+.svc-row{display:flex;align-items:center;gap:.6rem;padding:.8rem 1.1rem;border-bottom:1px solid rgba(136,80,190,.06);transition:background .12s;min-width:0;}
+.svc-row:last-child{border-bottom:none;}
+.svc-row:hover{background:rgba(136,80,190,.02);}
+.svc-row.inactive .svc-row-name,.svc-row.inactive .svc-row-dur,.svc-row.inactive .price-prefix{opacity:.35;}
+.svc-row.inactive .svc-price-input{opacity:.35;}
+.svc-info{flex:1;min-width:0;}
+.svc-row-name{font-size:.8rem;font-weight:700;color:var(--dark);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.svc-row-dur{font-size:.58rem;font-weight:600;color:var(--orange);margin-top:.12rem;letter-spacing:.06em;}
+.svc-price-wrap{display:flex;align-items:center;gap:.25rem;flex-shrink:0;}
+.price-prefix{font-size:.72rem;font-weight:700;color:var(--gray-light);}
+.svc-price-input{
+  width:84px;border:1.5px solid rgba(136,80,190,.18);border-radius:6px;
+  padding:.38rem .5rem;font-family:'Montserrat',sans-serif;
+  font-size:.8rem;font-weight:700;color:var(--violet);text-align:right;outline:none;
+  transition:border-color .2s,box-shadow .2s;background:#fff;-moz-appearance:textfield;
+}
+.svc-price-input::-webkit-outer-spin-button,.svc-price-input::-webkit-inner-spin-button{-webkit-appearance:none;}
+.svc-price-input:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(136,80,190,.1);}
+.svc-price-input.is-consultar{color:var(--gray-light);font-weight:600;font-size:.7rem;width:76px;text-align:center;cursor:default;}
+.svc-options-admin{background:rgba(136,80,190,.025);border-bottom:1px solid rgba(136,80,190,.06);padding:.6rem 1.1rem .6rem 2.2rem;display:flex;flex-direction:column;gap:.5rem;}
+.svc-options-admin:last-child{border-bottom:none;}
+.svc-option-row{display:flex;align-items:center;justify-content:space-between;gap:.75rem;}
+.svc-option-lbl{font-size:.7rem;font-weight:600;color:var(--gray);display:flex;align-items:center;gap:.4rem;}
+.svc-option-lbl::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--violet-light);display:inline-block;flex-shrink:0;}
+
+/* Toggle */
+.toggle-wrap{display:flex;align-items:center;flex-shrink:0;}
+.toggle{position:relative;width:38px;height:22px;cursor:pointer;display:block;}
+.toggle input{position:absolute;opacity:0;width:0;height:0;}
+.toggle-track{position:absolute;inset:0;background:var(--gray-light);border-radius:11px;transition:background .25s;}
+.toggle-thumb{position:absolute;width:16px;height:16px;border-radius:50%;background:#fff;top:3px;left:3px;transition:left .25s;box-shadow:0 1px 3px rgba(0,0,0,.2);}
+.toggle input:checked ~ .toggle-track{background:var(--violet);}
+.toggle input:checked ~ .toggle-thumb{left:19px;}
+
+/* ═══════════ HORARIOS ═══════════ */
+.day-list{display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.5rem;}
+.day-row{
+  background:#fff;border-radius:10px;overflow:hidden;
+  box-shadow:0 2px 8px rgba(136,80,190,.07);border:1px solid rgba(136,80,190,.1);
+}
+.day-row-hd{display:flex;align-items:center;gap:.85rem;padding:.85rem 1.1rem;}
+.day-label{font-size:.82rem;font-weight:700;color:var(--dark);flex:1;}
+.day-row.closed .day-label{color:var(--gray-light);}
+.day-times{
+  display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;
+  padding:.5rem 1.1rem .85rem 1.1rem;
+  border-top:1px solid rgba(136,80,190,.07);
+}
+.day-row.closed .day-times{display:none;}
+.time-lbl{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-light);min-width:44px;}
+.time-input{
+  border:1.5px solid rgba(136,80,190,.18);border-radius:6px;
+  padding:.4rem .6rem;font-family:'Montserrat',sans-serif;
+  font-size:.82rem;font-weight:700;color:var(--violet);outline:none;
+  transition:border-color .2s;background:#fff;width:100px;
+}
+.time-input:focus{border-color:var(--violet);}
+.time-sep{font-size:.75rem;color:var(--gray-light);font-weight:600;}
+
+.blocked-section{margin-top:.5rem;}
+.blocked-title{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--dark);margin-bottom:.75rem;}
+.blocked-list{display:flex;flex-direction:column;gap:.4rem;margin-bottom:.85rem;}
+.blocked-empty{font-size:.7rem;color:var(--gray-light);font-weight:500;padding:.5rem 0;}
+.blocked-item{
+  display:flex;align-items:center;justify-content:space-between;
+  background:#fff;border-radius:8px;padding:.65rem 1rem;
+  box-shadow:0 1px 4px rgba(136,80,190,.07);border:1px solid rgba(136,80,190,.08);
+}
+.blocked-item-date{font-size:.8rem;font-weight:700;color:var(--dark);}
+.blocked-item-note{font-size:.65rem;color:var(--gray-light);margin-top:.1rem;}
+.blocked-del{
+  background:none;border:none;cursor:pointer;color:var(--gray-light);
+  font-size:.85rem;padding:.2rem;border-radius:4px;transition:color .2s;
+  font-weight:700;
+}
+.blocked-del:hover{color:var(--danger);}
+.blocked-add-row{display:flex;gap:.5rem;flex-wrap:wrap;}
+.blocked-date-input{
+  border:1.5px solid rgba(136,80,190,.2);border-radius:8px;
+  padding:.55rem .75rem;font-family:'Montserrat',sans-serif;
+  font-size:.78rem;font-weight:600;color:var(--dark);outline:none;
+  transition:border-color .2s;flex:1;min-width:130px;
+}
+.blocked-date-input:focus{border-color:var(--violet);}
+.blocked-note-input{
+  border:1.5px solid rgba(136,80,190,.2);border-radius:8px;
+  padding:.55rem .75rem;font-family:'Montserrat',sans-serif;
+  font-size:.78rem;font-weight:500;color:var(--dark);outline:none;
+  transition:border-color .2s;flex:2;min-width:130px;
+}
+.blocked-note-input:focus{border-color:var(--violet);}
+.blocked-note-input::placeholder{color:var(--gray-light);}
+.btn-add-blocked{
+  background:var(--violet-pale);color:var(--violet);border:1.5px solid var(--violet-light);
+  border-radius:8px;padding:.55rem 1rem;font-family:'Montserrat',sans-serif;
+  font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  cursor:pointer;white-space:nowrap;transition:all .2s;
+}
+.btn-add-blocked:hover{background:#ede0ff;border-color:var(--violet);}
+
+/* ═══════════ TEXTOS ═══════════ */
+.text-form{display:flex;flex-direction:column;gap:1rem;}
+.tf-group{background:#fff;border-radius:10px;padding:1.1rem;box-shadow:0 2px 8px rgba(136,80,190,.07);border:1px solid rgba(136,80,190,.1);}
+.tf-label{font-size:.58rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--violet);margin-bottom:.5rem;display:block;}
+.tf-input{
+  width:100%;border:1.5px solid rgba(136,80,190,.18);border-radius:8px;
+  padding:.7rem .85rem;font-family:'Montserrat',sans-serif;
+  font-size:.85rem;font-weight:500;color:var(--dark);outline:none;
+  transition:border-color .2s,box-shadow .2s;background:#fff;
+}
+.tf-input:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(136,80,190,.1);}
+.tf-textarea{
+  width:100%;border:1.5px solid rgba(136,80,190,.18);border-radius:8px;
+  padding:.7rem .85rem;font-family:'Montserrat',sans-serif;
+  font-size:.82rem;font-weight:400;color:var(--dark);outline:none;line-height:1.65;
+  transition:border-color .2s,box-shadow .2s;background:#fff;resize:vertical;min-height:120px;
+}
+.tf-textarea:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(136,80,190,.1);}
+.tf-hint{font-size:.6rem;color:var(--gray-light);margin-top:.4rem;font-weight:500;}
+.tf-prefix-wrap{position:relative;}
+.tf-prefix{
+  position:absolute;left:.85rem;top:50%;transform:translateY(-50%);
+  font-size:.82rem;font-weight:600;color:var(--gray-light);pointer-events:none;
+}
+.tf-prefix-wrap .tf-input{padding-left:1.8rem;}
+
+/* ═══════════ GALERÍA ═══════════ */
+.gallery-upload-zone{
+  border:2px dashed var(--violet-light);border-radius:12px;
+  padding:2rem 1rem;text-align:center;cursor:pointer;
+  background:#fff;transition:border-color .2s,background .2s;
+  margin-bottom:1.2rem;position:relative;
+}
+.gallery-upload-zone:hover{border-color:var(--violet);background:var(--violet-pale);}
+.gallery-upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.upload-icon{font-size:2rem;margin-bottom:.5rem;}
+.upload-text{font-size:.78rem;font-weight:700;color:var(--violet);margin-bottom:.25rem;}
+.upload-sub{font-size:.65rem;color:var(--gray-light);font-weight:500;}
+
+.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;}
+@media(min-width:500px){.gallery-grid{grid-template-columns:repeat(4,1fr);}}
+.gallery-item{position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden;background:var(--violet-pale);}
+.gallery-item img{width:100%;height:100%;object-fit:cover;display:block;}
+.gallery-item-overlay{
+  position:absolute;inset:0;background:rgba(26,16,40,.55);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;
+  opacity:0;transition:opacity .2s;
+}
+.gallery-item:hover .gallery-item-overlay{opacity:1;}
+.gallery-item-del{
+  background:var(--danger);color:#fff;border:none;
+  border-radius:6px;padding:.35rem .7rem;
+  font-family:'Montserrat',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.08em;
+  cursor:pointer;
+}
+.gallery-item-move{
+  display:flex;gap:.3rem;
+}
+.gallery-move-btn{
+  background:rgba(255,255,255,.2);color:#fff;border:none;
+  border-radius:4px;padding:.3rem .55rem;font-size:.7rem;cursor:pointer;
+  transition:background .15s;
+}
+.gallery-move-btn:hover{background:rgba(255,255,255,.4);}
+.gallery-count{font-size:.65rem;color:var(--gray-light);font-weight:600;margin-bottom:.75rem;}
+.gallery-placeholder{
+  aspect-ratio:1;border-radius:8px;background:var(--violet-pale);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.4rem;color:var(--violet-light);
+  border:2px dashed var(--violet-light);
+}
+
+/* ═══════════ BOTTOM NAV ═══════════ */
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;z-index:200;
+  background:#fff;border-top:1px solid rgba(136,80,190,.1);
+  display:flex;height:56px;box-shadow:0 -2px 10px rgba(136,80,190,.06);
+}
+.bnav-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:.18rem;border:none;background:none;cursor:pointer;font-family:'Montserrat',sans-serif;
+  font-size:.44rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--gray-light);transition:color .2s;position:relative;
+}
+.bnav-btn.active{color:var(--violet);}
+.bnav-btn.active::after{content:'';position:absolute;top:0;left:20%;right:20%;height:2px;background:var(--violet);border-radius:0 0 2px 2px;}
+.bnav-icon{font-size:1.05rem;line-height:1;}
+
+/* ═══════════ TOAST ═══════════ */
+.toast{
+  position:fixed;bottom:5rem;left:50%;transform:translateX(-50%) translateY(6px);
+  background:#1A1018;color:#fff;padding:.6rem 1.5rem;border-radius:30px;
+  font-size:.7rem;font-weight:600;opacity:0;transition:opacity .25s,transform .25s;
+  z-index:500;white-space:nowrap;pointer-events:none;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ LOGIN ══════════════ -->
+<div id="login-screen">
+  <div class="login-card">
+    <img src="assets/logo-bajada-violeta.png" alt="Nina Peluquería" class="login-logo" onerror="this.style.display='none'"/>
+    <div class="login-title">Panel de administración</div>
+    <div class="login-sub">Ingresá tu contraseña para continuar</div>
+    <input type="password" id="loginPass" class="login-input" placeholder="Contraseña"
+      onkeydown="if(event.key==='Enter')doLogin()"/>
+    <button class="login-btn" onclick="doLogin()">Ingresar al panel</button>
+    <div id="loginError" class="login-error" hidden>Contraseña incorrecta.</div>
+    <div class="login-hint">Solo para uso de Nina Peluquería</div>
+  </div>
+</div>
+
+<!-- ══════════════ ADMIN ══════════════ -->
+<div id="admin-panel" style="display:none">
+
+  <header class="admin-header">
+    <div class="admin-header-left">
+      <img src="assets/logo-bajada-violeta.png" alt="Nina" class="admin-logo" onerror="this.style.display='none'"/>
+      <span class="admin-badge">Admin</span>
+    </div>
+    <div class="admin-user-info">
+      <div class="admin-user-avatar">N</div>
+      <span class="admin-user-name">Nina</span>
+      <span class="admin-user-dot"></span>
+      <span class="admin-user-status">En línea</span>
+    </div>
+    <button class="admin-logout-btn" onclick="doLogout()">Salir</button>
+  </header>
+
+  <div class="admin-content">
+
+    <!-- ── PRECIOS ── -->
+    <div id="sec-precios" class="admin-sec active">
+      <div class="sec-header">
+        <div><div class="sec-eyebrow">Gestión</div><div class="sec-title">Precios & Servicios</div></div>
+        <button class="btn-save" id="savePrecios" onclick="saveSection('precios')">
+          <span class="save-dot"></span>Guardar
+        </button>
+      </div>
+      <div class="info-banner">
+        Editá el precio directamente en el campo. Usá el toggle para <strong>activar o desactivar</strong> un servicio sin eliminarlo.
+      </div>
+      <div id="servicesList"></div>
+    </div>
+
+    <!-- ── HORARIOS ── -->
+    <div id="sec-horarios" class="admin-sec">
+      <div class="sec-header">
+        <div><div class="sec-eyebrow">Gestión</div><div class="sec-title">Horarios de atención</div></div>
+        <button class="btn-save" id="saveHorarios" onclick="saveSection('horarios')">
+          <span class="save-dot"></span>Guardar
+        </button>
+      </div>
+      <div class="info-banner">
+        Activá los días que atendés y configurá el horario. Bloqueá fechas específicas como feriados o vacaciones.
+      </div>
+      <div class="day-list" id="dayList"></div>
+
+      <div class="blocked-section">
+        <div class="blocked-title">Fechas bloqueadas</div>
+        <div class="blocked-list" id="blockedList"></div>
+        <div class="blocked-add-row">
+          <input type="date" class="blocked-date-input" id="newBlockedDate"/>
+          <input type="text" class="blocked-note-input" id="newBlockedNote" placeholder="Motivo (ej: feriado, vacaciones)"/>
+          <button class="btn-add-blocked" onclick="addBlockedDate()">+ Agregar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TEXTOS ── -->
+    <div id="sec-textos" class="admin-sec">
+      <div class="sec-header">
+        <div><div class="sec-eyebrow">Gestión</div><div class="sec-title">Textos & Contacto</div></div>
+        <button class="btn-save" id="saveTextos" onclick="saveSection('textos')">
+          <span class="save-dot"></span>Guardar
+        </button>
+      </div>
+      <div class="info-banner">
+        Editá los textos que aparecen en el sitio. Los cambios se reflejarán al guardar.
+      </div>
+      <div class="text-form">
+
+        <div class="tf-group">
+          <label class="tf-label">Slogan del hero</label>
+          <input type="text" class="tf-input" id="tf-slogan" onchange="markSectionDirty('textos')"/>
+          <div class="tf-hint">Aparece debajo del título principal en la portada.</div>
+        </div>
+
+        <div class="tf-group">
+          <label class="tf-label">Sobre mí</label>
+          <textarea class="tf-textarea" id="tf-sobre" onchange="markSectionDirty('textos')"></textarea>
+          <div class="tf-hint">Texto de la sección "Sobre mí". Máximo recomendado: 200 caracteres.</div>
+        </div>
+
+        <div class="tf-group">
+          <label class="tf-label">WhatsApp</label>
+          <div class="tf-prefix-wrap">
+            <span class="tf-prefix">+</span>
+            <input type="tel" class="tf-input" id="tf-whatsapp" placeholder="5492615000000" onchange="markSectionDirty('textos')"/>
+          </div>
+          <div class="tf-hint">Número completo con código de país (sin +). Ej: 5492615000000</div>
+        </div>
+
+        <div class="tf-group">
+          <label class="tf-label">Dirección</label>
+          <input type="text" class="tf-input" id="tf-direccion" onchange="markSectionDirty('textos')"/>
+        </div>
+
+        <div class="tf-group">
+          <label class="tf-label">Instagram</label>
+          <div class="tf-prefix-wrap">
+            <span class="tf-prefix">@</span>
+            <input type="text" class="tf-input" id="tf-instagram" placeholder="nina_peluqueria" onchange="markSectionDirty('textos')"/>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── GALERÍA ── -->
+    <div id="sec-galeria" class="admin-sec">
+      <div class="sec-header">
+        <div><div class="sec-eyebrow">Gestión</div><div class="sec-title">Galería de fotos</div></div>
+        <button class="btn-save" id="saveGaleria" onclick="saveSection('galeria')">
+          <span class="save-dot"></span>Guardar
+        </button>
+      </div>
+      <div class="info-banner">
+        Subí fotos del trabajo de Nina. Podés reordenarlas y eliminarlas. <strong>Formato JPG/PNG.</strong>
+      </div>
+
+      <div class="gallery-upload-zone">
+        <input type="file" accept="image/*" multiple onchange="onGalleryUpload(this)"/>
+        <div class="upload-icon">📷</div>
+        <div class="upload-text">Tocá para subir fotos</div>
+        <div class="upload-sub">JPG o PNG · Podés subir varias a la vez</div>
+      </div>
+
+      <div class="gallery-count" id="galleryCount">0 fotos</div>
+      <div class="gallery-grid" id="galleryGrid"></div>
+    </div>
+
+  </div><!-- /admin-content -->
+
+  <nav class="bottom-nav">
+    <button class="bnav-btn active" id="bnav-precios" onclick="switchTab('precios')">
+      <span class="bnav-icon">💰</span>Precios
+    </button>
+    <button class="bnav-btn" id="bnav-horarios" onclick="switchTab('horarios')">
+      <span class="bnav-icon">🕐</span>Horarios
+    </button>
+    <button class="bnav-btn" id="bnav-textos" onclick="switchTab('textos')">
+      <span class="bnav-icon">✏️</span>Textos
+    </button>
+    <button class="bnav-btn" id="bnav-galeria" onclick="switchTab('galeria')">
+      <span class="bnav-icon">📸</span>Galería
+    </button>
+  </nav>
+
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ══════════════════════════════════
+   CONFIG — datos mock (reemplazar con Firebase)
+══════════════════════════════════ */
+const CONFIG = {
+  categories:[
+    {id:'corte',label:'Cortes',services:[
+      {id:'cf', name:'Corte femenino',    dur:'60 min',    price:22800,active:true},
+      {id:'cm', name:'Corte masculino',   dur:'30 min',    price:15200,active:true},
+      {id:'cn', name:'Corte niño',        dur:'30 min',    price:13300,active:true},
+    ]},
+    {id:'mechas',label:'Mechas',services:[
+      {id:'mt', name:'Mechas tradicionales',dur:'3h 30min',active:true,options:[
+        {id:'mt1',name:'Media cabeza',   price:53200},
+        {id:'mt2',name:'Cabeza completa',price:79800},
+      ]},
+      {id:'mb', name:'Mechas balayage',  dur:'3h 30min',price:85500,active:true},
+      {id:'mby',name:'Mechas babylight', dur:'3h 30min',price:72200,active:true},
+      {id:'mf', name:'Mechas fantasía',  dur:'3h 30min',price:66500,active:true},
+    ]},
+    {id:'color',label:'Color',services:[
+      {id:'rr', name:'Retoque de raíz',  dur:'1h 30min',price:28500,active:true},
+      {id:'cg', name:'Coloración global',dur:'1h 30min',price:41800,active:true},
+      {id:'bll',name:'Baño de luz',      dur:'1h 30min',price:32300,active:true},
+    ]},
+    {id:'peinados',label:'Peinados',services:[
+      {id:'br',   name:'Brushing',         dur:'1 hs',       price:17100,     active:true},
+      {id:'oa',   name:'Ondas al agua',    dur:'1 hs',       price:20900,     active:true},
+      {id:'sr',   name:'Semirecogido',     dur:'1 hs',       price:26600,     active:true},
+      {id:'rc',   name:'Recogido completo',dur:'1 hs',       price:34200,     active:true},
+      {id:'novia',name:'Peinado de novia', dur:'A coordinar',price:'Consultar',active:true},
+    ]},
+    {id:'trat',label:'Tratamientos',services:[
+      {id:'at', name:'Alisado tradicional',dur:'2 hs',price:60800,active:true},
+      {id:'asf',name:'Alisado sin formol', dur:'4 hs',price:91200,active:true},
+      {id:'sk', name:'Shock de keratina',  dur:'2 hs',price:53200,active:true},
+      {id:'bo', name:'Botox capilar',      dur:'2 hs',price:47500,active:true},
+    ]},
+    {id:'ritual',label:'Rituales cuidado capilar',services:[
+      {id:'rit1',name:'Tratamiento de reparación',dur:'1 hs',price:22800,active:true},
+      {id:'rit2',name:'Tratamiento de nutrición', dur:'1 hs',price:24700,active:true},
+      {id:'rit3',name:'Tratamiento de brillo',    dur:'1 hs',price:20900,active:true},
+    ]},
+    {id:'pack',label:'Packs',isPack:true,services:[
+      {id:'pk-cf-rc',name:'Corte femenino + ritual capilar',dur:'90 min',  price:34200,active:true},
+      {id:'pk-cm-b', name:'Corte masculino + barba',        dur:'60 min',  price:24700,active:true},
+      {id:'pk-m-cf', name:'Mechas + corte femenino',        dur:'4 hs',    price:98800,active:true},
+      {id:'pk-col',  name:'Color + corte + ritual capilar', dur:'2 hs',    price:72200,active:true},
+      {id:'pk-sk',   name:'Shock de keratina + corte',      dur:'2h 30min',price:64600,active:true},
+      {id:'pk-rit',  name:'Ritual capilar + ondas al agua', dur:'2 hs',    price:34200,active:true},
+    ]},
+  ],
+
+  schedule:{
+    days:[
+      {id:'lun',label:'Lunes',    active:true, open:'09:00',close:'18:00'},
+      {id:'mar',label:'Martes',   active:true, open:'09:00',close:'18:00'},
+      {id:'mie',label:'Miércoles',active:true, open:'09:00',close:'18:00'},
+      {id:'jue',label:'Jueves',   active:true, open:'09:00',close:'18:00'},
+      {id:'vie',label:'Viernes',  active:true, open:'09:00',close:'18:00'},
+      {id:'sab',label:'Sábado',   active:true, open:'09:00',close:'14:00'},
+      {id:'dom',label:'Domingo',  active:false,open:'09:00',close:'13:00'},
+    ],
+    blocked:[
+      {date:'2026-07-09',note:'Día de la Independencia'},
+      {date:'2026-12-25',note:'Navidad'},
+    ],
+  },
+
+  contact:{
+    slogan:'Arte en cada corte.',
+    sobreMi:'Soy Nina, peluquera con más de 8 años de experiencia en Mendoza. Me especializo en colorimetría y alisados. Cada cliente es único y mi objetivo es que salgas sintiéndote increíble.',
+    whatsapp:'5492615000000',
+    direccion:'San Martín 123, Mendoza',
+    instagram:'nina_peluqueria',
+  },
+
+  gallery:[],
+};
+
+/* ══ AUTH ══ */
+const PASS = 'nina2026';
+function doLogin(){
+  const v=document.getElementById('loginPass').value.trim();
+  const e=document.getElementById('loginError');
+  if(v===PASS){
+    e.hidden=true;
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('admin-panel').style.display='flex';
+    initAll();
+  } else {
+    e.hidden=false;
+    document.getElementById('loginPass').select();
+  }
+}
+function doLogout(){
+  document.getElementById('admin-panel').style.display='none';
+  document.getElementById('login-screen').style.display='flex';
+  document.getElementById('loginPass').value='';
+}
+
+/* ══ INIT ══ */
+function initAll(){
+  renderServices();
+  renderDays();
+  renderBlockedDates();
+  renderTextos();
+  renderGallery();
+}
+
+/* ══════════════════ PRECIOS ══════════════════ */
+function renderServices(){
+  const c=document.getElementById('servicesList');
+  c.innerHTML='';
+  CONFIG.categories.forEach(cat=>{
+    const g=document.createElement('div');
+    g.className='cat-group open';
+    g.innerHTML=`
+      <div class="cat-group-hd" onclick="this.closest('.cat-group').classList.toggle('open')">
+        <div class="cat-group-name">
+          ${cat.label}
+          ${cat.isPack?'<span class="cat-pack-lbl">Pack</span>':''}
+          <span class="cat-count">${cat.services.length}</span>
+        </div>
+        <span class="cat-arrow">▾</span>
+      </div>
+      <div class="cat-group-body"></div>`;
+    const body=g.querySelector('.cat-group-body');
+    cat.services.forEach(svc=>{
+      const isC=svc.price==='Consultar', hasO=!!svc.options;
+      const row=document.createElement('div');
+      row.className='svc-row'+(svc.active?'':' inactive');
+      row.id='row-'+svc.id;
+      const priceCell=hasO
+        ?`<span style="font-size:.6rem;color:var(--gray-light);font-weight:600;white-space:nowrap;">Ver ↓</span>`
+        :isC
+          ?`<div class="svc-price-wrap"><input class="svc-price-input is-consultar" type="text" value="Consultar" readonly/></div>`
+          :`<div class="svc-price-wrap"><span class="price-prefix">$</span><input class="svc-price-input" type="number" value="${svc.price}" data-id="${svc.id}" onchange="markSectionDirty('precios')" min="0" step="100"/></div>`;
+      row.innerHTML=`
+        <div class="svc-info">
+          <div class="svc-row-name">${svc.name}</div>
+          <div class="svc-row-dur">${svc.dur}</div>
+        </div>
+        ${priceCell}
+        <div class="toggle-wrap">
+          <label class="toggle">
+            <input type="checkbox" ${svc.active?'checked':''} data-id="${svc.id}" onchange="onToggleSvc(this)"/>
+            <span class="toggle-track"></span><span class="toggle-thumb"></span>
+          </label>
+        </div>`;
+      body.appendChild(row);
+      if(hasO){
+        const ow=document.createElement('div');
+        ow.className='svc-options-admin';
+        svc.options.forEach(o=>{
+          const or=document.createElement('div');
+          or.className='svc-option-row';
+          or.innerHTML=`<span class="svc-option-lbl">${o.name}</span>
+            <div class="svc-price-wrap">
+              <span class="price-prefix">$</span>
+              <input class="svc-price-input" type="number" value="${o.price}" data-id="${o.id}" onchange="markSectionDirty('precios')" min="0" step="100"/>
+            </div>`;
+          ow.appendChild(or);
+        });
+        body.appendChild(ow);
+      }
+    });
+    c.appendChild(g);
+  });
+}
+
+function onToggleSvc(cb){
+  cb.closest('.svc-row').classList.toggle('inactive',!cb.checked);
+  markSectionDirty('precios');
+}
+
+/* ══════════════════ HORARIOS ══════════════════ */
+function renderDays(){
+  const dl=document.getElementById('dayList');
+  dl.innerHTML='';
+  CONFIG.schedule.days.forEach(day=>{
+    const dr=document.createElement('div');
+    dr.className='day-row'+(day.active?'':' closed');
+    dr.id='day-'+day.id;
+    dr.innerHTML=`
+      <div class="day-row-hd">
+        <span class="day-label">${day.label}</span>
+        <label class="toggle">
+          <input type="checkbox" ${day.active?'checked':''} data-day="${day.id}" onchange="onToggleDay(this)"/>
+          <span class="toggle-track"></span><span class="toggle-thumb"></span>
+        </label>
+      </div>
+      <div class="day-times">
+        <span class="time-lbl">Abre</span>
+        <input type="time" class="time-input" value="${day.open}" data-day="${day.id}" data-field="open" onchange="markSectionDirty('horarios')"/>
+        <span class="time-sep">→</span>
+        <span class="time-lbl">Cierra</span>
+        <input type="time" class="time-input" value="${day.close}" data-day="${day.id}" data-field="close" onchange="markSectionDirty('horarios')"/>
+      </div>`;
+    dl.appendChild(dr);
+  });
+}
+
+function onToggleDay(cb){
+  const day=cb.dataset.day;
+  const row=document.getElementById('day-'+day);
+  row.classList.toggle('closed',!cb.checked);
+  markSectionDirty('horarios');
+}
+
+function renderBlockedDates(){
+  const list=document.getElementById('blockedList');
+  list.innerHTML='';
+  if(!CONFIG.schedule.blocked.length){
+    list.innerHTML='<div class="blocked-empty">Sin fechas bloqueadas.</div>';
+    return;
+  }
+  CONFIG.schedule.blocked.forEach((b,i)=>{
+    const d=new Date(b.date+'T12:00:00');
+    const label=d.toLocaleDateString('es-AR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+    const item=document.createElement('div');
+    item.className='blocked-item';
+    item.innerHTML=`
+      <div>
+        <div class="blocked-item-date">${label}</div>
+        ${b.note?`<div class="blocked-item-note">${b.note}</div>`:''}
+      </div>
+      <button class="blocked-del" onclick="removeBlocked(${i})" title="Eliminar">✕</button>`;
+    list.appendChild(item);
+  });
+}
+
+function addBlockedDate(){
+  const dateVal=document.getElementById('newBlockedDate').value;
+  const noteVal=document.getElementById('newBlockedNote').value.trim();
+  if(!dateVal){showToast('Seleccioná una fecha primero');return;}
+  const exists=CONFIG.schedule.blocked.some(b=>b.date===dateVal);
+  if(exists){showToast('Esa fecha ya está bloqueada');return;}
+  CONFIG.schedule.blocked.push({date:dateVal,note:noteVal});
+  CONFIG.schedule.blocked.sort((a,b)=>a.date.localeCompare(b.date));
+  document.getElementById('newBlockedDate').value='';
+  document.getElementById('newBlockedNote').value='';
+  renderBlockedDates();
+  markSectionDirty('horarios');
+}
+
+function removeBlocked(idx){
+  CONFIG.schedule.blocked.splice(idx,1);
+  renderBlockedDates();
+  markSectionDirty('horarios');
+}
+
+/* ══════════════════ TEXTOS ══════════════════ */
+function renderTextos(){
+  const c=CONFIG.contact;
+  document.getElementById('tf-slogan').value=c.slogan||'';
+  document.getElementById('tf-sobre').value=c.sobreMi||'';
+  document.getElementById('tf-whatsapp').value=c.whatsapp||'';
+  document.getElementById('tf-direccion').value=c.direccion||'';
+  document.getElementById('tf-instagram').value=c.instagram||'';
+}
+
+/* ══════════════════ GALERÍA ══════════════════ */
+function renderGallery(){
+  const grid=document.getElementById('galleryGrid');
+  const count=document.getElementById('galleryCount');
+  grid.innerHTML='';
+  count.textContent=CONFIG.gallery.length+' foto'+(CONFIG.gallery.length!==1?'s':'');
+  if(!CONFIG.gallery.length){
+    const ph=document.createElement('div');
+    ph.className='gallery-placeholder';
+    ph.textContent='📷';
+    grid.appendChild(ph);
+    return;
+  }
+  CONFIG.gallery.forEach((img,i)=>{
+    const item=document.createElement('div');
+    item.className='gallery-item';
+    item.innerHTML=`
+      <img src="${img.url}" alt="${img.name}"/>
+      <div class="gallery-item-overlay">
+        <div class="gallery-item-move">
+          <button class="gallery-move-btn" onclick="movePhoto(${i},-1)" title="Mover izquierda">←</button>
+          <button class="gallery-move-btn" onclick="movePhoto(${i},1)" title="Mover derecha">→</button>
+        </div>
+        <button class="gallery-item-del" onclick="deletePhoto(${i})">Eliminar</button>
+      </div>`;
+    grid.appendChild(item);
+  });
+}
+
+function onGalleryUpload(input){
+  const files=Array.from(input.files);
+  files.forEach(file=>{
+    const url=URL.createObjectURL(file);
+    CONFIG.gallery.push({url,name:file.name});
+  });
+  input.value='';
+  renderGallery();
+  markSectionDirty('galeria');
+}
+
+function deletePhoto(idx){
+  CONFIG.gallery.splice(idx,1);
+  renderGallery();
+  markSectionDirty('galeria');
+}
+
+function movePhoto(idx,dir){
+  const newIdx=idx+dir;
+  if(newIdx<0||newIdx>=CONFIG.gallery.length)return;
+  [CONFIG.gallery[idx],CONFIG.gallery[newIdx]]=[CONFIG.gallery[newIdx],CONFIG.gallery[idx]];
+  renderGallery();
+  markSectionDirty('galeria');
+}
+
+/* ══════════════════ SAVE ══════════════════ */
+const dirty={precios:false,horarios:false,textos:false,galeria:false};
+
+function markSectionDirty(sec){
+  if(dirty[sec])return;
+  dirty[sec]=true;
+  const btn=document.getElementById('save'+capitalize(sec));
+  if(btn){btn.classList.add('dirty');btn.querySelector('.save-dot').style.display='block';}
+}
+
+function saveSection(sec){
+  if(!dirty[sec])return;
+  const btn=document.getElementById('save'+capitalize(sec));
+  btn.classList.remove('dirty');
+  btn.classList.add('saving');
+  btn.innerHTML='<span class="save-dot"></span>Guardando...';
+
+  /* Leer valores actuales antes de guardar */
+  if(sec==='precios'){
+    document.querySelectorAll('.svc-price-input[data-id]').forEach(inp=>{
+      if(inp.classList.contains('is-consultar'))return;
+      const id=inp.dataset.id, val=Number(inp.value);
+      CONFIG.categories.forEach(cat=>{
+        cat.services.forEach(svc=>{
+          if(svc.id===id)svc.price=val;
+          if(svc.options)svc.options.forEach(o=>{if(o.id===id)o.price=val;});
+        });
+      });
+    });
+    document.querySelectorAll('#servicesList .toggle input[data-id]').forEach(inp=>{
+      const id=inp.dataset.id;
+      CONFIG.categories.forEach(cat=>{cat.services.forEach(svc=>{if(svc.id===id)svc.active=inp.checked;});});
+    });
+  }
+  if(sec==='horarios'){
+    document.querySelectorAll('.time-input').forEach(inp=>{
+      const d=inp.dataset.day, f=inp.dataset.field;
+      const day=CONFIG.schedule.days.find(x=>x.id===d);
+      if(day)day[f]=inp.value;
+    });
+    document.querySelectorAll('#dayList .toggle input').forEach(inp=>{
+      const d=inp.dataset.day;
+      const day=CONFIG.schedule.days.find(x=>x.id===d);
+      if(day)day.active=inp.checked;
+    });
+  }
+  if(sec==='textos'){
+    CONFIG.contact.slogan=document.getElementById('tf-slogan').value;
+    CONFIG.contact.sobreMi=document.getElementById('tf-sobre').value;
+    CONFIG.contact.whatsapp=document.getElementById('tf-whatsapp').value;
+    CONFIG.contact.direccion=document.getElementById('tf-direccion').value;
+    CONFIG.contact.instagram=document.getElementById('tf-instagram').value;
+  }
+
+  /* Simula guardado (reemplazar con Firebase) */
+  setTimeout(()=>{
+    dirty[sec]=false;
+    btn.classList.remove('saving');
+    btn.classList.add('done');
+    btn.innerHTML='<span class="save-dot"></span>Guardado ✓';
+    showToast('✓ Cambios guardados');
+    setTimeout(()=>{btn.classList.remove('done');btn.innerHTML='<span class="save-dot"></span>Guardar';},2500);
+  },800);
+}
+
+/* ══════════════════ NAV ══════════════════ */
+function switchTab(tab){
+  document.querySelectorAll('.admin-sec').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sec-'+tab).classList.add('active');
+  document.querySelectorAll('.bnav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('bnav-'+tab).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ══════════════════ UTILS ══════════════════ */
+function capitalize(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+window.addEventListener('beforeunload',e=>{
+  if(Object.values(dirty).some(Boolean)){e.preventDefault();e.returnValue='';}
+});
+</script>
+</body>
+</html>

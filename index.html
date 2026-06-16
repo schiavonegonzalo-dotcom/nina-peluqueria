@@ -1677,13 +1677,65 @@ function toggleTheme(){
   localStorage.setItem('nina-theme',isDark?'dark':'light');
 }
 
-/* ── EMAILJS CONFIG ── completar con tus credenciales de emailjs.com ── */
-const EJS_PUBLIC_KEY     = 'TU_PUBLIC_KEY';       // Account → API Keys
-const EJS_SERVICE_ID     = 'TU_SERVICE_ID';       // Email Services → Service ID
-const EJS_TPL_SALON      = 'template_salon';      // Email Templates → Template ID (notif al local)
-const EJS_TPL_CLIENTE    = 'template_cliente';    // Email Templates → Template ID (confirm al cliente)
-const SALON_EMAIL        = 'ninapeluqueriamza@gmail.com';
-emailjs.init({ publicKey: EJS_PUBLIC_KEY });
+// ==========================================
+// CONFIGURACIÓN DE EMAILJS (NINA PELUQUERÍA)
+// ==========================================
+emailjs.init("TU_PUBLIC_KEY_AQUI");
+
+const EJS_SERVICE_ID  = "TU_SERVICE_ID_AQUI";
+const EJS_TPL_SALON   = "TU_TEMPLATE_SALON";
+const EJS_TPL_CLIENTE = "TU_TEMPLATE_CLIENTE";
+const SALON_EMAIL     = "ninapeluqueria.mza@gmail.com";
+
+async function enviarNotificacionesTurno(nombre, email, wa, notif, selectedSvc, dateStr, selectedTime, nota) {
+  const ejsData = {
+    cliente_nombre: nombre,
+    cliente_email:  email || 'No proporcionado',
+    cliente_wa:     wa,
+    servicio_name:  selectedSvc.name,
+    servicio_dur:   selectedSvc.dur + " min",
+    turno_fecha:    dateStr,
+    turno_hora:     selectedTime + " hs",
+    nota:           nota || '—',
+    salon_email:    SALON_EMAIL,
+  };
+
+  /* Envío 1: Notificación interna al salón */
+  try {
+    await emailjs.send(EJS_SERVICE_ID, EJS_TPL_SALON, ejsData);
+    console.log('Notificación enviada al salón con éxito.');
+  } catch (err) {
+    console.error('Error de EmailJS al notificar al salón:', err);
+  }
+
+  /* Envío 2: Confirmación directa al cliente */
+  if ((notif === 'email' || notif === 'ambos') && email) {
+    try {
+      await emailjs.send(EJS_SERVICE_ID, EJS_TPL_CLIENTE, { ...ejsData, to_email: email });
+      console.log('Confirmación enviada por correo al cliente con éxito.');
+    } catch (err) {
+      console.error('Error de EmailJS al notificar al cliente:', err);
+    }
+  }
+
+  /* Procesamiento de WhatsApp */
+  let notifMsg = '';
+  if (notif === 'whatsapp' || notif === 'ambos') {
+    notifMsg += `📱 Te llegará confirmación por WhatsApp al <strong>${wa}</strong>. `;
+    const msg = encodeURIComponent(
+      `Hola Nina! Reservé un turno:\n` +
+      `✂️ *Servicio:* ${selectedSvc.name}\n` +
+      `📅 *Fecha:* ${dateStr}\n` +
+      `🕐 *Hora:* ${selectedTime} hs\n` +
+      `👤 *Nombre:* ${nombre}`
+    );
+    setTimeout(() => {
+      window.open(`https://wa.me/5492616627238?text=${msg}`, '_blank');
+    }, 800);
+  }
+
+  return notifMsg;
+}
 
 /* ── CURSOR ── */
 
@@ -2122,45 +2174,12 @@ async function confirmarTurno(){
     🕐 <strong>${selectedTime} hs</strong><br>
     ⏱ Duración aproximada: <strong>${durStr}</strong>`;
 
-  /* Datos comunes para los templates de EmailJS */
-  const ejsData={
-    nombre,
-    servicio:  selectedSvc.name,
-    duracion:  durStr,
-    fecha:     dateStr,
-    hora:      selectedTime+' hs',
-    contacto:  wa ? `WhatsApp: ${wa}` : `Email: ${email}`,
-    nota:      nota||'—',
-    salon_email: SALON_EMAIL,
-  };
-
-  /* 1. Notificación al local (siempre) */
-  try{
-    await emailjs.send(EJS_SERVICE_ID, EJS_TPL_SALON, ejsData);
-  }catch(err){
-    console.warn('EmailJS salon error:',err);
-  }
-
-  /* 2. Confirmación al cliente (solo si eligió email) */
-  if((notif==='email'||notif==='ambos')&&email){
-    try{
-      await emailjs.send(EJS_SERVICE_ID, EJS_TPL_CLIENTE, {...ejsData, to_email:email});
-    }catch(err){
-      console.warn('EmailJS cliente error:',err);
-    }
-  }
-
-  /* 3. WhatsApp redirect */
-  let notifMsg='';
-  if(notif==='whatsapp'||notif==='ambos'){
-    notifMsg+=`📱 Te llegará confirmación por WhatsApp al <strong>${wa}</strong>. `;
-    const msg=encodeURIComponent(`Hola Nina! Reservé un turno:\n✂️ ${selectedSvc.name}\n📅 ${dateStr}\n🕐 ${selectedTime} hs\n👤 ${nombre}`);
-    setTimeout(()=>window.open(`https://wa.me/5492616627238?text=${msg}`,'_blank'),800);
-  }
+  /* Envío de notificaciones (email + WhatsApp) */
+  let notifMsg = await enviarNotificacionesTurno(nombre, email, wa, notif, selectedSvc, dateStr, selectedTime, nota);
   if(notif==='email'||notif==='ambos'){
-    notifMsg+=`📧 Te enviamos confirmación a <strong>${email}</strong>.`;
+    notifMsg += `📧 Te enviamos confirmación a <strong>${email}</strong>.`;
   }
-  document.getElementById('confirmNotif').innerHTML=notifMsg||'✅ Turno confirmado.';
+  document.getElementById('confirmNotif').innerHTML = notifMsg || '✅ Turno confirmado.';
   goStep(4);
 }
 
