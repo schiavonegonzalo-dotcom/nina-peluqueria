@@ -1837,64 +1837,98 @@ const OPEN_HOUR=9, CLOSE_HOUR=20;
 /* Servicios con tiempo muerto (pueden recibir superposición) */
 const CAN_OVERLAP_SVCS=new Set(['cf','cm','cn','pk-cm-b','rit1','rit2','rit3']);
 
-/* Mock de turnos ocupados por día de semana */
-const MOCK_BLOCKS_BY_DOW={
-  2:['10:00','10:30','14:00','16:00'],
-  3:['09:00','09:30','11:00','13:00','13:30','17:00'],
-  4:['10:00','10:30','11:00','11:30','15:00','15:30'],
-  5:['09:30','12:00','12:30','16:30'],
-  6:['09:00','09:30','11:00','11:30','14:00','14:30','16:00'],
-};
-/* Slots bloqueados que en realidad son tiempo muerto de color/tratamiento
-   → quedan libres para servicios que pueden superponerse */
-const MOCK_OVERLAP_BY_DOW={
-  2:['10:00','10:30','14:00','14:30'],
-  3:['09:00','09:30','11:00','11:30','13:00','13:30'],
-  4:['10:00','10:30','11:00','11:30','15:00','15:30'],
-  5:['09:30','10:00','12:00','12:30'],
-  6:['09:00','09:30','11:00','11:30','14:00','14:30'],
-};
-function getMockBlocked(dateObj){
-  const dow=dateObj.getDay();
-  const base=MOCK_BLOCKS_BY_DOW[dow]||[];
-  const d=dateObj.getDate();
-  const extras=[];
-  if(d%4===0)extras.push('12:00');
-  if(d%5===0)extras.push('15:00');
-  if(d%3===0&&dow!==3)extras.push('10:00');
-  const all=[...new Set([...base,...extras])];
-  if(selectedSvc&&CAN_OVERLAP_SVCS.has(selectedSvc.id)){
-    const free=MOCK_OVERLAP_BY_DOW[dow]||[];
-    return all.filter(s=>!free.includes(s));
+/* ── Firebase turno cache y ocupación real ── */
+const _turnosCache={};
+let _dayListener=null;
+
+function _parseDurMins(dur){
+  if(typeof dur==='number')return dur;
+  const h=dur.match(/(\d+)\s*h/),mn=dur.match(/(\d+)\s*min/);
+  return(h?parseInt(h[1])*60:0)+(mn?parseInt(mn[1]):0)||60;
+}
+
+function _buildBlockedArr(data){
+  if(!data)return[];
+  const s=new Set();
+  Object.values(data).forEach(t=>{
+    if(t.estado==='cancelado'||!t.hora)return;
+    const p=t.hora.split(':');
+    const start=parseInt(p[0])*60+parseInt(p[1]);
+    const dur=_parseDurMins(t.duracion||60);
+    for(let m=start;m<start+dur;m+=30)s.add(fmtMin(m));
+  });
+  return Array.from(s);
+}
+
+function _detachDayListener(){
+  if(_dayListener){
+    firebase.database().ref('turnos/'+_dayListener.key).off('value',_dayListener.fn);
+    _dayListener=null;
   }
-  return all;
 }
-function getMockBlockedFull(dateObj){
-  const dow=dateObj.getDay();
-  const base=MOCK_BLOCKS_BY_DOW[dow]||[];
-  const d=dateObj.getDate();
-  const extras=[];
-  if(d%4===0)extras.push('12:00');
-  if(d%5===0)extras.push('15:00');
-  if(d%3===0&&dow!==3)extras.push('10:00');
-  return[...new Set([...base,...extras])];
+
+function _attachDayListener(dateKey){
+  _detachDayListener();
+  if(selectedSvc&&selectedDate)_renderSlotsList(selectedDate,_turnosCache[dateKey]||[]);
+  const fn=snap=>{
+    _turnosCache[dateKey]=_buildBlockedArr(snap.val());
+    if(selectedDate&&selectedDate.toISOString().split('T')[0]===dateKey)
+      _renderSlotsList(selectedDate,_turnosCache[dateKey]);
+    _updateCalDot(dateKey);
+  };
+  _dayListener={key:dateKey,fn};
+  firebase.database().ref('turnos/'+dateKey).on('value',fn);
 }
-function isSlotAvailable(startMin, dur, blocked){
+
+function _updateCalDot(dateKey){
+  const pts=dateKey.split('-');
+  const d=parseInt(pts[2]),mo=parseInt(pts[1])-1,yr=parseInt(pts[0]);
+  if(yr!==calYear||mo!==calMonth)return;
+  document.querySelectorAll('.cal-day:not(.disabled):not(.empty)').forEach(el=>{
+    const sp=el.querySelector('span');
+    if(!sp||parseInt(sp.textContent)!==d)return;
+    const dot=el.querySelector('.cal-dot');if(!dot)return;
+    const blocked=_turnosCache[dateKey]||[];
+    const dur=selectedSvc?selectedSvc.dur:60;
+    let avail=0;const last=CLOSE_HOUR*60-dur;
+    for(let m=OPEN_HOUR*60;m<=last;m+=30){if(isSlotAvailable(m,dur,blocked))avail++;}
+    dot.className='cal-dot';
+    if(avail===0){dot.classList.add('full');if(!el.classList.contains('selected'))el.classList.add('disabled');}
+    else if(avail<=3){dot.classList.add('few');}
+    else{dot.classList.add('ok');}
+  });
+}
+
+async function _preloadMonth(year,month){
+  const pad=n=>String(n).padStart(2,'0');
+  const start=`${year}-${pad(month+1)}-01`;
+  const end=`${year}-${pad(month+1)}-31`;
+  try{
+    const snap=await firebase.database().ref('turnos').orderByKey().startAt(start).endAt(end).once('value');
+    const data=snap.val()||{};
+    const days=new Date(year,month+1,0).getDate();
+    for(let d=1;d<=days;d++){
+      const key=`${year}-${pad(month+1)}-${pad(d)}`;
+      _turnosCache[key]=_buildBlockedArr(data[key]||null);
+    }
+    if(selectedSvc){for(let d=1;d<=days;d++){_updateCalDot(`${year}-${pad(month+1)}-${pad(d)}`);}}
+  }catch(e){console.warn('Error preloading turnos:',e);}
+}
+
+function isSlotAvailable(startMin,dur,blocked){
   if(startMin+dur>CLOSE_HOUR*60)return false;
-  for(let m=startMin; m<startMin+dur; m+=30){
-    if(blocked.includes(fmtMin(m)))return false;
-  }
+  for(let m=startMin;m<startMin+dur;m+=30){if(blocked.includes(fmtMin(m)))return false;}
   return true;
 }
+
 function countAvailableSlots(dateObj){
   if(!selectedSvc)return 99;
   const dur=selectedSvc.dur;
   const lastStart=CLOSE_HOUR*60-dur;
-  const blocked=getMockBlocked(dateObj);
+  const key=dateObj.toISOString().split('T')[0];
+  const blocked=_turnosCache[key]||[];
   let count=0;
-  for(let m=OPEN_HOUR*60;m<=lastStart;m+=30){
-    if(isSlotAvailable(m,dur,blocked))count++;
-  }
+  for(let m=OPEN_HOUR*60;m<=lastStart;m+=30){if(isSlotAvailable(m,dur,blocked))count++;}
   return count;
 }
 
@@ -1957,9 +1991,10 @@ function renderCal(){
       }
     });
   }
+  _preloadMonth(calYear,calMonth);
 }
-function calPrev(){calMonth--;if(calMonth<0){calMonth=11;calYear--;}renderCal();}
-function calNext(){calMonth++;if(calMonth>11){calMonth=0;calYear++;}renderCal();}
+function calPrev(){_detachDayListener();calMonth--;if(calMonth<0){calMonth=11;calYear--;}renderCal();}
+function calNext(){_detachDayListener();calMonth++;if(calMonth>11){calMonth=0;calYear++;}renderCal();}
 function selectDate(d,el){
   document.querySelectorAll('.cal-day').forEach(c=>c.classList.remove('selected'));
   el.classList.add('selected');
@@ -2031,10 +2066,14 @@ function setTlBar(type, startMin, dur){
 /* ── SLOTS LIST ── */
 function buildSlotsList(dateObj){
   if(!selectedSvc||!dateObj)return;
+  _attachDayListener(dateObj.toISOString().split('T')[0]);
+}
+
+function _renderSlotsList(dateObj,blocked){
+  if(!selectedSvc)return;
   const dur=selectedSvc.dur;
   const lastStart=CLOSE_HOUR*60-dur;
   if(lastStart<OPEN_HOUR*60)return;
-  const blocked=getMockBlocked(dateObj);
   const fullDays=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
   const months2=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
   document.getElementById('slotsDayTitle').textContent=
@@ -2043,16 +2082,14 @@ function buildSlotsList(dateObj){
   document.getElementById('slotsContent').style.display='block';
   buildCompactTimeline(blocked);
   const list=document.getElementById('slotsList');
+  const prevSelected=selectedTime;
   list.innerHTML='';
   hideSummary();
-  const isOverlapSvc=selectedSvc&&CAN_OVERLAP_SVCS.has(selectedSvc.id);
-  const fullBlocked=isOverlapSvc?getMockBlockedFull(dateObj):blocked;
   for(let m=OPEN_HOUR*60;m<=lastStart;m+=30){
     const timeStr=fmtMin(m);
     const isBlocked=!isSlotAvailable(m,dur,blocked);
-    const isOverlapSlot=isOverlapSvc&&!isBlocked&&!isSlotAvailable(m,dur,fullBlocked);
     const row=document.createElement('div');
-    row.className='slot-row '+(isBlocked?'ocupado':isOverlapSlot?'libre superposicion':'libre');
+    row.className='slot-row '+(isBlocked?'ocupado':'libre');
     const timeSpan=document.createElement('span');
     timeSpan.className='slot-time';timeSpan.textContent=timeStr;
     const badge=document.createElement('span');
@@ -2060,9 +2097,13 @@ function buildSlotsList(dateObj){
     badge.textContent=isBlocked?'Ocupado':'Disponible';
     row.appendChild(timeSpan);row.appendChild(badge);
     if(!isBlocked){
-      row.addEventListener('mouseenter',()=>{
-        if(!row.classList.contains('selected'))setTlBar('ghost',m,dur);
-      });
+      if(timeStr===prevSelected){
+        row.classList.add('selected');
+        selectedTime=timeStr;
+        setTlBar('solid',m,dur);
+        showSummary();
+      }
+      row.addEventListener('mouseenter',()=>{if(!row.classList.contains('selected'))setTlBar('ghost',m,dur);});
       row.addEventListener('mouseleave',()=>setTlBar('clear-ghost'));
       row.addEventListener('click',()=>{
         document.querySelectorAll('.slot-row').forEach(r=>r.classList.remove('selected'));
@@ -2074,10 +2115,9 @@ function buildSlotsList(dateObj){
     }
     list.appendChild(row);
   }
-  /* scroll al primer slot disponible */
-  const firstFree=list.querySelector('.slot-row.libre');
-  if(firstFree){
-    setTimeout(()=>firstFree.scrollIntoView({block:'nearest',behavior:'smooth'}),80);
+  if(!selectedTime){
+    const firstFree=list.querySelector('.slot-row.libre');
+    if(firstFree){setTimeout(()=>firstFree.scrollIntoView({block:'nearest',behavior:'smooth'}),80);}
   }
 }
 function buildCompactTimeline(blocked){
