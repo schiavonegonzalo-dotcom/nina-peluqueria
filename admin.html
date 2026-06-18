@@ -307,6 +307,68 @@ body{font-family:'Montserrat',sans-serif;background:#F0ECF8;color:#1A1018;min-he
   border:2px dashed var(--violet-light);
 }
 
+/* ═══════════ TURNOS ═══════════ */
+.turnos-date-nav{display:flex;align-items:center;gap:.5rem;background:#fff;border-radius:10px;padding:.7rem 1rem;margin-bottom:.9rem;box-shadow:0 2px 8px rgba(136,80,190,.07);border:1px solid rgba(136,80,190,.1);}
+.turnos-nav-btn{background:var(--violet-pale);border:1.5px solid var(--violet-light);border-radius:6px;color:var(--violet);padding:.38rem .75rem;cursor:pointer;font-size:.75rem;font-weight:800;transition:all .2s;flex-shrink:0;}
+.turnos-nav-btn:hover{background:#ede0ff;border-color:var(--violet);}
+.turnos-date-center{flex:1;text-align:center;}
+.turnos-date-input{border:none;background:none;font-family:'Montserrat',sans-serif;font-size:.88rem;font-weight:700;color:var(--dark);text-align:center;cursor:pointer;outline:none;width:100%;}
+.turnos-date-rel{font-size:.58rem;font-weight:600;color:var(--gray-light);margin-top:.12rem;letter-spacing:.06em;}
+.turnos-today-btn{background:none;border:1.5px solid rgba(136,80,190,.18);border-radius:6px;color:var(--gray-light);padding:.3rem .6rem;cursor:pointer;font-size:.52rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;transition:all .2s;white-space:nowrap;}
+.turnos-today-btn:hover{border-color:var(--violet);color:var(--violet);}
+.turnos-summary{display:flex;gap:.5rem;margin-bottom:.9rem;}
+.summary-chip{flex:1;background:#fff;border-radius:8px;padding:.6rem .5rem;text-align:center;box-shadow:0 1px 6px rgba(136,80,190,.08);border:1px solid rgba(136,80,190,.08);}
+.summary-chip-n{font-size:1.3rem;font-weight:900;color:var(--violet);}
+.summary-chip-lbl{font-size:.48rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-light);margin-top:.1rem;}
+.turno-card{background:#fff;border-radius:10px;margin-bottom:.55rem;overflow:hidden;box-shadow:0 2px 8px rgba(136,80,190,.07);border:1px solid rgba(136,80,190,.1);}
+.turno-card.cancelado{opacity:.5;border-style:dashed;}
+.turno-card-main{display:flex;align-items:flex-start;gap:.75rem;padding:.8rem .9rem;}
+.turno-hora-wrap{flex-shrink:0;text-align:center;min-width:38px;}
+.turno-hora{font-size:1rem;font-weight:900;color:var(--violet);line-height:1;}
+.turno-hora-dur{font-size:.48rem;font-weight:600;color:var(--gray-light);letter-spacing:.04em;margin-top:.22rem;}
+.turno-info{flex:1;min-width:0;}
+.turno-nombre{font-size:.85rem;font-weight:800;color:var(--dark);}
+.turno-svc{font-size:.65rem;font-weight:700;color:var(--orange);margin-top:.08rem;}
+.turno-contact{font-size:.6rem;color:var(--gray-light);margin-top:.2rem;display:flex;gap:.5rem;flex-wrap:wrap;}
+.turno-actions{display:flex;flex-direction:column;align-items:flex-end;gap:.3rem;flex-shrink:0;}
+.turno-status{font-size:.48rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.18rem .5rem;border-radius:20px;white-space:nowrap;}
+.turno-status.confirmado{background:rgba(34,197,94,.12);color:#16A34A;}
+.turno-status.cancelado{background:rgba(239,68,68,.1);color:var(--danger);}
+.turno-status.manual{background:rgba(250,60,1,.1);color:var(--orange);}
+.turno-btns{display:flex;gap:.3rem;}
+.turno-btn{background:var(--violet-pale);border:1.5px solid var(--violet-light);border-radius:5px;color:var(--violet);padding:.28rem .55rem;cursor:pointer;font-size:.58rem;font-weight:700;white-space:nowrap;transition:all .2s;font-family:'Montserrat',sans-serif;}
+.turno-btn:hover{background:#ede0ff;border-color:var(--violet);}
+.turno-btn.danger{background:rgba(239,68,68,.07);border-color:rgba(239,68,68,.22);color:var(--danger);}
+.turno-btn.danger:hover{background:rgba(239,68,68,.14);}
+.turno-btn.restore{background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.25);color:#16A34A;}
+.turno-nota{font-size:.63rem;color:var(--gray);font-style:italic;padding:.35rem .9rem .5rem 3.2rem;border-top:1px solid rgba(136,80,190,.06);}
+.turnos-empty{background:#fff;border-radius:10px;padding:2.5rem 1rem;text-align:center;border:1.5px dashed var(--violet-light);}
+.turnos-empty-icon{font-size:2rem;margin-bottom:.5rem;}
+.turnos-empty-txt{font-size:.75rem;font-weight:600;color:var(--gray-light);}
+.turnos-add-btn{display:flex;align-items:center;justify-content:center;gap:.5rem;background:var(--violet);color:#fff;border:none;width:100%;padding:.82rem;border-radius:10px;font-family:'Montserrat',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;margin-top:.85rem;transition:background .2s,transform .15s;}
+.turnos-add-btn:hover{background:var(--violet-deep);transform:translateY(-1px);}
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(26,16,40,.6);z-index:500;display:none;align-items:flex-end;justify-content:center;padding:0;}
+.modal-overlay.open{display:flex;}
+@media(min-width:600px){.modal-overlay{align-items:center;padding:1rem;}}
+.modal-sheet{background:#fff;border-radius:16px 16px 0 0;width:100%;max-width:500px;padding:1.4rem 1.2rem 2rem;max-height:92vh;overflow-y:auto;}
+@media(min-width:600px){.modal-sheet{border-radius:16px;}}
+.modal-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.1rem;}
+.modal-title{font-size:.95rem;font-weight:900;text-transform:uppercase;color:var(--dark);}
+.modal-close{background:none;border:none;color:var(--gray-light);font-size:1.2rem;cursor:pointer;padding:.2rem;line-height:1;}
+.modal-close:hover{color:var(--dark);}
+.modal-field{margin-bottom:.8rem;}
+.modal-label{font-size:.56rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--violet);display:block;margin-bottom:.32rem;}
+.modal-input,.modal-select{width:100%;border:1.5px solid rgba(136,80,190,.2);border-radius:8px;padding:.62rem .82rem;font-family:'Montserrat',sans-serif;font-size:.84rem;font-weight:500;color:var(--dark);outline:none;transition:border-color .2s;background:#fff;}
+.modal-input:focus,.modal-select:focus{border-color:var(--violet);}
+.modal-row{display:flex;gap:.55rem;}
+.modal-row .modal-field{flex:1;}
+.modal-btns{display:flex;gap:.55rem;margin-top:1.1rem;}
+.modal-btn-cancel{flex:1;background:var(--violet-pale);border:1.5px solid var(--violet-light);border-radius:8px;color:var(--gray);padding:.72rem;font-family:'Montserrat',sans-serif;font-size:.68rem;font-weight:700;cursor:pointer;transition:background .2s;}
+.modal-btn-cancel:hover{background:#ede0ff;}
+.modal-btn-ok{flex:2;background:var(--violet);border:none;border-radius:8px;color:#fff;padding:.72rem;font-family:'Montserrat',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .2s;}
+.modal-btn-ok:hover{background:var(--violet-deep);}
+
 /* ═══════════ BOTTOM NAV ═══════════ */
 .bottom-nav{
   position:fixed;bottom:0;left:0;right:0;z-index:200;
@@ -479,7 +541,79 @@ body{font-family:'Montserrat',sans-serif;background:#F0ECF8;color:#1A1018;min-he
       <div class="gallery-grid" id="galleryGrid"></div>
     </div>
 
+    <!-- ── TURNOS ── -->
+    <div id="sec-turnos" class="admin-sec">
+      <div class="sec-header">
+        <div><div class="sec-eyebrow">Agenda</div><div class="sec-title">Turnos</div></div>
+      </div>
+
+      <div class="turnos-date-nav">
+        <button class="turnos-nav-btn" onclick="turnosNavDate(-1)">←</button>
+        <div class="turnos-date-center">
+          <input type="date" class="turnos-date-input" id="turnosDateInput" onchange="turnosSetDate(this.value)"/>
+          <div class="turnos-date-rel" id="turnosDateRel"></div>
+        </div>
+        <button class="turnos-today-btn" onclick="turnosGoToday()">Hoy</button>
+        <button class="turnos-nav-btn" onclick="turnosNavDate(1)">→</button>
+      </div>
+
+      <div class="turnos-summary">
+        <div class="summary-chip"><div class="summary-chip-n" id="chip-total">—</div><div class="summary-chip-lbl">Turnos</div></div>
+        <div class="summary-chip"><div class="summary-chip-n" id="chip-confirmados" style="color:var(--success)">—</div><div class="summary-chip-lbl">Confirmados</div></div>
+        <div class="summary-chip"><div class="summary-chip-n" id="chip-cancelados" style="color:var(--danger)">—</div><div class="summary-chip-lbl">Cancelados</div></div>
+      </div>
+
+      <div id="turnosList"></div>
+      <button class="turnos-add-btn" onclick="openModalNuevoTurno()">+ Nuevo turno manual</button>
+    </div>
+
   </div><!-- /admin-content -->
+
+  <!-- Modal turnos -->
+  <div class="modal-overlay" id="turnoModal" onclick="if(event.target===this)closeModal()">
+    <div class="modal-sheet">
+      <div class="modal-hd">
+        <div class="modal-title" id="modalTitle">Nuevo turno</div>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-row">
+        <div class="modal-field">
+          <label class="modal-label">Fecha</label>
+          <input type="date" class="modal-input" id="m-fecha"/>
+        </div>
+        <div class="modal-field">
+          <label class="modal-label">Hora</label>
+          <input type="time" class="modal-input" id="m-hora"/>
+        </div>
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">Servicio</label>
+        <select class="modal-select" id="m-svc"></select>
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">Nombre cliente</label>
+        <input type="text" class="modal-input" id="m-nombre" placeholder="Nombre completo"/>
+      </div>
+      <div class="modal-row">
+        <div class="modal-field">
+          <label class="modal-label">WhatsApp</label>
+          <input type="tel" class="modal-input" id="m-wa" placeholder="Ej: 2616123456"/>
+        </div>
+        <div class="modal-field">
+          <label class="modal-label">Email</label>
+          <input type="email" class="modal-input" id="m-email" placeholder="opcional"/>
+        </div>
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">Nota</label>
+        <input type="text" class="modal-input" id="m-nota" placeholder="Ej: cliente nuevo, alergia a tinte..."/>
+      </div>
+      <div class="modal-btns">
+        <button class="modal-btn-cancel" onclick="closeModal()">Cancelar</button>
+        <button class="modal-btn-ok" onclick="saveModalTurno()">Guardar turno</button>
+      </div>
+    </div>
+  </div>
 
   <nav class="bottom-nav">
     <button class="bnav-btn active" id="bnav-precios" onclick="switchTab('precios')">
@@ -493,6 +627,9 @@ body{font-family:'Montserrat',sans-serif;background:#F0ECF8;color:#1A1018;min-he
     </button>
     <button class="bnav-btn" id="bnav-galeria" onclick="switchTab('galeria')">
       <span class="bnav-icon">📸</span>Galería
+    </button>
+    <button class="bnav-btn" id="bnav-turnos" onclick="switchTab('turnos')">
+      <span class="bnav-icon">📅</span>Turnos
     </button>
   </nav>
 
@@ -942,13 +1079,223 @@ function saveSection(sec){
     });
 }
 
+/* ══════════════════ TURNOS ══════════════════ */
+let turnosCurrentDate = new Date();
+let turnosListener = null;
+
+function turnosFormatKey(d){ return d.toISOString().split('T')[0]; }
+
+function turnosDayLabel(d){
+  const days=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+  const months=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  const today=new Date(); today.setHours(0,0,0,0);
+  const dd=new Date(d); dd.setHours(0,0,0,0);
+  const diff=(dd-today)/86400000;
+  const rel=diff===0?'Hoy':diff===1?'Mañana':diff===-1?'Ayer':'';
+  return (rel?rel+' · ':'')+days[d.getDay()]+' '+d.getDate()+' de '+months[d.getMonth()];
+}
+
+function turnosUpdateUI(){
+  const key=turnosFormatKey(turnosCurrentDate);
+  document.getElementById('turnosDateInput').value=key;
+  document.getElementById('turnosDateRel').textContent=turnosDayLabel(turnosCurrentDate);
+}
+
+function turnosNavDate(delta){
+  const d=new Date(turnosCurrentDate);
+  d.setDate(d.getDate()+delta);
+  turnosCurrentDate=d;
+  turnosUpdateUI();
+  loadTurnos();
+}
+
+function turnosSetDate(val){
+  turnosCurrentDate=new Date(val+'T12:00:00');
+  turnosUpdateUI();
+  loadTurnos();
+}
+
+function turnosGoToday(){
+  turnosCurrentDate=new Date();
+  turnosUpdateUI();
+  loadTurnos();
+}
+
+function detachTurnosListener(){
+  if(turnosListener){
+    db.ref('turnos/'+turnosListener.key).off('value',turnosListener.fn);
+    turnosListener=null;
+  }
+}
+
+function loadTurnos(){
+  detachTurnosListener();
+  document.getElementById('turnosList').innerHTML='<div style="padding:1.5rem;text-align:center;font-size:.7rem;color:var(--gray-light)">Cargando...</div>';
+  const key=turnosFormatKey(turnosCurrentDate);
+  const fn=snap=>renderTurnos(snap.val());
+  turnosListener={key,fn};
+  db.ref('turnos/'+key).on('value',fn);
+}
+
+function renderTurnos(data){
+  const list=document.getElementById('turnosList');
+  list.innerHTML='';
+  if(!data){
+    document.getElementById('chip-total').textContent='0';
+    document.getElementById('chip-confirmados').textContent='0';
+    document.getElementById('chip-cancelados').textContent='0';
+    list.innerHTML=`<div class="turnos-empty"><div class="turnos-empty-icon">📅</div><div class="turnos-empty-txt">Sin turnos para este día</div></div>`;
+    return;
+  }
+  const arr=Object.entries(data).map(([id,t])=>({id,...t})).sort((a,b)=>a.hora.localeCompare(b.hora));
+  const confirmados=arr.filter(t=>t.estado!=='cancelado').length;
+  const cancelados=arr.filter(t=>t.estado==='cancelado').length;
+  document.getElementById('chip-total').textContent=arr.length;
+  document.getElementById('chip-confirmados').textContent=confirmados;
+  document.getElementById('chip-cancelados').textContent=cancelados;
+  arr.forEach(t=>{
+    const card=document.createElement('div');
+    card.className='turno-card'+(t.estado==='cancelado'?' cancelado':'');
+    const stClass=t.estado==='cancelado'?'cancelado':t.origen==='manual'?'manual':'confirmado';
+    const stLabel=t.estado==='cancelado'?'Cancelado':t.origen==='manual'?'Manual':'Web';
+    const contactParts=[];
+    if(t.wa) contactParts.push('WA: '+t.wa);
+    if(t.email) contactParts.push(t.email);
+    const actionBtns=t.estado!=='cancelado'
+      ?`<button class="turno-btn" onclick="openModalMoverTurno('${t.id}')">Editar</button>
+         <button class="turno-btn danger" onclick="cancelarTurno('${t.id}')">Cancelar</button>`
+      :`<button class="turno-btn restore" onclick="restaurarTurno('${t.id}')">Restaurar</button>`;
+    card.innerHTML=`
+      <div class="turno-card-main">
+        <div class="turno-hora-wrap">
+          <div class="turno-hora">${t.hora}</div>
+          <div class="turno-hora-dur">${t.duracion||''}</div>
+        </div>
+        <div class="turno-info">
+          <div class="turno-nombre">${t.nombre}</div>
+          <div class="turno-svc">${t.servicio}</div>
+          ${contactParts.length?`<div class="turno-contact">${contactParts.map(p=>`<span>${p}</span>`).join('')}</div>`:''}
+        </div>
+        <div class="turno-actions">
+          <span class="turno-status ${stClass}">${stLabel}</span>
+          <div class="turno-btns">${actionBtns}</div>
+        </div>
+      </div>
+      ${t.nota?`<div class="turno-nota">${t.nota}</div>`:''}`;
+    list.appendChild(card);
+  });
+}
+
+function cancelarTurno(id){
+  const key=turnosFormatKey(turnosCurrentDate);
+  db.ref('turnos/'+key+'/'+id+'/estado').set('cancelado')
+    .then(()=>showToast('Turno cancelado'))
+    .catch(()=>showToast('⚠️ Error al cancelar'));
+}
+
+function restaurarTurno(id){
+  const key=turnosFormatKey(turnosCurrentDate);
+  db.ref('turnos/'+key+'/'+id+'/estado').set('confirmado')
+    .then(()=>showToast('Turno restaurado'))
+    .catch(()=>showToast('⚠️ Error'));
+}
+
+/* ── Modal ── */
+let _modalEditId=null, _modalOrigDate=null;
+
+function buildSvcOptions(selId){
+  let opts='';
+  CONFIG.categories.forEach(cat=>{
+    cat.services.forEach(svc=>{
+      if(!svc.active) return;
+      opts+=`<option value="${svc.id}" data-name="${svc.name}" data-dur="${svc.dur}" ${svc.id===selId?'selected':''}>${svc.name} (${svc.dur})</option>`;
+      if(svc.options) svc.options.forEach(o=>{
+        opts+=`<option value="${o.id}" data-name="${o.name}" data-dur="${svc.dur}" ${o.id===selId?'selected':''}>   ↳ ${o.name} (${svc.dur})</option>`;
+      });
+    });
+  });
+  return opts;
+}
+
+function openModalNuevoTurno(){
+  _modalEditId=null; _modalOrigDate=null;
+  document.getElementById('m-fecha').value=turnosFormatKey(turnosCurrentDate);
+  document.getElementById('m-hora').value='';
+  document.getElementById('m-nombre').value='';
+  document.getElementById('m-wa').value='';
+  document.getElementById('m-email').value='';
+  document.getElementById('m-nota').value='';
+  document.getElementById('m-svc').innerHTML=buildSvcOptions(null);
+  document.getElementById('modalTitle').textContent='Nuevo turno manual';
+  document.getElementById('turnoModal').classList.add('open');
+}
+
+function openModalMoverTurno(id){
+  const key=turnosFormatKey(turnosCurrentDate);
+  db.ref('turnos/'+key+'/'+id).once('value').then(snap=>{
+    const t=snap.val(); if(!t) return;
+    _modalEditId=id; _modalOrigDate=key;
+    document.getElementById('m-fecha').value=key;
+    document.getElementById('m-hora').value=t.hora;
+    document.getElementById('m-nombre').value=t.nombre;
+    document.getElementById('m-wa').value=t.wa||'';
+    document.getElementById('m-email').value=t.email||'';
+    document.getElementById('m-nota').value=t.nota||'';
+    document.getElementById('m-svc').innerHTML=buildSvcOptions(t.servicioId);
+    document.getElementById('modalTitle').textContent='Editar turno';
+    document.getElementById('turnoModal').classList.add('open');
+  });
+}
+
+function closeModal(){
+  document.getElementById('turnoModal').classList.remove('open');
+  _modalEditId=null; _modalOrigDate=null;
+}
+
+async function saveModalTurno(){
+  const fecha=document.getElementById('m-fecha').value;
+  const hora=document.getElementById('m-hora').value;
+  const nombre=document.getElementById('m-nombre').value.trim();
+  const wa=document.getElementById('m-wa').value.trim();
+  const email=document.getElementById('m-email').value.trim();
+  const nota=document.getElementById('m-nota').value.trim();
+  const svcSel=document.getElementById('m-svc');
+  const svcOpt=svcSel.options[svcSel.selectedIndex];
+  if(!fecha||!hora||!nombre){showToast('Completá fecha, hora y nombre');return;}
+  const data={nombre,wa,email,nota,servicio:svcOpt.dataset.name,servicioId:svcSel.value,duracion:svcOpt.dataset.dur,hora,fecha,estado:'confirmado',origen:'manual',ts:Date.now()};
+  try{
+    if(_modalEditId){
+      if(_modalOrigDate!==fecha){
+        await db.ref('turnos/'+_modalOrigDate+'/'+_modalEditId).remove();
+        await db.ref('turnos/'+fecha).push(data);
+        turnosCurrentDate=new Date(fecha+'T12:00:00');
+        turnosUpdateUI();
+        loadTurnos();
+      } else {
+        await db.ref('turnos/'+fecha+'/'+_modalEditId).update(data);
+      }
+      showToast('Turno actualizado');
+    } else {
+      await db.ref('turnos/'+fecha).push(data);
+      turnosCurrentDate=new Date(fecha+'T12:00:00');
+      turnosUpdateUI();
+      loadTurnos();
+      showToast('Turno creado');
+    }
+    closeModal();
+  } catch(e){showToast('⚠️ Error al guardar');}
+}
+
 /* ══════════════════ NAV ══════════════════ */
 function switchTab(tab){
+  const wasTurnos=document.getElementById('bnav-turnos').classList.contains('active');
+  if(wasTurnos && tab!=='turnos') detachTurnosListener();
   document.querySelectorAll('.admin-sec').forEach(s=>s.classList.remove('active'));
   document.getElementById('sec-'+tab).classList.add('active');
   document.querySelectorAll('.bnav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('bnav-'+tab).classList.add('active');
   window.scrollTo({top:0,behavior:'smooth'});
+  if(tab==='turnos'){turnosUpdateUI();loadTurnos();}
 }
 
 /* ══════════════════ UTILS ══════════════════ */

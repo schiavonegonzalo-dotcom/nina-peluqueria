@@ -2188,6 +2188,19 @@ async function confirmarTurno(){
     notifMsg += `📧 Te enviamos confirmación a <strong>${email}</strong>.`;
   }
   document.getElementById('confirmNotif').innerHTML = notifMsg || '✅ Turno confirmado.';
+
+  /* Guardar turno en Firebase */
+  try {
+    const fechaKey = selectedDate.toISOString().split('T')[0];
+    firebase.database().ref('turnos/'+fechaKey).push({
+      nombre, email: email||'', wa,
+      servicio: selectedSvc.name, servicioId: selectedSvc.id,
+      hora: selectedTime, duracion: selectedSvc.dur,
+      nota: nota||'', estado: 'confirmado', origen: 'web',
+      ts: Date.now()
+    });
+  } catch(e){ console.warn('Error guardando turno:', e); }
+
   goStep(4);
 }
 
