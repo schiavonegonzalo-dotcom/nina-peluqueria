@@ -1147,42 +1147,53 @@ function renderTurnos(data){
     list.innerHTML=`<div class="turnos-empty"><div class="turnos-empty-icon">📅</div><div class="turnos-empty-txt">Sin turnos para este día</div></div>`;
     return;
   }
-  const arr=Object.entries(data).map(([id,t])=>({id,...t})).sort((a,b)=>a.hora.localeCompare(b.hora));
+  let arr;
+  try {
+    arr=Object.entries(data).map(([id,t])=>({id,...t})).sort((a,b)=>(a.hora||'').localeCompare(b.hora||''));
+  } catch(e){
+    console.error('[renderTurnos] error al parsear datos de Firebase:',e);
+    list.innerHTML=`<div class="turnos-empty"><div class="turnos-empty-txt">Error al cargar turnos. Recargá la página.</div></div>`;
+    return;
+  }
   const confirmados=arr.filter(t=>t.estado!=='cancelado').length;
   const cancelados=arr.filter(t=>t.estado==='cancelado').length;
   document.getElementById('chip-total').textContent=arr.length;
   document.getElementById('chip-confirmados').textContent=confirmados;
   document.getElementById('chip-cancelados').textContent=cancelados;
   arr.forEach(t=>{
-    const card=document.createElement('div');
-    card.className='turno-card'+(t.estado==='cancelado'?' cancelado':'');
-    const stClass=t.estado==='cancelado'?'cancelado':t.origen==='manual'?'manual':'confirmado';
-    const stLabel=t.estado==='cancelado'?'Cancelado':t.origen==='manual'?'Manual':'Web';
-    const contactParts=[];
-    if(t.wa) contactParts.push('WA: '+t.wa);
-    if(t.email) contactParts.push(t.email);
-    const actionBtns=t.estado!=='cancelado'
-      ?`<button class="turno-btn" onclick="openModalMoverTurno('${t.id}')">Editar</button>
-         <button class="turno-btn danger" onclick="cancelarTurno('${t.id}')">Cancelar</button>`
-      :`<button class="turno-btn restore" onclick="restaurarTurno('${t.id}')">Restaurar</button>`;
-    card.innerHTML=`
-      <div class="turno-card-main">
-        <div class="turno-hora-wrap">
-          <div class="turno-hora">${t.hora}</div>
-          <div class="turno-hora-dur">${t.duracion||''}</div>
+    try {
+      const card=document.createElement('div');
+      card.className='turno-card'+(t.estado==='cancelado'?' cancelado':'');
+      const stClass=t.estado==='cancelado'?'cancelado':t.origen==='manual'?'manual':'confirmado';
+      const stLabel=t.estado==='cancelado'?'Cancelado':t.origen==='manual'?'Manual':'Web';
+      const contactParts=[];
+      if(t.wa) contactParts.push('WA: '+t.wa);
+      if(t.email) contactParts.push(t.email);
+      const actionBtns=t.estado!=='cancelado'
+        ?`<button class="turno-btn" onclick="openModalMoverTurno('${t.id}')">Editar</button>
+           <button class="turno-btn danger" onclick="cancelarTurno('${t.id}')">Cancelar</button>`
+        :`<button class="turno-btn restore" onclick="restaurarTurno('${t.id}')">Restaurar</button>`;
+      card.innerHTML=`
+        <div class="turno-card-main">
+          <div class="turno-hora-wrap">
+            <div class="turno-hora">${t.hora||'—'}</div>
+            <div class="turno-hora-dur">${t.duracion||''}</div>
+          </div>
+          <div class="turno-info">
+            <div class="turno-nombre">${t.nombre||'Sin nombre'}</div>
+            <div class="turno-svc">${t.servicio||'Sin servicio'}</div>
+            ${contactParts.length?`<div class="turno-contact">${contactParts.map(p=>`<span>${p}</span>`).join('')}</div>`:''}
+          </div>
+          <div class="turno-actions">
+            <span class="turno-status ${stClass}">${stLabel}</span>
+            <div class="turno-btns">${actionBtns}</div>
+          </div>
         </div>
-        <div class="turno-info">
-          <div class="turno-nombre">${t.nombre}</div>
-          <div class="turno-svc">${t.servicio}</div>
-          ${contactParts.length?`<div class="turno-contact">${contactParts.map(p=>`<span>${p}</span>`).join('')}</div>`:''}
-        </div>
-        <div class="turno-actions">
-          <span class="turno-status ${stClass}">${stLabel}</span>
-          <div class="turno-btns">${actionBtns}</div>
-        </div>
-      </div>
-      ${t.nota?`<div class="turno-nota">${t.nota}</div>`:''}`;
-    list.appendChild(card);
+        ${t.nota?`<div class="turno-nota">${t.nota}</div>`:''}`;
+      list.appendChild(card);
+    } catch(e){
+      console.error('[renderTurnos] error al renderizar turno:',t?.id,e);
+    }
   });
 }
 
