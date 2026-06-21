@@ -2272,6 +2272,7 @@ async function confirmarTurno(){
   const nota   = document.getElementById('dNota').value.trim();
   const notif  = document.querySelector('input[name=notif]:checked').value;
 
+  if(!selectedSvc||!selectedDate||!selectedTime){alert('Seleccioná un servicio, fecha y horario antes de confirmar.');return;}
   if(!nombre){alert('Por favor ingresá tu nombre completo.');return;}
   if((notif==='whatsapp'||notif==='ambos')&&!wa){alert('Por favor ingresá tu número de WhatsApp.');return;}
   if((notif==='email'||notif==='ambos')&&!email){alert('Por favor ingresá tu email.');return;}
