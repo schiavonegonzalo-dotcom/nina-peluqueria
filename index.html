@@ -1155,6 +1155,112 @@ html.dark .map-ph iframe{filter:grayscale(20%) invert(92%) hue-rotate(180deg);}
 html.dark footer{background:#06040A;}
 html.dark .footer-copy{color:var(--gray-light);}
 html.dark .socials a{color:var(--gray-light);}
+
+/* ── SEARCH ── */
+.nav-search-btn{
+  background:none;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  width:36px;height:36px;border-radius:50%;
+  color:var(--gray);transition:color .2s,background .2s;
+  padding:0;flex-shrink:0;
+}
+.nav-search-btn:hover{color:var(--violet-mid);background:var(--violet-pale);}
+.nav-search-btn svg{width:20px;height:20px;}
+
+.search-overlay{
+  position:fixed;inset:0;z-index:999;
+  background:rgba(30,10,50,0.55);
+  backdrop-filter:blur(6px);
+  display:flex;align-items:flex-start;justify-content:center;
+  padding-top:90px;
+  opacity:0;pointer-events:none;
+  transition:opacity .2s;
+}
+.search-overlay.open{opacity:1;pointer-events:all;}
+.search-panel{
+  width:100%;max-width:560px;
+  background:var(--white-ish,#fff);
+  border-radius:16px;
+  box-shadow:0 24px 60px rgba(136,80,190,.25);
+  overflow:hidden;
+  transform:translateY(-14px) scale(.98);
+  transition:transform .2s;
+}
+.search-overlay.open .search-panel{transform:none;}
+.search-input-wrap{
+  display:flex;align-items:center;gap:.75rem;
+  padding:1.1rem 1.4rem;
+  border-bottom:1px solid rgba(136,80,190,.12);
+}
+.search-input-wrap svg{flex-shrink:0;color:var(--violet-mid);}
+#searchInput{
+  flex:1;border:none;outline:none;background:transparent;
+  font-family:'Montserrat',sans-serif;
+  font-size:1rem;font-weight:500;color:var(--gray-dark,#222);
+}
+#searchInput::placeholder{color:#bbb;}
+.search-close-btn{
+  background:none;border:none;cursor:pointer;
+  color:#aaa;font-size:1.5rem;line-height:1;padding:0;
+  transition:color .2s;flex-shrink:0;
+}
+.search-close-btn:hover{color:var(--violet-mid);}
+#searchResults{max-height:400px;overflow-y:auto;}
+.search-empty{
+  padding:2rem 1.4rem;text-align:center;
+  color:#bbb;font-size:.8rem;letter-spacing:.06em;
+}
+.search-hint{
+  padding:.6rem 1.4rem .9rem;text-align:center;
+  color:#ccc;font-size:.7rem;letter-spacing:.06em;
+}
+.search-group-label{
+  padding:.7rem 1.4rem .3rem;
+  font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--violet-mid);opacity:.7;
+}
+.search-result{
+  display:flex;align-items:center;gap:1rem;
+  padding:.8rem 1.4rem;cursor:pointer;
+  transition:background .15s;
+  border-top:1px solid rgba(136,80,190,.06);
+}
+.search-result:hover,.search-result.focused{background:var(--violet-pale,#f5f0fc);}
+.search-result-icon{
+  width:36px;height:36px;border-radius:10px;
+  background:var(--violet-pale);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:1rem;
+}
+.search-result.nav-result .search-result-icon{background:#fff3ee;}
+.search-result-body{flex:1;min-width:0;}
+.search-result-name{
+  font-size:.82rem;font-weight:600;color:var(--gray-dark,#222);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.search-result-name mark{background:none;color:var(--violet-mid);font-weight:800;}
+.search-result-meta{
+  font-size:.68rem;color:#999;margin-top:.18rem;
+  display:flex;gap:.5rem;align-items:center;
+}
+.search-result-cat{
+  background:var(--violet-pale);color:var(--violet-mid);
+  padding:.1rem .5rem;border-radius:20px;
+  font-size:.6rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+}
+.search-result-arrow{
+  color:#ccc;font-size:.9rem;flex-shrink:0;
+  transition:color .15s,transform .15s;
+}
+.search-result:hover .search-result-arrow,
+.search-result.focused .search-result-arrow{color:var(--violet-mid);transform:translateX(3px);}
+html.dark #searchInput{color:#e8e0f5;}
+html.dark .search-panel{background:#1a1028;}
+html.dark .search-result-name{color:#e8e0f5;}
+html.dark .search-result:hover,html.dark .search-result.focused{background:rgba(136,80,190,.15);}
+@media(max-width:900px){
+  .search-overlay{padding:70px .8rem 0;}
+}
 </style>
 </head>
 <body>
@@ -1173,6 +1279,9 @@ html.dark .socials a{color:var(--gray-light);}
     <li><a href="#contacto">Contacto</a></li>
   </ul>
   <div style="display:flex;align-items:center;gap:1rem;">
+    <button class="nav-search-btn" onclick="openSearch()" aria-label="Buscar servicios">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    </button>
     <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Cambiar modo día/noche">
       <span class="t-icon t-sun">☀</span>
       <span class="t-icon t-moon">☽</span>
@@ -1180,6 +1289,18 @@ html.dark .socials a{color:var(--gray-light);}
     <button class="nav-cta" onclick="goSection('turnero')">Reservar turno</button>
   </div>
 </nav>
+
+<!-- ── SEARCH OVERLAY ── -->
+<div class="search-overlay" id="searchOverlay" onclick="handleSearchOverlayClick(event)">
+  <div class="search-panel" role="dialog" aria-modal="true" aria-label="Buscar servicios">
+    <div class="search-input-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="20" height="20"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" id="searchInput" placeholder="Buscar servicio, tratamiento..." autocomplete="off" spellcheck="false"/>
+      <button class="search-close-btn" onclick="closeSearch()" aria-label="Cerrar">&#x2715;</button>
+    </div>
+    <div id="searchResults"></div>
+  </div>
+</div>
 
 <!-- ── HERO ── -->
 <main>
@@ -2370,6 +2491,127 @@ function resetTurnero(){
   document.getElementById('dNota').value='';
   goStep(1);
 }
+
+/* ── SEARCH ── */
+const SEARCH_NAV=[
+  {label:'Reservar turno',        icon:'✂️', section:'turnero'},
+  {label:'Galería de trabajos',   icon:'📸', section:'galeria'},
+  {label:'Sobre mí',              icon:'👩', section:'nosotros'},
+  {label:'Contacto & Horarios',   icon:'📍', section:'contacto'},
+];
+const CAT_LABELS={corte:'Cortes',mechas:'Mechas',color:'Color',peinados:'Peinados',trat:'Tratamientos',ritual:'Rituales',pack:'Packs'};
+const CAT_ICONS ={corte:'✂️',mechas:'🎨',color:'🌈',peinados:'💫',trat:'✨',ritual:'🌿',pack:'⭐'};
+
+function normalizeQ(str){return str.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');}
+function highlightQ(text,q){
+  if(!q) return text;
+  const ni=normalizeQ(text).indexOf(normalizeQ(q));
+  if(ni<0) return text;
+  return text.slice(0,ni)+'<mark>'+text.slice(ni,ni+q.length)+'</mark>'+text.slice(ni+q.length);
+}
+
+let searchFocusIdx=-1;
+
+function openSearch(){
+  document.getElementById('searchOverlay').classList.add('open');
+  setTimeout(()=>document.getElementById('searchInput').focus(),60);
+  renderSearchResults('');
+}
+function closeSearch(){
+  document.getElementById('searchOverlay').classList.remove('open');
+  document.getElementById('searchInput').value='';
+  searchFocusIdx=-1;
+}
+function handleSearchOverlayClick(e){
+  if(e.target===document.getElementById('searchOverlay')) closeSearch();
+}
+
+function renderSearchResults(query){
+  const container=document.getElementById('searchResults');
+  const q=query.trim();
+  const nq=normalizeQ(q);
+
+  const svcs=q ? SERVICES.filter(s=>normalizeQ(s.name).includes(nq)) : SERVICES;
+  const navs=q ? SEARCH_NAV.filter(n=>normalizeQ(n.label).includes(nq)) : SEARCH_NAV;
+
+  if(q && !svcs.length && !navs.length){
+    container.innerHTML=`<div class="search-empty">Sin resultados para "<strong>${q}</strong>"<br><span style="font-size:.75rem">Probá con "corte", "mechas", "keratina"…</span></div>`;
+    return;
+  }
+
+  let html='';
+  if(svcs.length){
+    html+=`<div class="search-group-label">Servicios</div>`;
+    svcs.forEach(svc=>{
+      html+=`<div class="search-result" onclick="selectFromSearch('${svc.id}')">
+        <div class="search-result-icon">${CAT_ICONS[svc.cat]||'✂️'}</div>
+        <div class="search-result-body">
+          <div class="search-result-name">${highlightQ(svc.name,q)}</div>
+          <div class="search-result-meta">
+            <span class="search-result-cat">${CAT_LABELS[svc.cat]||svc.cat}</span>
+            <span>${formatDur(svc.dur)}</span>
+          </div>
+        </div>
+        <div class="search-result-arrow">→</div>
+      </div>`;
+    });
+  }
+  if(navs.length){
+    html+=`<div class="search-group-label">Secciones</div>`;
+    navs.forEach(n=>{
+      html+=`<div class="search-result nav-result" onclick="navFromSearch('${n.section}')">
+        <div class="search-result-icon">${n.icon}</div>
+        <div class="search-result-body">
+          <div class="search-result-name">${highlightQ(n.label,q)}</div>
+        </div>
+        <div class="search-result-arrow">→</div>
+      </div>`;
+    });
+  }
+  if(!q){
+    html+=`<div class="search-hint">Escribí para buscar · <kbd style="background:rgba(136,80,190,.1);padding:.1rem .4rem;border-radius:4px;font-size:.7rem">ESC</kbd> para cerrar</div>`;
+  }
+  container.innerHTML=html;
+  searchFocusIdx=-1;
+}
+
+function selectFromSearch(id){
+  closeSearch();
+  bookFromService(id);
+  goSection('turnero');
+}
+function navFromSearch(section){
+  closeSearch();
+  goSection(section);
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  const inp=document.getElementById('searchInput');
+  inp.addEventListener('input',e=>{renderSearchResults(e.target.value);});
+  inp.addEventListener('keydown',e=>{
+    const items=document.querySelectorAll('#searchResults .search-result');
+    if(e.key==='Escape'){closeSearch();return;}
+    if(e.key==='ArrowDown'){
+      e.preventDefault();
+      searchFocusIdx=Math.min(searchFocusIdx+1,items.length-1);
+      items.forEach((el,i)=>el.classList.toggle('focused',i===searchFocusIdx));
+      items[searchFocusIdx]?.scrollIntoView({block:'nearest'});
+    }
+    if(e.key==='ArrowUp'){
+      e.preventDefault();
+      searchFocusIdx=Math.max(searchFocusIdx-1,0);
+      items.forEach((el,i)=>el.classList.toggle('focused',i===searchFocusIdx));
+      items[searchFocusIdx]?.scrollIntoView({block:'nearest'});
+    }
+    if(e.key==='Enter'&&searchFocusIdx>=0) items[searchFocusIdx].click();
+  });
+});
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='/'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){
+    e.preventDefault();openSearch();
+  }
+});
 </script>
 </body>
 </html>
