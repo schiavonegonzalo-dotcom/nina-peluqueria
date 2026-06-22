@@ -1993,7 +1993,7 @@ function countAvailableSlots(dateObj){
   return count;
 }
 
-let selectedSvc=null, selectedDate=null, selectedTime=null;
+let selectedSvc=null, selectedDate=null, selectedTime=null, isConfirming=false;
 let calYear, calMonth;
 
 /* Build service cards */
@@ -2266,6 +2266,8 @@ function toggleContactFields(){
 
 /* ── CONFIRM ── */
 async function confirmarTurno(){
+  if(isConfirming) return;
+
   const nombre = document.getElementById('dNombre').value.trim();
   const wa     = document.getElementById('dWA').value.trim();
   const email  = document.getElementById('dEmail').value.trim();
@@ -2277,28 +2279,32 @@ async function confirmarTurno(){
   if((notif==='whatsapp'||notif==='ambos')&&!wa){alert('Por favor ingresá tu número de WhatsApp.');return;}
   if((notif==='email'||notif==='ambos')&&!email){alert('Por favor ingresá tu email.');return;}
 
-  const days   =['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
-  const months2=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-  const dateStr=`${days[selectedDate.getDay()]} ${selectedDate.getDate()} de ${months2[selectedDate.getMonth()]} de ${selectedDate.getFullYear()}`;
-  const durStr =formatDur(selectedSvc.dur);
+  isConfirming = true;
+  const btnConfirmar = document.querySelector('#step3 .btn-v');
+  if(btnConfirmar){ btnConfirmar.disabled=true; btnConfirmar.textContent='Procesando...'; }
 
-  /* Mostrar confirmación en pantalla */
-  document.getElementById('confirmDetail').innerHTML=
-    `<strong>${nombre}</strong>, tu turno quedó reservado:<br><br>
-    ✂️ <strong>${selectedSvc.name}</strong><br>
-    📅 <strong>${dateStr}</strong><br>
-    🕐 <strong>${selectedTime} hs</strong><br>
-    ⏱ Duración aproximada: <strong>${durStr}</strong>`;
-
-  /* Envío de notificaciones (email + WhatsApp) */
-  let notifMsg = await enviarNotificacionesTurno(nombre, email, wa, notif, selectedSvc, dateStr, selectedTime, nota);
-  if(notif==='email'||notif==='ambos'){
-    notifMsg += `📧 Te enviamos confirmación a <strong>${email}</strong>.`;
-  }
-  document.getElementById('confirmNotif').innerHTML = notifMsg || '✅ Turno confirmado.';
-
-  /* Guardar turno en Firebase */
   try {
+    const days   =['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+    const months2=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+    const dateStr=`${days[selectedDate.getDay()]} ${selectedDate.getDate()} de ${months2[selectedDate.getMonth()]} de ${selectedDate.getFullYear()}`;
+    const durStr =formatDur(selectedSvc.dur);
+
+    /* Mostrar confirmación en pantalla */
+    document.getElementById('confirmDetail').innerHTML=
+      `<strong>${nombre}</strong>, tu turno quedó reservado:<br><br>
+      ✂️ <strong>${selectedSvc.name}</strong><br>
+      📅 <strong>${dateStr}</strong><br>
+      🕐 <strong>${selectedTime} hs</strong><br>
+      ⏱ Duración aproximada: <strong>${durStr}</strong>`;
+
+    /* Envío de notificaciones (email + WhatsApp) */
+    let notifMsg = await enviarNotificacionesTurno(nombre, email, wa, notif, selectedSvc, dateStr, selectedTime, nota);
+    if(notif==='email'||notif==='ambos'){
+      notifMsg += `📧 Te enviamos confirmación a <strong>${email}</strong>.`;
+    }
+    document.getElementById('confirmNotif').innerHTML = notifMsg || '✅ Turno confirmado.';
+
+    /* Guardar turno en Firebase */
     const fechaKey = selectedDate.toISOString().split('T')[0];
     firebase.database().ref('turnos/'+fechaKey).push({
       nombre, email: email||'', wa,
@@ -2307,9 +2313,13 @@ async function confirmarTurno(){
       nota: nota||'', estado: 'confirmado', origen: 'web',
       ts: Date.now()
     });
-  } catch(e){ console.warn('Error guardando turno:', e); }
 
-  goStep(4);
+    goStep(4);
+  } catch(e){
+    console.warn('Error confirmando turno:', e);
+    if(btnConfirmar){ btnConfirmar.disabled=false; btnConfirmar.textContent='Confirmar turno ✓'; }
+    isConfirming = false;
+  }
 }
 
 /* ── FIREBASE PRECIOS ── */
@@ -2353,7 +2363,7 @@ async function confirmarTurno(){
 })();
 
 function resetTurnero(){
-  selectedSvc=null;selectedDate=null;selectedTime=null;
+  selectedSvc=null;selectedDate=null;selectedTime=null;isConfirming=false;
   document.getElementById('dNombre').value='';
   document.getElementById('dWA').value='';
   document.getElementById('dEmail').value='';
