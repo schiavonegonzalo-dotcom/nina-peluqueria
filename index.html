@@ -1729,20 +1729,12 @@ html.dark .search-result:hover,html.dark .search-result.focused{background:rgba(
         <input type="text" id="dNombre" placeholder="Tu nombre y apellido"/>
       </div>
       <div class="fg" id="fgWA">
-        <label>WhatsApp</label>
+        <label>WhatsApp <span style="font-weight:400;font-size:.75em;opacity:.6">(opcional)</span></label>
         <input type="tel" id="dWA" placeholder="+54 11 0000-0000"/>
       </div>
       <div class="fg" id="fgEmail">
         <label>Email</label>
         <input type="email" id="dEmail" placeholder="tu@email.com"/>
-      </div>
-      <div class="fg full">
-        <label>¿Cómo querés recibir la confirmación?</label>
-        <div class="notif-choice">
-          <label class="notif-opt"><input type="radio" name="notif" value="whatsapp" checked onchange="toggleContactFields()"/> 📱 WhatsApp</label>
-          <label class="notif-opt"><input type="radio" name="notif" value="email" onchange="toggleContactFields()"/> 📧 Email</label>
-          <label class="notif-opt"><input type="radio" name="notif" value="ambos" onchange="toggleContactFields()"/> 📱📧 Ambos</label>
-        </div>
       </div>
       <div class="fg full">
         <label>Nota opcional</label>
@@ -2445,15 +2437,6 @@ function goStep(n){
   }
 }
 
-/* ── CONTACT FIELDS TOGGLE ── */
-function toggleContactFields(){
-  const notif=document.querySelector('input[name=notif]:checked').value;
-  const fgWA=document.getElementById('fgWA');
-  const fgEmail=document.getElementById('fgEmail');
-  fgWA.style.display=(notif==='whatsapp'||notif==='ambos')?'':'none';
-  fgEmail.style.display=(notif==='email'||notif==='ambos')?'':'none';
-}
-
 /* ── CONFIRM ── */
 async function confirmarTurno(){
   if(isConfirming) return;
@@ -2462,12 +2445,11 @@ async function confirmarTurno(){
   const wa     = document.getElementById('dWA').value.trim();
   const email  = document.getElementById('dEmail').value.trim();
   const nota   = document.getElementById('dNota').value.trim();
-  const notif  = document.querySelector('input[name=notif]:checked').value;
+  const notif  = 'email';
 
   if(!selectedSvc||!selectedDate||!selectedTime){alert('Seleccioná un servicio, fecha y horario antes de confirmar.');return;}
   if(!nombre){alert('Por favor ingresá tu nombre completo.');return;}
-  if((notif==='whatsapp'||notif==='ambos')&&!wa){alert('Por favor ingresá tu número de WhatsApp.');return;}
-  if((notif==='email'||notif==='ambos')&&!email){alert('Por favor ingresá tu email.');return;}
+  if(!email){alert('Por favor ingresá tu email.');return;}
 
   isConfirming = true;
   const btnConfirmar = document.querySelector('#step3 .btn-v');
