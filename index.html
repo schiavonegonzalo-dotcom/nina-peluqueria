@@ -1934,7 +1934,7 @@ async function enviarNotificacionesTurno(nombre, email, wa, notif, selectedSvc, 
     console.error('Error de EmailJS al notificar al salón:', err);
   }
 
-  /* Envío 2: Confirmación directa al cliente */
+  /* Envío 2: Confirmación al cliente */
   if ((notif === 'email' || notif === 'ambos') && email) {
     try {
       await emailjs.send(EJS_SERVICE_ID, EJS_TPL_CLIENTE, { ...ejsData, to_email: email });
@@ -1942,6 +1942,14 @@ async function enviarNotificacionesTurno(nombre, email, wa, notif, selectedSvc, 
     } catch (err) {
       console.error('Error de EmailJS al notificar al cliente:', err);
     }
+  }
+
+  /* Envío 3: Copia del email del cliente al salón */
+  try {
+    await emailjs.send(EJS_SERVICE_ID, EJS_TPL_CLIENTE, { ...ejsData, to_email: SALON_EMAIL });
+    console.log('Copia de confirmación enviada al salón con éxito.');
+  } catch (err) {
+    console.error('Error de EmailJS al copiar al salón:', err);
   }
 
   /* Procesamiento de WhatsApp */
