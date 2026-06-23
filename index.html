@@ -1158,33 +1158,29 @@ html.dark .socials a{color:var(--gray-light);}
 
 /* ── MARCAS ── */
 #marcas{
-  padding:3rem 5rem;
-  background:#fff;
-  border-top:1px solid rgba(136,80,190,.1);
-  border-bottom:1px solid rgba(136,80,190,.1);
-  display:flex;flex-direction:column;align-items:center;gap:1.8rem;
+  padding:3.5rem 5rem;
+  background:#150d24;
+  display:flex;flex-direction:column;align-items:center;gap:2rem;
 }
-html.dark #marcas{background:#1a1028;border-color:rgba(136,80,190,.15);}
 .marcas-label{
   margin:0;
   font-size:.6rem;font-weight:700;
   letter-spacing:.24em;text-transform:uppercase;
-  color:rgba(136,80,190,.5);
+  color:rgba(255,255,255,.3);
 }
 .marcas-logos{
   display:flex;align-items:center;justify-content:center;
-  gap:4rem;flex-wrap:wrap;
+  gap:4.5rem;flex-wrap:wrap;
 }
 .marca-logo{
   height:36px;width:auto;
-  filter:grayscale(1);
-  opacity:.4;
-  transition:filter .3s,opacity .3s,transform .3s;
+  filter:brightness(0) invert(1);
+  opacity:.55;
+  transition:opacity .3s,transform .3s;
 }
-html.dark .marca-logo{filter:grayscale(1) invert(1);}
-.marca-logo:hover{filter:grayscale(0);opacity:1;transform:scale(1.05);}
+.marca-logo:hover{opacity:1;transform:scale(1.06);}
 @media(max-width:900px){
-  #marcas{padding:2rem 1.5rem;gap:1.4rem;}
+  #marcas{padding:2.5rem 1.5rem;gap:1.6rem;}
   .marcas-logos{gap:2.5rem;}
   .marca-logo{height:26px;}
 }
@@ -1754,10 +1750,10 @@ html.dark .search-result:hover,html.dark .search-result.focused{background:rgba(
 <section id="marcas">
   <p class="marcas-label">Trabajamos con las mejores marcas</p>
   <div class="marcas-logos">
-    <img src="assets/logo-alfa.png"   alt="Alfaparf"            class="marca-logo">
-    <img src="assets/logo-k18.png"    alt="K18"                 class="marca-logo">
-    <img src="assets/logo-loreal.png" alt="L'Oréal Professionnel" class="marca-logo">
-    <img src="assets/logo-yellow.png" alt="Yellow"              class="marca-logo">
+    <img src="assets/logo-alfa_02.png"   alt="Alfaparf"             class="marca-logo">
+    <img src="assets/logo-k18_02.png"    alt="K18"                  class="marca-logo">
+    <img src="assets/logo-loreal_02.png" alt="L'Oréal Professionnel" class="marca-logo">
+    <img src="assets/logo-yellow_02.png" alt="Yellow"               class="marca-logo">
   </div>
 </section>
 
