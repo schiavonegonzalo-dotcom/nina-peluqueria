@@ -416,41 +416,45 @@ html.dark .logo-night{display:block;}
 
 /* ── PACKS FEATURED ── */
 #cat-pack{
-  background:linear-gradient(135deg,#EDE0FA 0%,#D8BFF5 100%);
-  border-radius:8px;
+  background:linear-gradient(135deg,var(--violet-mid) 0%,var(--violet-deep) 100%);
+  border-radius:12px;
   padding:2rem 2rem 2.2rem;
   margin-bottom:3rem;
+  box-shadow:0 12px 40px rgba(136,80,190,.35);
 }
 #cat-pack .cat-section-hd{
-  border-bottom-color:rgba(136,80,190,.2);
+  border-bottom-color:rgba(255,255,255,.2);
   margin-bottom:1.4rem;
   position:relative;
 }
 #cat-pack .cat-section-hd::before{
   display:none;
 }
-#cat-pack .cat-section-title{color:var(--dark);}
+#cat-pack .cat-section-title{color:#fff;}
 #cat-pack .svc-item{
-  background:rgba(255,255,255,.55);
-  border-color:rgba(136,80,190,.18);
+  background:rgba(255,255,255,.1);
+  border-color:rgba(255,255,255,.18);
 }
 #cat-pack .svc-item:hover{
-  background:rgba(255,255,255,.85);
-  border-color:rgba(136,80,190,.4);
-  box-shadow:0 6px 20px rgba(136,80,190,.15);
+  background:rgba(255,255,255,.18);
+  border-color:rgba(255,255,255,.35);
+  box-shadow:0 6px 20px rgba(0,0,0,.2);
 }
 #cat-pack .svc-item.open{
-  background:rgba(255,255,255,.85);
-  border-color:rgba(136,80,190,.4);
+  background:rgba(255,255,255,.18);
+  border-color:rgba(255,255,255,.35);
 }
-#cat-pack .svc-name{color:var(--dark);}
-#cat-pack .svc-time{color:var(--gray-light);}
-#cat-pack .svc-price{color:var(--violet-deep);}
-#cat-pack .svc-toggle{color:var(--violet-mid);}
+#cat-pack .svc-name{color:#fff;}
+#cat-pack .svc-time{color:rgba(255,255,255,.6);}
+#cat-pack .svc-price{color:var(--orange-warm);}
+#cat-pack .svc-toggle{color:rgba(255,255,255,.8);}
+#cat-pack .svc-duration-badge{background:var(--orange-hot);color:#fff;border:none;}
 #cat-pack .svc-desc{
-  border-top-color:rgba(136,80,190,.15);
-  color:var(--gray);
+  border-top-color:rgba(255,255,255,.15);
+  color:rgba(255,255,255,.8);
 }
+#cat-pack .svc-book-btn{background:var(--orange-hot);border-color:var(--orange-hot);color:#fff;}
+#cat-pack .svc-book-btn:hover{background:var(--orange-warm);border-color:var(--orange-warm);}
 
 /* ──────────────── ABOUT ──────────────── */
 #nosotros{
