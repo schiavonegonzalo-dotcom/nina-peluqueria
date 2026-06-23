@@ -1114,14 +1114,16 @@ html.dark #turnero{background:#0E0B14;}
 html.dark .turnero-header p{color:var(--gray);}
 html.dark .step-num{background:#2e2248;color:rgba(255,255,255,.65);border:1.5px solid rgba(168,112,216,.4);}
 html.dark .step-connector{background:rgba(168,112,216,.45);opacity:1;}
-/* Pack dark mode: mantener estilo light (cards blancas sobre fondo violeta) */
+/* Pack dark mode: idéntico al light mode — valores literales para evitar override de variables */
 html.dark #cat-pack .svc-item{background:#fff;border-color:rgba(136,80,190,.14);box-shadow:0 2px 8px rgba(0,0,0,.1);}
-html.dark #cat-pack .svc-item:hover,html.dark #cat-pack .svc-item.open{background:var(--violet-pale);border-color:rgba(136,80,190,.3);}
-html.dark #cat-pack .svc-name{color:var(--dark);}
-html.dark #cat-pack .svc-price{color:var(--violet-mid);}
-html.dark #cat-pack .svc-toggle{background:var(--violet-pale);color:var(--violet-mid);}
-html.dark #cat-pack .svc-duration-badge{background:#fff3ee;color:var(--orange-hot);}
-html.dark #cat-pack .svc-desc{border-top-color:rgba(136,80,190,.12);color:var(--gray);}
+html.dark #cat-pack .svc-item:hover,html.dark #cat-pack .svc-item.open{background:#F5EEFF;border-color:rgba(136,80,190,.3);}
+html.dark #cat-pack .svc-name{color:#1A1018;}
+html.dark #cat-pack .svc-price{color:#8850BE;font-weight:800;}
+html.dark #cat-pack .svc-toggle{background:#F5EEFF;color:#8850BE;}
+html.dark #cat-pack .svc-duration-badge{background:#fff3ee;color:#FA3C01;}
+html.dark #cat-pack .svc-desc{border-top-color:rgba(136,80,190,.12);color:#4A3F52;}
+html.dark #cat-pack .svc-book-btn{background:#FA3C01;color:#fff;}
+html.dark #cat-pack .cat-section-hd::after{color:#fff;}
 html.dark .svc-select-card{background:#19152A;border-color:transparent;}
 html.dark .svc-select-card:hover{background:#231D35;border-color:var(--violet-light);}
 html.dark .svc-select-card.selected{background:var(--violet-pale);border-color:var(--violet-mid);}
