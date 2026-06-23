@@ -908,14 +908,11 @@ html.dark .logo-night{display:block;}
 #galeria .gallery-grid{
   display:grid;
   grid-template-columns:repeat(4,1fr);
-  grid-template-rows:280px 280px;
-  gap:10px;margin-top:3rem;
+  gap:8px;margin-top:3rem;
 }
-.gi{overflow:hidden;position:relative;}
-.gi:nth-child(1){grid-column:span 2;}
-.gi:nth-child(5){grid-column:span 2;}
-.gi img,.gi video{width:100%;height:100%;object-fit:cover;transition:transform .5s ease;display:block;}
-.gi:hover img,.gi:hover video{transform:scale(1.07);}
+.gi{overflow:hidden;position:relative;aspect-ratio:1/1;}
+.gi img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease;display:block;}
+.gi:hover img{transform:scale(1.07);}
 .gi::after{
   content:'';position:absolute;inset:0;
   background:linear-gradient(135deg,rgba(136,80,190,.3),transparent);
@@ -1062,8 +1059,7 @@ footer{
   #cat-pack .cat-section-hd::after{color:#fff;}
   #nosotros,#contacto{grid-template-columns:1fr;}
   .about-stats{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem 1rem;margin-top:1.8rem;}
-  #galeria .gallery-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto;}
-  .gi:nth-child(1),.gi:nth-child(5){grid-column:span 1;}
+  #galeria .gallery-grid{grid-template-columns:1fr 1fr;gap:6px;}
   .datos-form{grid-template-columns:1fr;}
   .fg.full{grid-column:span 1;}
   .band{padding:.9rem 2rem;gap:2rem;}
@@ -1802,12 +1798,18 @@ html.dark .search-result:hover,html.dark .search-result.focused{background:rgba(
     <h2 class="section-title">Para <em>inspirarte</em></h2>
   </div>
   <div class="gallery-grid fade-up">
-    <div class="gi"><img src="assets/nina-ondas-foto.jpg" alt="Peinado de ondas realizadas en Nina Peluquería, Guaymallén Mendoza"/></div>
-    <div class="gi"><img src="assets/nina-sola.jpg" alt="Nina, estilista profesional en Guaymallén, Mendoza"/></div>
-    <div class="gi"><img src="assets/nina-juan.jpg" alt="Corte masculino en Nina Peluquería, Guaymallén Mendoza"/></div>
-    <div class="gi"><img src="assets/nina-juanma.jpg" alt="Corte de cabello realizado en Nina Peluquería, Mendoza"/></div>
-    <div class="gi"><img src="assets/nina-graciela.jpg" alt="Coloración y mechas realizadas en Nina Peluquería, Mendoza"/></div>
-    <div class="gi"><video src="assets/trenza.mp4" autoplay muted loop playsinline></video></div>
+    <div class="gi"><img src="fotos/1.png"  alt="Trabajo de peluquería en Nina Peluquería, Guaymallén Mendoza"/></div>
+    <div class="gi"><img src="fotos/2.png"  alt="Resultado de coloración en Nina Peluquería, Mendoza"/></div>
+    <div class="gi"><img src="fotos/3.png"  alt="Corte y peinado realizado en Nina Peluquería, Mendoza"/></div>
+    <div class="gi"><img src="fotos/5.png"  alt="Mechas y coloración en Nina Peluquería, Guaymallén"/></div>
+    <div class="gi"><img src="fotos/7.png"  alt="Tratamiento capilar en Nina Peluquería, Mendoza"/></div>
+    <div class="gi"><img src="fotos/10.png" alt="Balayage realizado en Nina Peluquería, Mendoza"/></div>
+    <div class="gi"><img src="fotos/9.png"  alt="Peinado artístico en Nina Peluquería, Guaymallén"/></div>
+    <div class="gi"><img src="fotos/6.png"  alt="Coloración global en Nina Peluquería, Mendoza"/></div>
+    <div class="gi"><img src="fotos/14.png" alt="Corte femenino en Nina Peluquería, Guaymallén Mendoza"/></div>
+    <div class="gi"><img src="fotos/16.png" alt="Mechas balayage en Nina Peluquería, Mendoza"/></div>
+    <div class="gi"><img src="fotos/17.png" alt="Trabajo de keratina en Nina Peluquería, Mendoza"/></div>
+    <div class="gi"><img src="fotos/20.png" alt="Resultado final en Nina Peluquería, Guaymallén Mendoza"/></div>
   </div>
 </section>
 
