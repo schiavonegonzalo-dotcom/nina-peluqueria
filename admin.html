@@ -558,9 +558,7 @@ body{font-family:'Montserrat',sans-serif;background:#F0ECF8;color:#1A1018;min-he
       </div>
 
       <div class="turnos-summary">
-        <div class="summary-chip"><div class="summary-chip-n" id="chip-total">—</div><div class="summary-chip-lbl">Turnos</div></div>
-        <div class="summary-chip"><div class="summary-chip-n" id="chip-confirmados" style="color:var(--success)">—</div><div class="summary-chip-lbl">Confirmados</div></div>
-        <div class="summary-chip"><div class="summary-chip-n" id="chip-cancelados" style="color:var(--danger)">—</div><div class="summary-chip-lbl">Cancelados</div></div>
+        <div class="summary-chip"><div class="summary-chip-n" id="chip-total">—</div><div class="summary-chip-lbl">Turnos del día</div></div>
       </div>
 
       <div id="turnosList"></div>
@@ -1142,8 +1140,6 @@ function renderTurnos(data){
   list.innerHTML='';
   if(!data){
     document.getElementById('chip-total').textContent='0';
-    document.getElementById('chip-confirmados').textContent='0';
-    document.getElementById('chip-cancelados').textContent='0';
     list.innerHTML=`<div class="turnos-empty"><div class="turnos-empty-icon">📅</div><div class="turnos-empty-txt">Sin turnos para este día</div></div>`;
     return;
   }
@@ -1156,8 +1152,6 @@ function renderTurnos(data){
     return;
   }
   document.getElementById('chip-total').textContent=arr.length;
-  document.getElementById('chip-confirmados').textContent=arr.filter(t=>t.origen!=='manual').length;
-  document.getElementById('chip-cancelados').textContent=arr.filter(t=>t.origen==='manual').length;
   arr.forEach(t=>{
     try {
       const card=document.createElement('div');
