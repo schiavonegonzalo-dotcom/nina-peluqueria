@@ -347,6 +347,23 @@ body{font-family:'Montserrat',sans-serif;background:#F0ECF8;color:#1A1018;min-he
 .turnos-empty-txt{font-size:.75rem;font-weight:600;color:var(--gray-light);}
 .turnos-add-btn{display:flex;align-items:center;justify-content:center;gap:.5rem;background:var(--violet);color:#fff;border:none;width:100%;padding:.82rem;border-radius:10px;font-family:'Montserrat',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;margin-top:.85rem;transition:background .2s,transform .15s;}
 .turnos-add-btn:hover{background:var(--violet-deep);transform:translateY(-1px);}
+
+/* ── Timeline visual ── */
+.turnos-timeline{background:#fff;border-radius:10px;padding:.85rem 1rem .65rem;margin-bottom:.9rem;box-shadow:0 2px 8px rgba(136,80,190,.07);border:1px solid rgba(136,80,190,.1);}
+.tl-label{font-size:.5rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gray-light);margin-bottom:.55rem;display:flex;align-items:center;justify-content:space-between;}
+.tl-legend{display:flex;gap:.75rem;}
+.tl-leg-item{display:flex;align-items:center;gap:.25rem;font-size:.48rem;font-weight:600;color:var(--gray-light);letter-spacing:.06em;}
+.tl-leg-dot{width:7px;height:7px;border-radius:2px;flex-shrink:0;}
+.tl-track{position:relative;height:48px;background:var(--violet-pale);border-radius:6px;overflow:hidden;margin-bottom:2px;}
+.tl-block{position:absolute;top:4px;bottom:4px;border-radius:4px;display:flex;flex-direction:column;justify-content:center;padding:0 .4rem;overflow:hidden;cursor:default;transition:filter .15s;min-width:4px;}
+.tl-block:hover{filter:brightness(.82);z-index:2;}
+.tl-block-time{font-size:.44rem;font-weight:700;color:rgba(255,255,255,.85);white-space:nowrap;line-height:1;}
+.tl-block-name{font-size:.56rem;font-weight:800;color:#fff;white-space:nowrap;line-height:1.2;}
+.tl-hours{position:relative;height:16px;}
+.tl-marker{position:absolute;transform:translateX(-50%);text-align:center;}
+.tl-marker::before{content:'';display:block;width:1px;height:3px;background:var(--gray-light);margin:0 auto 2px;}
+.tl-marker span{font-size:.42rem;font-weight:600;color:var(--gray-light);white-space:nowrap;}
+
 /* Modal */
 .modal-overlay{position:fixed;inset:0;background:rgba(26,16,40,.6);z-index:500;display:none;align-items:flex-end;justify-content:center;padding:0;}
 .modal-overlay.open{display:flex;}
@@ -561,6 +578,7 @@ body{font-family:'Montserrat',sans-serif;background:#F0ECF8;color:#1A1018;min-he
         <div class="summary-chip"><div class="summary-chip-n" id="chip-total">—</div><div class="summary-chip-lbl">Turnos del día</div></div>
       </div>
 
+      <div class="turnos-timeline" id="turnosTimeline" style="display:none"></div>
       <div id="turnosList"></div>
       <button class="turnos-add-btn" onclick="openModalNuevoTurno()">+ Nuevo turno manual</button>
     </div>
@@ -1135,11 +1153,74 @@ function loadTurnos(){
   db.ref('turnos/'+key).on('value',fn);
 }
 
+function parseDurMin(dur){
+  if(!dur) return 60;
+  if(typeof dur==='number') return dur;
+  const s=String(dur).trim().toLowerCase();
+  if(s.includes('coordinar')) return 60;
+  const num=parseInt(s);
+  if(/^\d+$/.test(s)&&!isNaN(num)) return num;
+  let h=0,m=0;
+  const hm=s.match(/(\d+)\s*h/);
+  const mm=s.match(/(\d+)\s*min/);
+  if(hm) h=parseInt(hm[1]);
+  if(mm) m=parseInt(mm[1]);
+  if(!hm&&!mm) return 60;
+  return h*60+m;
+}
+
+function timeToMin(hora){
+  const p=(hora||'').split(':').map(Number);
+  return (p[0]||0)*60+(p[1]||0);
+}
+
+function renderTimeline(arr){
+  const el=document.getElementById('turnosTimeline');
+  if(!el) return;
+  const valid=(arr||[]).filter(t=>t.hora && /^\d{1,2}:\d{2}$/.test(t.hora));
+  if(!valid.length){el.style.display='none';return;}
+  el.style.display='block';
+
+  let minT=9999,maxT=0;
+  valid.forEach(t=>{
+    const s=timeToMin(t.hora);
+    const e=s+parseDurMin(t.duracion);
+    if(!isNaN(s)&&s<minT) minT=s;
+    if(!isNaN(e)&&e>maxT) maxT=e;
+  });
+  if(minT===9999||maxT===0||minT>=maxT){el.style.display='none';return;}
+  const dayStart=Math.max(0,minT-30);
+  const dayEnd=Math.min(1440,maxT+30);
+  const range=Math.max(dayEnd-dayStart,60);
+
+  const esc=s=>(s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+  const blocks=valid.map(t=>{
+    const s=timeToMin(t.hora);
+    const dur=parseDurMin(t.duracion);
+    const left=((s-dayStart)/range*100).toFixed(2);
+    const width=(dur/range*100).toFixed(2);
+    if(isNaN(left)||isNaN(width)) return '';
+    const bg=t.origen==='manual'?'var(--orange)':'var(--violet)';
+    const firstName=(t.nombre||'?').split(' ')[0];
+    return `<div class="tl-block" style="left:${left}%;width:${width}%;background:${bg}" title="${esc(t.nombre)} · ${t.hora} · ${esc(t.servicio)}"><span class="tl-block-time">${t.hora}</span><span class="tl-block-name">${esc(firstName)}</span></div>`;
+  }).join('');
+
+  const h0=Math.ceil(dayStart/60),h1=Math.floor(dayEnd/60);
+  let markers='';
+  for(let h=h0;h<=h1;h++){
+    const left=((h*60-dayStart)/range*100).toFixed(2);
+    markers+=`<div class="tl-marker" style="left:${left}%"><span>${h}:00</span></div>`;
+  }
+
+  el.innerHTML=`<div class="tl-label">Vista del día<div class="tl-legend"><div class="tl-leg-item"><div class="tl-leg-dot" style="background:var(--violet)"></div>Web</div><div class="tl-leg-item"><div class="tl-leg-dot" style="background:var(--orange)"></div>Manual</div></div></div><div class="tl-track">${blocks}</div><div class="tl-hours">${markers}</div>`;
+}
+
 function renderTurnos(data){
   const list=document.getElementById('turnosList');
   list.innerHTML='';
   if(!data){
     document.getElementById('chip-total').textContent='0';
+    renderTimeline([]);
     list.innerHTML=`<div class="turnos-empty"><div class="turnos-empty-icon">📅</div><div class="turnos-empty-txt">Sin turnos para este día</div></div>`;
     return;
   }
@@ -1152,6 +1233,7 @@ function renderTurnos(data){
     return;
   }
   document.getElementById('chip-total').textContent=arr.length;
+  try{ renderTimeline(arr); }catch(e){ console.error('[timeline]',e); }
   arr.forEach(t=>{
     try {
       const card=document.createElement('div');
