@@ -979,6 +979,10 @@ footer{
   height:40px;width:auto;display:block;
 }
 .footer-copy{font-size:.65rem;font-weight:300;color:rgba(255,255,255,.3);}
+.footer-horarios-col{display:flex;flex-direction:column;gap:.3rem;}
+.footer-h-title{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:.35rem;}
+.footer-hora-row{display:flex;gap:1.5rem;justify-content:space-between;font-size:.7rem;color:rgba(255,255,255,.55);}
+#footer-horarios{display:flex;flex-direction:column;gap:.2rem;}
 .socials{display:flex;gap:.7rem;}
 .socials a{
   width:2.2rem;height:2.2rem;
@@ -1878,6 +1882,10 @@ html.dark .search-result:hover,html.dark .search-result.focused{background:rgba(
   <div>
     <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;"><img src="assets/logo-blanco.png" alt="Nina Peluquería" class="footer-logo"></a>
   </div>
+  <div class="footer-horarios-col">
+    <div class="footer-h-title">Horarios de atención</div>
+    <div id="footer-horarios"></div>
+  </div>
   <div class="footer-copy">© 2026 Nina Peluquería · Todos los derechos reservados</div>
 </footer>
 
@@ -2058,7 +2066,10 @@ const SERVICES=[
   {id:'pk-rit', name:'Pack ritual cuidado capilar + peinado ondas al agua', dur:120,cat:'pack', canOverlap:true},
 ];
 
-const OPEN_HOUR=9, CLOSE_HOUR=20;
+let OPEN_HOUR=9, CLOSE_HOUR=20;
+let _schedule=null;       // days[] de Firebase /horarios
+let _blockedDates=new Set(); // YYYY-MM-DD bloqueadas desde admin
+const _DOW_ID=['dom','lun','mar','mie','jue','vie','sab'];
 
 /* Servicios que pueden agendarse durante el tiempo muerto de otro turno */
 const CAN_OVERLAP_SVCS=new Set(['cf','cm','cn','pk-cm-b','rit1','rit2','rit3','pk-cf-rc','pk-rit']);
@@ -2217,8 +2228,16 @@ function renderCal(){
     const dateObj=new Date(calYear,calMonth,d);
     const dow=dateObj.getDay();
     const isPast=dateObj<new Date(today.getFullYear(),today.getMonth(),today.getDate());
-    const isClosed=dow===0||dow===1;
-    if(isPast||isClosed){
+    const dateKey2=`${calYear}-${pad(calMonth+1)}-${pad(d)}`;
+    const isBlocked=_blockedDates.has(dateKey2);
+    let isClosed;
+    if(_schedule){
+      const dayConf=_schedule.find(dc=>dc.id===_DOW_ID[dow]);
+      isClosed=!dayConf||!dayConf.active;
+    } else {
+      isClosed=dow===0||dow===1;
+    }
+    if(isPast||isClosed||isBlocked){
       e.classList.add('disabled');
     } else {
       if(dateObj.getDate()===today.getDate()&&dateObj.getMonth()===today.getMonth()&&dateObj.getFullYear()===today.getFullYear())e.classList.add('today');
@@ -2250,6 +2269,13 @@ function selectDate(d,el){
   document.querySelectorAll('.cal-day').forEach(c=>c.classList.remove('selected'));
   el.classList.add('selected');
   selectedDate=d;
+  if(_schedule){
+    const dayConf=_schedule.find(dc=>dc.id===_DOW_ID[d.getDay()]);
+    if(dayConf&&dayConf.active){
+      OPEN_HOUR=parseInt(dayConf.open.split(':')[0]);
+      CLOSE_HOUR=parseInt(dayConf.close.split(':')[0]);
+    }
+  }
   buildSlotsList(d);
   setTimeout(()=>{
     const panel=document.getElementById('panel-2');
@@ -2540,7 +2566,39 @@ async function confirmarTurno(){
   firebase.database().ref('precios').on('value', snap=>{
     if(snap.val()) aplicarPrecios(snap.val());
   });
+
+  firebase.database().ref('horarios').on('value', snap=>{
+    const val=snap.val();
+    if(!val) return;
+    if(val.days)    _schedule=val.days;
+    if(val.blocked) _blockedDates=new Set(val.blocked.map(b=>b.date));
+    else            _blockedDates=new Set();
+    renderCal();
+    renderFooterHorarios(_schedule);
+  });
 })();
+
+function renderFooterHorarios(days){
+  const el=document.getElementById('footer-horarios');
+  if(!el||!days) return;
+  const groups=[];
+  let prevIdx=-2;
+  days.forEach((d,i)=>{
+    if(!d.active){prevIdx=-2;return;}
+    const last=groups[groups.length-1];
+    if(last&&i===prevIdx+1&&last.open===d.open&&last.close===d.close){
+      last.lastLabel=d.label;
+    } else {
+      groups.push({firstLabel:d.label,lastLabel:d.label,open:d.open,close:d.close});
+    }
+    prevIdx=i;
+  });
+  if(!groups.length){el.innerHTML='';return;}
+  el.innerHTML=groups.map(g=>{
+    const range=g.firstLabel===g.lastLabel?g.firstLabel:`${g.firstLabel} a ${g.lastLabel}`;
+    return `<div class="footer-hora-row"><span>${range}</span><span>${g.open} – ${g.close}</span></div>`;
+  }).join('');
+}
 
 function resetTurnero(){
   selectedSvc=null;selectedDate=null;selectedTime=null;isConfirming=false;
