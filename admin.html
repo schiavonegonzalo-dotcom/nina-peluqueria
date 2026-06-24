@@ -1155,24 +1155,20 @@ function renderTurnos(data){
     list.innerHTML=`<div class="turnos-empty"><div class="turnos-empty-txt">Error al cargar turnos. Recargá la página.</div></div>`;
     return;
   }
-  const confirmados=arr.filter(t=>t.estado!=='cancelado').length;
-  const cancelados=arr.filter(t=>t.estado==='cancelado').length;
   document.getElementById('chip-total').textContent=arr.length;
-  document.getElementById('chip-confirmados').textContent=confirmados;
-  document.getElementById('chip-cancelados').textContent=cancelados;
+  document.getElementById('chip-confirmados').textContent=arr.filter(t=>t.origen!=='manual').length;
+  document.getElementById('chip-cancelados').textContent=arr.filter(t=>t.origen==='manual').length;
   arr.forEach(t=>{
     try {
       const card=document.createElement('div');
-      card.className='turno-card'+(t.estado==='cancelado'?' cancelado':'');
-      const stClass=t.estado==='cancelado'?'cancelado':t.origen==='manual'?'manual':'confirmado';
-      const stLabel=t.estado==='cancelado'?'Cancelado':t.origen==='manual'?'Manual':'Web';
+      card.className='turno-card';
+      const stClass=t.origen==='manual'?'manual':'confirmado';
+      const stLabel=t.origen==='manual'?'Manual':'Web';
       const contactParts=[];
       if(t.wa) contactParts.push('WA: '+t.wa);
       if(t.email) contactParts.push(t.email);
-      const actionBtns=t.estado!=='cancelado'
-        ?`<button class="turno-btn" onclick="openModalMoverTurno('${t.id}')">Editar</button>
-           <button class="turno-btn danger" onclick="cancelarTurno('${t.id}')">Cancelar</button>`
-        :`<button class="turno-btn restore" onclick="restaurarTurno('${t.id}')">Restaurar</button>`;
+      const actionBtns=`<button class="turno-btn" onclick="openModalMoverTurno('${t.id}')">Editar</button>
+           <button class="turno-btn danger" onclick="cancelarTurno('${t.id}')">Cancelar</button>`;
       card.innerHTML=`
         <div class="turno-card-main">
           <div class="turno-hora-wrap">
@@ -1198,17 +1194,11 @@ function renderTurnos(data){
 }
 
 function cancelarTurno(id){
+  if(!confirm('¿Estás segura de cancelar este turno? Se eliminará definitivamente.')) return;
   const key=turnosFormatKey(turnosCurrentDate);
-  db.ref('turnos/'+key+'/'+id+'/estado').set('cancelado')
-    .then(()=>showToast('Turno cancelado'))
-    .catch(()=>showToast('⚠️ Error al cancelar'));
-}
-
-function restaurarTurno(id){
-  const key=turnosFormatKey(turnosCurrentDate);
-  db.ref('turnos/'+key+'/'+id+'/estado').set('confirmado')
-    .then(()=>showToast('Turno restaurado'))
-    .catch(()=>showToast('⚠️ Error'));
+  db.ref('turnos/'+key+'/'+id).remove()
+    .then(()=>showToast('Turno eliminado'))
+    .catch(()=>showToast('⚠️ Error al eliminar'));
 }
 
 /* ── Modal ── */
