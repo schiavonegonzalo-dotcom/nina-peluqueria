@@ -1862,8 +1862,10 @@ html.dark .search-result:hover,html.dark .search-result.focused{background:rgba(
     </div>
     <div class="hours-block">
       <h3>Horarios</h3>
-      <div class="h-row"><span>Martes — Sábado</span><span>09:00 — 20:00</span></div>
-      <div class="h-row"><span>Domingos y Lunes</span><span>Cerrado</span></div>
+      <div id="contact-horarios">
+        <div class="h-row"><span>Martes — Sábado</span><span>09:00 — 20:00</span></div>
+        <div class="h-row"><span>Domingos y Lunes</span><span>Cerrado</span></div>
+      </div>
     </div>
   </div>
   <div class="map-ph fade-up">
@@ -2579,8 +2581,9 @@ async function confirmarTurno(){
 })();
 
 function renderFooterHorarios(days){
-  const el=document.getElementById('footer-horarios');
-  if(!el||!days) return;
+  if(!days) return;
+
+  // Agrupar días consecutivos con mismo horario
   const groups=[];
   let prevIdx=-2;
   days.forEach((d,i)=>{
@@ -2593,11 +2596,36 @@ function renderFooterHorarios(days){
     }
     prevIdx=i;
   });
-  if(!groups.length){el.innerHTML='';return;}
-  el.innerHTML=groups.map(g=>{
-    const range=g.firstLabel===g.lastLabel?g.firstLabel:`${g.firstLabel} a ${g.lastLabel}`;
-    return `<div class="footer-hora-row"><span>${range}</span><span>${g.open} – ${g.close}</span></div>`;
+
+  // Días cerrados (inactivos)
+  const cerrados=days.filter(d=>!d.active);
+  const cerradosStr=cerrados.length
+    ? cerrados.map(d=>d.label).join(' y ')
+    : null;
+
+  // HTML filas abiertas
+  const rowsOpen=groups.map(g=>{
+    const range=g.firstLabel===g.lastLabel?g.firstLabel:`${g.firstLabel} — ${g.lastLabel}`;
+    return `<div class="h-row"><span>${range}</span><span>${g.open} – ${g.close}</span></div>`;
   }).join('');
+  const rowClosed=cerradosStr
+    ? `<div class="h-row"><span>${cerradosStr}</span><span style="color:var(--orange-hot)">Cerrado</span></div>`
+    : '';
+
+  const html=rowsOpen+rowClosed;
+
+  // Llenar sección contacto
+  const contactEl=document.getElementById('contact-horarios');
+  if(contactEl) contactEl.innerHTML=html;
+
+  // Llenar footer
+  const footerEl=document.getElementById('footer-horarios');
+  if(footerEl){
+    footerEl.innerHTML=groups.map(g=>{
+      const range=g.firstLabel===g.lastLabel?g.firstLabel:`${g.firstLabel} — ${g.lastLabel}`;
+      return `<div class="footer-hora-row"><span>${range}</span><span>${g.open} – ${g.close}</span></div>`;
+    }).join('');
+  }
 }
 
 function resetTurnero(){
