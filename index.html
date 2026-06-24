@@ -2230,7 +2230,8 @@ function renderCal(){
     const dateObj=new Date(calYear,calMonth,d);
     const dow=dateObj.getDay();
     const isPast=dateObj<new Date(today.getFullYear(),today.getMonth(),today.getDate());
-    const dateKey2=`${calYear}-${pad(calMonth+1)}-${pad(d)}`;
+    const _p=n=>String(n).padStart(2,'0');
+    const dateKey2=`${calYear}-${_p(calMonth+1)}-${_p(d)}`;
     const isBlocked=_blockedDates.has(dateKey2);
     let isClosed;
     if(_schedule){
@@ -2575,7 +2576,7 @@ async function confirmarTurno(){
     if(val.days)    _schedule=val.days;
     if(val.blocked) _blockedDates=new Set(val.blocked.map(b=>b.date));
     else            _blockedDates=new Set();
-    renderCal();
+    if(calYear!==undefined) renderCal();
     renderFooterHorarios(_schedule);
   });
 })();
