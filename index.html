@@ -335,6 +335,8 @@ html.dark .logo-night{display:block;}
   font-size:.95rem;font-weight:800;
   color:var(--violet-mid);white-space:nowrap;
 }
+.svc-item[data-svc-id] .svc-price{opacity:0;transition:opacity .15s;}
+.svc-item[data-svc-id] .svc-option-price{opacity:0;transition:opacity .15s;}
 .svc-meta{display:flex;justify-content:space-between;align-items:center;}
 .svc-duration-badge{
   background:var(--orange-pale);color:var(--orange-hot);
@@ -1368,7 +1370,7 @@ html.dark .search-result:hover,html.dark .search-result.focused{background:rgba(
       <span class="sr-only">Peluquería unisex en Guaymallén, Mendoza</span>
     </h1>
     <p class="hero-desc">
-      En <strong>Nina Peluquería</strong>, peluquería en Mendoza, creemos que el cabello es tu mejor accesorio. Combinamos técnica, pasión y las últimas tendencias para transformar cada visita en una experiencia.
+      En <strong>Nina Peluquería</strong>, creemos que el cabello es tu mejor accesorio. Combinamos técnica, pasión y las últimas tendencias para transformar cada visita en una experiencia.
     </p>
     <div class="hero-btns">
       <button class="btn-v" onclick="goSection('turnero')">Sacar turno</button>
@@ -2538,23 +2540,31 @@ async function confirmarTurno(){
 
   function fmt(n){ return '$'+Number(n).toLocaleString('es-AR'); }
 
+  const DESDE_IDS=new Set(['rr','cg','bll','pk-col','at','asf','sk','bo','pk-sk','rit1','rit2','rit3','pk-rit','mb','mby','mf','pk-m-cf']);
+
+  // Mostrar precios estáticos ("Consultar") que Firebase no actualiza
+  document.querySelectorAll('.svc-item[data-svc-id] .svc-price').forEach(el=>{
+    if(el.textContent.trim()==='Consultar') el.style.opacity='1';
+  });
+
   function aplicarPrecios(p){
     document.querySelectorAll('.svc-item[data-svc-id]').forEach(item=>{
       const id=item.dataset.svcId;
       if(p[id]===undefined) return;
       const el=item.querySelector('.svc-main .svc-price');
-      if(!el||el.textContent==='Consultar'||el.textContent.startsWith('desde')) return;
-      el.textContent=fmt(p[id]);
+      if(!el||el.textContent==='Consultar') return;
+      el.textContent=DESDE_IDS.has(id)?'desde '+fmt(p[id]):fmt(p[id]);
+      el.style.opacity='1';
     });
     // Mechas tradicionales: mt1=media cabeza, mt2=cabeza completa
     const mt1=document.querySelector('[data-svc-id="mt1"]');
     if(mt1){
       const p1=p.mt1||0, p2=p.mt2||0;
       const priceEl=mt1.querySelector('.svc-main .svc-price');
-      if(priceEl) priceEl.textContent='desde '+fmt(Math.min(p1,p2)||Math.max(p1,p2));
+      if(priceEl){priceEl.textContent='desde '+fmt(Math.min(p1,p2)||Math.max(p1,p2));priceEl.style.opacity='1';}
       const opts=mt1.querySelectorAll('.svc-option-price');
-      if(opts[0]&&p.mt1) opts[0].textContent=fmt(p.mt1);
-      if(opts[1]&&p.mt2) opts[1].textContent=fmt(p.mt2);
+      if(opts[0]&&p.mt1){opts[0].textContent='desde '+fmt(p.mt1);opts[0].style.opacity='1';}
+      if(opts[1]&&p.mt2){opts[1].textContent='desde '+fmt(p.mt2);opts[1].style.opacity='1';}
     }
   }
 
