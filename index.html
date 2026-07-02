@@ -1739,8 +1739,8 @@ html.dark .search-result:hover,html.dark .search-result.focused{background:rgba(
         <input type="tel" id="dWA" placeholder="+54 11 0000-0000"/>
       </div>
       <div class="fg" id="fgEmail">
-        <label>Email</label>
-        <input type="email" id="dEmail" placeholder="tu@email.com"/>
+        <label>Email <span style="color:var(--violet-mid)">*</span></label>
+        <input type="email" id="dEmail" placeholder="tu@email.com" required/>
       </div>
       <div class="fg full">
         <label>Nota opcional</label>
@@ -1831,7 +1831,7 @@ html.dark .search-result:hover,html.dark .search-result.focused{background:rgba(
         <div class="c-icon">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--orange-warm)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
         </div>
-        <div><div class="c-label">Dirección</div><div class="c-val">Marquez 831, Dorrego<br>Guaymalén, Mendoza</div></div>
+        <div><div class="c-label">Dirección</div><div class="c-val">Marquez 831, Dorrego<br>Guaymallén, Mendoza</div></div>
       </div>
       <div class="contact-item">
         <div class="c-icon">
@@ -2481,6 +2481,7 @@ async function confirmarTurno(){
   if(!selectedSvc||!selectedDate||!selectedTime){alert('Seleccioná un servicio, fecha y horario antes de confirmar.');return;}
   if(!nombre){alert('Por favor ingresá tu nombre completo.');return;}
   if(!email){alert('Por favor ingresá tu email.');return;}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){alert('El email no es válido. Revisá que tenga el formato correcto (ej: nombre@gmail.com).');return;}
 
   isConfirming = true;
   const btnConfirmar = document.querySelector('#step3 .btn-v');
