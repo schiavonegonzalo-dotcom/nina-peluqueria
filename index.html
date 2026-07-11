@@ -2488,6 +2488,23 @@ async function confirmarTurno(){
   if(btnConfirmar){ btnConfirmar.disabled=true; btnConfirmar.textContent='Procesando...'; }
 
   try {
+    /* Revalidar disponibilidad contra datos frescos de Firebase justo antes de guardar,
+       para evitar que dos reservas simultáneas terminen pisándose */
+    const fechaKeyCheck = selectedDate.toISOString().split('T')[0];
+    const freshSnap = await firebase.database().ref('turnos/'+fechaKeyCheck).once('value');
+    const freshBlocked = _buildBlockedArr(freshSnap.val());
+    const tp = selectedTime.split(':');
+    const startMin = parseInt(tp[0])*60+parseInt(tp[1]);
+    if(!isSlotAvailable(startMin, selectedSvc.dur, freshBlocked, selectedSvc)){
+      alert('Justo se ocupó ese horario mientras completabas tus datos. Elegí otro, por favor.');
+      isConfirming = false;
+      if(btnConfirmar){ btnConfirmar.disabled=false; btnConfirmar.textContent='Confirmar turno ✓'; }
+      selectedTime=null;
+      goStep(2);
+      buildSlotsList(selectedDate);
+      return;
+    }
+
     const days   =['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
     const months2=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
     const dateStr=`${days[selectedDate.getDay()]} ${selectedDate.getDate()} de ${months2[selectedDate.getMonth()]} de ${selectedDate.getFullYear()}`;
