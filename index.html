@@ -2478,7 +2478,12 @@ async function confirmarTurno(){
   const nota   = document.getElementById('dNota').value.trim();
   const notif  = 'email';
 
-  if(!selectedSvc||!selectedDate||!selectedTime){alert('Seleccioná un servicio, fecha y horario antes de confirmar.');return;}
+  if(!selectedSvc||!selectedDate||!selectedTime){
+    alert('Seleccioná un servicio, fecha y horario antes de confirmar.');
+    goStep(2);
+    if(selectedDate) buildSlotsList(selectedDate);
+    return;
+  }
   if(!nombre){alert('Por favor ingresá tu nombre completo.');return;}
   if(!email){alert('Por favor ingresá tu email.');return;}
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){alert('El email no es válido. Revisá que tenga el formato correcto (ej: nombre@gmail.com).');return;}
