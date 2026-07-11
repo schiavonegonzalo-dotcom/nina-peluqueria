@@ -2488,15 +2488,33 @@ async function confirmarTurno(){
   if(btnConfirmar){ btnConfirmar.disabled=true; btnConfirmar.textContent='Procesando...'; }
 
   try {
-    /* Revalidar disponibilidad contra datos frescos de Firebase justo antes de guardar,
-       para evitar que dos reservas simultáneas terminen pisándose */
-    const fechaKeyCheck = selectedDate.toISOString().split('T')[0];
-    const freshSnap = await firebase.database().ref('turnos/'+fechaKeyCheck).once('value');
-    const freshBlocked = _buildBlockedArr(freshSnap.val());
+    /* Guardar el turno con una transacción atómica de Firebase: revalida
+       disponibilidad y escribe en un solo paso indivisible, para que dos o
+       más reservas simultáneas no puedan pisarse entre sí (Firebase encola
+       y reintenta cada transacción contra el dato más reciente del server) */
+    const fechaKey = selectedDate.toISOString().split('T')[0];
+    const turnoRef = firebase.database().ref('turnos/'+fechaKey);
+    const newKey   = turnoRef.push().key;
     const tp = selectedTime.split(':');
     const startMin = parseInt(tp[0])*60+parseInt(tp[1]);
-    if(!isSlotAvailable(startMin, selectedSvc.dur, freshBlocked, selectedSvc)){
-      alert('Justo se ocupó ese horario mientras completabas tus datos. Elegí otro, por favor.');
+    const turnoData = {
+      nombre, email: email||'', wa,
+      servicio: selectedSvc.name, servicioId: selectedSvc.id,
+      hora: selectedTime, duracion: selectedSvc.dur,
+      nota: nota||'', estado: 'confirmado', origen: 'web',
+      ts: Date.now()
+    };
+
+    const result = await turnoRef.transaction(current=>{
+      const blocked = _buildBlockedArr(current);
+      if(!isSlotAvailable(startMin, selectedSvc.dur, blocked, selectedSvc)) return; // aborta: ya no está disponible
+      const data = current||{};
+      data[newKey] = turnoData;
+      return data;
+    });
+
+    if(!result.committed){
+      alert('Justo se ocupó ese horario. Elegí otro, por favor.');
       isConfirming = false;
       if(btnConfirmar){ btnConfirmar.disabled=false; btnConfirmar.textContent='Confirmar turno ✓'; }
       selectedTime=null;
@@ -2524,16 +2542,6 @@ async function confirmarTurno(){
       notifMsg += `📧 Te enviamos confirmación a <strong>${email}</strong>.`;
     }
     document.getElementById('confirmNotif').innerHTML = notifMsg || '✅ Turno confirmado.';
-
-    /* Guardar turno en Firebase */
-    const fechaKey = selectedDate.toISOString().split('T')[0];
-    firebase.database().ref('turnos/'+fechaKey).push({
-      nombre, email: email||'', wa,
-      servicio: selectedSvc.name, servicioId: selectedSvc.id,
-      hora: selectedTime, duracion: selectedSvc.dur,
-      nota: nota||'', estado: 'confirmado', origen: 'web',
-      ts: Date.now()
-    });
 
     goStep(4);
   } catch(e){
