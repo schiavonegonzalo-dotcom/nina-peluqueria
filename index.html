@@ -2487,27 +2487,33 @@ async function confirmarTurno(){
   const btnConfirmar = document.querySelector('#step3 .btn-v');
   if(btnConfirmar){ btnConfirmar.disabled=true; btnConfirmar.textContent='Procesando...'; }
 
+  /* Copia local del servicio/fecha/hora elegidos: la escritura en Firebase de
+     abajo dispara el listener en tiempo real, que puede resetear selectedTime
+     al re-renderizar la lista de horarios. Usamos esta copia para el resto de
+     la función en vez de releer las variables globales tras el await. */
+  const svc = selectedSvc, fecha = selectedDate, hora = selectedTime;
+
   try {
     /* Guardar el turno con una transacción atómica de Firebase: revalida
        disponibilidad y escribe en un solo paso indivisible, para que dos o
        más reservas simultáneas no puedan pisarse entre sí (Firebase encola
        y reintenta cada transacción contra el dato más reciente del server) */
-    const fechaKey = selectedDate.toISOString().split('T')[0];
+    const fechaKey = fecha.toISOString().split('T')[0];
     const turnoRef = firebase.database().ref('turnos/'+fechaKey);
     const newKey   = turnoRef.push().key;
-    const tp = selectedTime.split(':');
+    const tp = hora.split(':');
     const startMin = parseInt(tp[0])*60+parseInt(tp[1]);
     const turnoData = {
       nombre, email: email||'', wa,
-      servicio: selectedSvc.name, servicioId: selectedSvc.id,
-      hora: selectedTime, duracion: selectedSvc.dur,
+      servicio: svc.name, servicioId: svc.id,
+      hora, duracion: svc.dur,
       nota: nota||'', estado: 'confirmado', origen: 'web',
       ts: Date.now()
     };
 
     const result = await turnoRef.transaction(current=>{
       const blocked = _buildBlockedArr(current);
-      if(!isSlotAvailable(startMin, selectedSvc.dur, blocked, selectedSvc)) return; // aborta: ya no está disponible
+      if(!isSlotAvailable(startMin, svc.dur, blocked, svc)) return; // aborta: ya no está disponible
       const data = current||{};
       data[newKey] = turnoData;
       return data;
@@ -2519,25 +2525,25 @@ async function confirmarTurno(){
       if(btnConfirmar){ btnConfirmar.disabled=false; btnConfirmar.textContent='Confirmar turno ✓'; }
       selectedTime=null;
       goStep(2);
-      buildSlotsList(selectedDate);
+      buildSlotsList(fecha);
       return;
     }
 
     const days   =['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
     const months2=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-    const dateStr=`${days[selectedDate.getDay()]} ${selectedDate.getDate()} de ${months2[selectedDate.getMonth()]} de ${selectedDate.getFullYear()}`;
-    const durStr =formatDur(selectedSvc.dur);
+    const dateStr=`${days[fecha.getDay()]} ${fecha.getDate()} de ${months2[fecha.getMonth()]} de ${fecha.getFullYear()}`;
+    const durStr =formatDur(svc.dur);
 
     /* Mostrar confirmación en pantalla */
     document.getElementById('confirmDetail').innerHTML=
       `<strong>${nombre}</strong>, tu turno quedó reservado:<br><br>
-      ✂️ <strong>${selectedSvc.name}</strong><br>
+      ✂️ <strong>${svc.name}</strong><br>
       📅 <strong>${dateStr}</strong><br>
-      🕐 <strong>${selectedTime} hs</strong><br>
+      🕐 <strong>${hora} hs</strong><br>
       ⏱ Duración aproximada: <strong>${durStr}</strong>`;
 
     /* Envío de notificaciones (email + WhatsApp) */
-    let notifMsg = await enviarNotificacionesTurno(nombre, email, wa, notif, selectedSvc, dateStr, selectedTime, nota);
+    let notifMsg = await enviarNotificacionesTurno(nombre, email, wa, notif, svc, dateStr, hora, nota);
     if(notif==='email'||notif==='ambos'){
       notifMsg += `📧 Te enviamos confirmación a <strong>${email}</strong>.`;
     }
