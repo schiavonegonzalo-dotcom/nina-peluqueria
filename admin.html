@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Montserrat',sans-serif;background:#F0ECF8;color:#1A1018;min-height:100vh;}
@@ -37,18 +38,15 @@ body{font-family:'Montserrat',sans-serif;background:#F0ECF8;color:#1A1018;min-he
 .login-logo{height:52px;margin-bottom:1.8rem;display:block;margin-left:auto;margin-right:auto;}
 .login-title{font-size:.95rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--dark);margin-bottom:.3rem;}
 .login-sub{font-size:.68rem;color:var(--gray-light);font-weight:500;margin-bottom:2rem;}
-.login-input{
-  width:100%;padding:.9rem 1rem;border:1.5px solid rgba(136,80,190,.2);border-radius:8px;
-  font-family:'Montserrat',sans-serif;font-size:.88rem;font-weight:500;
-  color:var(--dark);outline:none;margin-bottom:.75rem;transition:border-color .2s,box-shadow .2s;
-}
-.login-input:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(136,80,190,.1);}
 .login-btn{
-  width:100%;padding:.95rem;background:var(--violet);color:#fff;border:none;border-radius:8px;
-  font-family:'Montserrat',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
-  cursor:pointer;transition:background .2s,transform .15s;
+  width:100%;padding:.95rem;background:#fff;color:var(--dark);border:1.5px solid rgba(136,80,190,.25);border-radius:8px;
+  font-family:'Montserrat',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:.02em;
+  cursor:pointer;transition:background .2s,transform .15s,border-color .2s;
+  display:flex;align-items:center;justify-content:center;gap:.6rem;
 }
-.login-btn:hover{background:var(--violet-deep);transform:translateY(-1px);}
+.login-btn:hover{background:var(--violet-pale);border-color:var(--violet);transform:translateY(-1px);}
+.login-btn:disabled{opacity:.6;cursor:default;transform:none;}
+.login-btn img{width:18px;height:18px;}
 .login-error{margin-top:.85rem;font-size:.7rem;font-weight:600;color:var(--danger);}
 .login-hint{margin-top:1.5rem;font-size:.62rem;color:var(--gray-light);}
 
@@ -419,11 +417,12 @@ body{font-family:'Montserrat',sans-serif;background:#F0ECF8;color:#1A1018;min-he
   <div class="login-card">
     <img src="assets/logo-bajada-violeta.png" alt="Nina Peluquería" class="login-logo" onerror="this.style.display='none'"/>
     <div class="login-title">Panel de administración</div>
-    <div class="login-sub">Ingresá tu contraseña para continuar</div>
-    <input type="password" id="loginPass" class="login-input" placeholder="Contraseña"
-      onkeydown="if(event.key==='Enter')doLogin()"/>
-    <button class="login-btn" onclick="doLogin()">Ingresar al panel</button>
-    <div id="loginError" class="login-error" hidden>Contraseña incorrecta.</div>
+    <div class="login-sub">Iniciá sesión con la cuenta de Google autorizada</div>
+    <button class="login-btn" id="googleLoginBtn" onclick="doLogin()">
+      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt=""/>
+      Iniciar sesión con Google
+    </button>
+    <div id="loginError" class="login-error" hidden>Esta cuenta de Google no tiene acceso al panel.</div>
     <div class="login-hint">Solo para uso de Nina Peluquería</div>
   </div>
 </div>
@@ -665,6 +664,7 @@ const FB_CFG = {
 };
 if(!firebase.apps.length) firebase.initializeApp(FB_CFG);
 const db = firebase.database();
+const auth = firebase.auth();
 
 /* ══════════════════════════════════
    CONFIG — estructura local (sincronizada con Firebase al guardar)
@@ -746,25 +746,41 @@ const CONFIG = {
 };
 
 /* ══ AUTH ══ */
-const PASS = 'nina2026';
+const ALLOWED_EMAIL = 'ninapeluqueriamza@gmail.com';
+
 function doLogin(){
-  const v=document.getElementById('loginPass').value.trim();
+  const btn=document.getElementById('googleLoginBtn');
   const e=document.getElementById('loginError');
-  if(v===PASS){
+  e.hidden=true;
+  btn.disabled=true;
+  const provider=new firebase.auth.GoogleAuthProvider();
+  auth.signInWithPopup(provider).catch(err=>{
+    console.error('Login error:',err);
+    if(err.code!=='auth/popup-closed-by-user') { e.hidden=false; }
+  }).finally(()=>{ btn.disabled=false; });
+}
+
+function doLogout(){
+  auth.signOut();
+}
+
+auth.onAuthStateChanged(user=>{
+  const e=document.getElementById('loginError');
+  if(user && user.email && user.email.toLowerCase()===ALLOWED_EMAIL){
     e.hidden=true;
     document.getElementById('login-screen').style.display='none';
     document.getElementById('admin-panel').style.display='flex';
     initAll();
   } else {
-    e.hidden=false;
-    document.getElementById('loginPass').select();
+    if(user){
+      /* Cuenta de Google válida pero no autorizada */
+      e.hidden=false;
+      auth.signOut();
+    }
+    document.getElementById('admin-panel').style.display='none';
+    document.getElementById('login-screen').style.display='flex';
   }
-}
-function doLogout(){
-  document.getElementById('admin-panel').style.display='none';
-  document.getElementById('login-screen').style.display='flex';
-  document.getElementById('loginPass').value='';
-}
+});
 
 /* ══ INIT ══ */
 async function initAll(){
