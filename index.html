@@ -2262,10 +2262,20 @@ function renderCal(){
 }
 function calPrev(){_detachDayListener();calMonth--;if(calMonth<0){calMonth=11;calYear--;}renderCal();}
 function calNext(){_detachDayListener();calMonth++;if(calMonth>11){calMonth=0;calYear++;}renderCal();}
-function selectDate(d,el){
+async function selectDate(d,el){
   document.querySelectorAll('.cal-day').forEach(c=>c.classList.remove('selected'));
   el.classList.add('selected');
   selectedDate=d;
+  if(!_schedule){
+    /* El horario real todavía no cargó desde Firebase (carga async):
+       lo esperamos acá para no usar el default OPEN_HOUR/CLOSE_HOUR de
+       respaldo, que podría mostrar horarios ya cerrados como disponibles. */
+    try{
+      const snap=await firebase.database().ref('horarios').once('value');
+      const val=snap.val();
+      if(val&&val.days) _schedule=val.days;
+    }catch(e){console.warn('Error cargando horarios:',e);}
+  }
   if(_schedule){
     const dayConf=_schedule.find(dc=>dc.id===_DOW_ID[d.getDay()]);
     if(dayConf&&dayConf.active){
@@ -2504,10 +2514,35 @@ async function confirmarTurno(){
        más reservas simultáneas no puedan pisarse entre sí (Firebase encola
        y reintenta cada transacción contra el dato más reciente del server) */
     const fechaKey = fecha.toISOString().split('T')[0];
-    const turnoRef = firebase.database().ref('turnos/'+fechaKey);
-    const newKey   = turnoRef.push().key;
     const tp = hora.split(':');
     const startMin = parseInt(tp[0])*60+parseInt(tp[1]);
+
+    /* Última verificación contra el horario real (recién cargado de Firebase,
+       no el default de respaldo) antes de guardar: evita reservar fuera de
+       atención si _schedule no había cargado a tiempo al elegir la hora. */
+    try{
+      const schSnap = await firebase.database().ref('horarios').once('value');
+      const schDays = (schSnap.val()||{}).days;
+      if(schDays){
+        const dayConf = schDays.find(dc=>dc.id===_DOW_ID[fecha.getDay()]);
+        const [oh,om] = dayConf&&dayConf.active ? dayConf.open.split(':').map(Number)  : [null,null];
+        const [ch,cm] = dayConf&&dayConf.active ? dayConf.close.split(':').map(Number) : [null,null];
+        const openMin  = oh!==null ? oh*60+om : null;
+        const closeMin = ch!==null ? ch*60+cm : null;
+        if(!dayConf || !dayConf.active || startMin<openMin || startMin+svc.dur>closeMin){
+          alert('Ese horario ya no está disponible (fuera del horario de atención). Por favor, elegí otro.');
+          isConfirming=false;
+          if(btnConfirmar){btnConfirmar.disabled=false; btnConfirmar.textContent='Confirmar turno ✓';}
+          selectedTime=null;
+          goStep(2);
+          buildSlotsList(fecha);
+          return;
+        }
+      }
+    }catch(e){console.warn('Error validando horario antes de confirmar:',e);}
+
+    const turnoRef = firebase.database().ref('turnos/'+fechaKey);
+    const newKey   = turnoRef.push().key;
     const turnoData = {
       nombre, email: email||'', wa,
       servicio: svc.name, servicioId: svc.id,
