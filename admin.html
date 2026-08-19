@@ -784,10 +784,21 @@ auth.onAuthStateChanged(user=>{
 
 /* ══ INIT ══ */
 async function initAll(){
-  /* Cargar datos actuales desde Firebase antes de renderizar */
+  /* Cargar datos actuales desde Firebase antes de renderizar.
+     Se lee cada sección por separado (no la raíz "/"): las reglas de
+     seguridad solo permiten lectura en precios/horarios/textos/turnos,
+     no en la raíz completa. */
   try {
-    const snap = await db.ref('/').once('value');
-    const data = snap.val() || {};
+    const [precSnap, horSnap, texSnap] = await Promise.all([
+      db.ref('precios').once('value'),
+      db.ref('horarios').once('value'),
+      db.ref('textos').once('value'),
+    ]);
+    const data = {
+      precios:  precSnap.val(),
+      horarios: horSnap.val(),
+      textos:   texSnap.val(),
+    };
 
     if(data.precios){
       CONFIG.categories.forEach(cat=>{
